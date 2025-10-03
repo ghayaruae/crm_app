@@ -1,0 +1,225 @@
+<!doctype html>
+<!-- <html lang="en" data-layout="twocolumn" data-sidebar-visibility="show" data-topbar="light" data-sidebar="dark"
+  data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable" data-layout-style="default"
+  data-bs-theme="light" data-layout-width="fluid" data-layout-position="fixed"> -->
+<html lang="en" data-layout="twocolumn" data-layout-style="default" data-layout-position="fixed" data-topbar="light"
+  data-sidebar="dark" data-sidebar-size="lg" data-layout-width="fluid" data-sidebar-visibility="show"
+  data-bs-theme="dark" data-preloader="disable">
+
+<head>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>CRM Ghayar</title>
+    <link rel="icon" href="logo-sm.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Meta Tags for SEO -->
+    <meta name="description"
+      content="CRM Management System - Comprehensive customer relationship management solution for businesses." />
+    <meta name="author" content="Dualsysco" />
+    <meta name="keywords"
+      content="CRM, customer relationship management, sales management, lead tracking, customer management, business CRM, sales pipeline, contact management" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="CRM Management System - Streamline Your Customer Relationships" />
+    <meta property="og:description"
+      content="Powerful CRM solution to manage leads, contacts, sales pipeline and customer interactions efficiently." />
+    <meta property="og:image" content="%PUBLIC_URL%/assets/images/preview.png" />
+    <meta property="og:url" content="https://yourwebsite.com" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CRM Management System - Boost Your Sales Productivity" />
+    <meta name="twitter:description"
+      content="Complete CRM platform for managing customer relationships, sales pipelines, and business growth." />
+    <meta name="twitter:image" content="%PUBLIC_URL%/assets/images/preview.png" />
+
+    <link rel="apple-touch-icon" href="logo192.png" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/assets/images/logo-sm.png">
+
+    <!-- CSS Dependencies -->
+    <link href="%PUBLIC_URL%/assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
+    <link href="%PUBLIC_URL%/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+    <link href="%PUBLIC_URL%/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="%PUBLIC_URL%/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="%PUBLIC_URL%/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    <link href="%PUBLIC_URL%/assets/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="%PUBLIC_URL%/assets/css/custom.css" rel="stylesheet" type="text/css" />
+
+    <script src="%PUBLIC_URL%/assets/js/layout.js"></script>
+
+    <!-- Shimmer Styles (Unchanged) -->
+    <style>
+      @keyframes shimmer {
+        0% {
+          background-position: -200% 0;
+        }
+
+        100% {
+          background-position: 200% 0;
+        }
+      }
+
+      .shimmer {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e7e7e7 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: shimmer 2s infinite;
+      }
+
+      .shimmer td {
+        border: 1px solid #ddd;
+        padding: 18px;
+        background: inherit;
+      }
+
+      .shimmer-card,
+      .shimmer-card-2,
+      .shimmer-line,
+      .shimmer-chart-circle,
+      .shimmer-chart-column,
+      .shimmer-box,
+      .shimmer-chart-block {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e7e7e7 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: shimmer 2s infinite;
+      }
+
+      .shimmer-card {
+        width: 100%;
+        height: 200px;
+        border-radius: 12px;
+      }
+
+      .shimmer-card-2 {
+        width: 100%;
+        height: 150px;
+        margin-bottom: 20px;
+        border-radius: 12px;
+      }
+
+      .shimmer-line {
+        height: 20px;
+        width: 100px;
+        border-radius: 4px;
+        margin-bottom: 6px;
+      }
+
+      .shimmer-chart-circle {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        margin: 0 auto;
+      }
+
+      .shimmer-chart-column {
+        width: 40px;
+        height: 150px;
+        margin: 0 10px;
+        border-radius: 6px;
+        display: inline-block;
+      }
+
+      .shimmer-box {
+        height: 80px;
+        border-radius: 8px;
+        margin: 12px;
+      }
+
+      .shimmer-chart-block {
+        height: 300px;
+        border-radius: 8px;
+        margin-top: 16px;
+      }
+    </style>
+  </head>
+
+
+<body>
+  <!-- Begin page -->
+  <div id="layout-wrapper">
+    <div id="root"></div>
+  </div>
+  <!-- END layout-wrapper -->
+
+  <!-- JavaScript Dependencies - Loaded after DOM is ready -->
+  <script>
+    // Wait for both DOM and all resources to be ready
+    window.addEventListener('load', function () {
+      // Check if required elements exist before executing scripts
+      function elementExists(selector) {
+        return document.querySelector(selector) !== null;
+      }
+
+      // Load scripts with dependency checking
+      function loadScript(src, integrity, crossorigin) {
+        return new Promise((resolve, reject) => {
+          if (document.querySelector(`script[src="${src}"]`)) {
+            return resolve();
+          }
+
+          const script = document.createElement('script');
+          script.src = src;
+          if (integrity) script.integrity = integrity;
+          if (crossorigin) script.crossOrigin = crossorigin;
+          script.onload = resolve;
+          script.onerror = reject;
+          document.body.appendChild(script);
+        });
+      }
+
+      // Main initialization function
+      function initializeApp() {
+        // Add safety checks for DOM elements
+        const safeExecute = (fn, elementSelector) => {
+          if (!elementSelector || elementExists(elementSelector)) {
+            try {
+              return fn();
+            } catch (e) {
+              console.error('Execution error:', e);
+            }
+          } else {
+            console.warn(`Element not found: ${elementSelector}`);
+          }
+        };
+
+        // Load scripts in proper order
+        Promise.all([
+          loadScript('%PUBLIC_URL%/assets/libs/bootstrap/js/bootstrap.bundle.min.js'),
+          loadScript('%PUBLIC_URL%/assets/libs/simplebar/simplebar.min.js'),
+          loadScript('%PUBLIC_URL%/assets/libs/node-waves/waves.min.js')
+        ])
+          .then(() => loadScript('%PUBLIC_URL%/assets/libs/feather-icons/feather.min.js'))
+          .then(() => loadScript('%PUBLIC_URL%/assets/js/pages/plugins/lord-icon-2.1.0.js'))
+          .then(() => loadScript('%PUBLIC_URL%/assets/js/plugins.js'))
+          .then(() => Promise.all([
+            loadScript('%PUBLIC_URL%/assets/libs/apexcharts/apexcharts.min.js'),
+            loadScript('%PUBLIC_URL%/assets/libs/swiper/swiper-bundle.min.js')
+          ]))
+          .then(() => loadScript('%PUBLIC_URL%/assets/js/pages/dashboard-ecommerce.init.js'))
+          .then(() => loadScript('%PUBLIC_URL%/assets/js/app.js'))
+          .catch(err => {
+            console.error('Script loading failed:', err);
+          });
+      }
+
+      initializeApp();
+    });
+
+    // Enhanced error handling
+    window.addEventListener('error', function (event) {
+      console.error('Global error:', {
+        message: event.message,
+        source: event.filename,
+        line: event.lineno,
+        column: event.colno,
+        error: event.error
+      });
+      return true;
+    });
+  </script>
+</body>
+
+</html>
