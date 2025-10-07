@@ -20,43 +20,42 @@ const Header = () => {
       label: "Dashboard",
       isDropdown: false,
     },
-    // {
-    //   id: "accounts",
-    //   icon: "ri-wallet-3-fill",
-    //   label: "Accounts",
-    //   isDropdown: true,
-    //   dropdownId: "sidebarAccounts",
-    //   items: [
-    //     {
-    //       id: "accountsMasters",
-    //       label: "Masters",
-    //       isDropdown: true,
-    //       dropdownId: "sidebarAccountsMasters",
-    //       items: [
-    //         {
-    //           id: "accountsLedger",
-    //           label: "Ledger",
-    //           isDropdown: true,
-    //           dropdownId: "sidebarLedger",
-    //           items: [
-    //             {
-    //               id: "manageLedger",
-    //               path: "/Accounts/Masters/ManageLedger",
-    //               label: "Manage Ledger",
-    //               isDropdown: false,
-    //             },
-    //             {
-    //               id: "ledgerList",
-    //               path: "/Accounts/Masters/LedgerList",
-    //               label: "Ledger List",
-    //               isDropdown: false,
-    //             },
-    //           ],
-    //         },
-    //       ]
-    //     },
-    //   ],
-    // },
+    {
+      id: "Business",
+      icon: "ri-briefcase-line",
+      label: "Businesses",
+      isDropdown: true,
+      dropdownId: "sidebarBusiness",
+      items: [
+        {
+          id: "AllBusinesses",
+          path: "/AllBusinesses",
+          label: "Businesses",
+          isDropdown: false,
+        },
+        {
+          id: "BusinessOrders",
+          path: "/BusinessOrders",
+          label: "Businesse Orders",
+          isDropdown: false,
+        },
+      ],
+    },
+    {
+      id: "Reports",
+      icon: "ri-file-list-3-line",
+      label: "Businesses",
+      isDropdown: true,
+      dropdownId: "sidebarReports",
+      items: [
+        {
+          id: "AllOrders",
+          path: "/AllOrders",
+          label: "Orders Report",
+          isDropdown: false,
+        },
+      ],
+    },
   ];
 
   const renderMenuItems = (items) => {
