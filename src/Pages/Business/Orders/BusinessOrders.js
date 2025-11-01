@@ -116,7 +116,7 @@ const BusinessOrders = () => {
         <div className="main-content">
             <div className="page-content">
                 <div className="container-fluid">
-                    <PageTitle title="Business Orders" primary="Inventory" />
+                    <PageTitle title="Business Orders" primary="Orders" />
                     <div className="row">
                         <div className="col-md-12">
                             <div className="card">
