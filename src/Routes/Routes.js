@@ -14,6 +14,7 @@ import Dashboard from "../Pages/Dashboard/Dashboard";
 import FollowupList from "../Pages/Masters/Followup/FollowupList";
 import ManageFollowup from "../Pages/Masters/Followup/ManageFollowup";
 import ManageTarget from "../Pages/Masters/ManageTarget";
+import ManageUsers from "../Pages/Masters/UsersManagement/ManageUsers";
 import AllOrders from "../Pages/SalesReports/AllOrders";
 
 
@@ -50,6 +51,7 @@ const routes = [
   { path: "/Masters/ManageTarget", element: <ManageTarget /> },
   { path: "/Masters/ManageFollowup/:business_salesman_followup_id?", element: <ManageFollowup /> },
   { path: "/Masters/FollowupList", element: <FollowupList /> },
+  { path: "/Masters/ManageUsers", element: <ManageUsers /> },
 ];
 
 export default routes;
