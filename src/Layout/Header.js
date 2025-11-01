@@ -22,7 +22,7 @@ const Header = () => {
     },
     {
       id: "Business",
-      icon: "ri-briefcase-line",
+      icon: "ri-briefcase-fill",
       label: "Businesses",
       isDropdown: true,
       dropdownId: "sidebarBusiness",
@@ -43,8 +43,8 @@ const Header = () => {
     },
     {
       id: "Reports",
-      icon: "ri-file-list-3-line",
-      label: "Businesses",
+      icon: "ri-file-list-3-fill",
+      label: "Reports",
       isDropdown: true,
       dropdownId: "sidebarReports",
       items: [
@@ -53,6 +53,42 @@ const Header = () => {
           path: "/AllOrders",
           label: "Orders Report",
           isDropdown: false,
+        },
+      ],
+    },
+    {
+      id: "Masters",
+      icon: "ri-home-2-fill",
+      label: "Masters",
+      isDropdown: true,
+      dropdownId: "sidebarMasters",
+      items: [
+        {
+          id: "ManageTarget",
+          path: "/Masters/ManageTarget",
+          label: "Manage Target",
+          isDropdown: false,
+        },
+        {
+          id: "Followups",
+          label: "Followups",
+          isDropdown: true,
+          dropdownId: "sidebarFollowups",
+          items: [
+            {
+              id: "ManageFollowup",
+              path: "/Masters/ManageFollowup",
+              label: "Manage Followup",
+              isDropdown: false,
+            },
+            {
+              id: "FollowupList",
+              path: "/Masters/FollowupList",
+              label: "Followups List",
+              isDropdown: false,
+            },
+
+          ]
         },
       ],
     },
@@ -229,9 +265,12 @@ const Header = () => {
                         className="nav-link menu-link"
                         href={`#${item.dropdownId}`}
                         data-bs-toggle="collapse"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
                         role="button"
                         aria-expanded="false"
                         aria-controls={item.dropdownId}
+                        title={item.label}
                       >
                         <i className={item.icon} />
                         <span data-key="t-dashboards">{item.label}</span>
@@ -246,7 +285,13 @@ const Header = () => {
                       </div>
                     </>
                   ) : (
-                    <NavLink className="nav-link menu-link" to={item.path}>
+                    <NavLink
+                      className="nav-link menu-link"
+                      to={item.path}
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="right"
+                      title={item.label}
+                    >
                       <i className={item.icon} />
                       <span data-key="t-dashboards">{item.label}</span>
                     </NavLink>

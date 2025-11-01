@@ -1,0 +1,348 @@
+import axios from 'axios'
+import React, { useContext, useEffect, useState } from 'react'
+import Select from 'react-select'
+import { SubmitBtn } from '../../../Components/InputElements'
+import { ConfigContext } from '../../../Context/ConfigContext'
+import PageTitle from '../../../Components/PageTitle'
+import Swal from 'sweetalert2'
+import Flatpickr from "react-flatpickr";
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { getCurrentDate } from '../../../Components/GlobalFunctions'
+
+const ManageFollowup = () => {
+
+    const { primaryColor, apiHeaderJson, apiURL, selectTheme, selectStyle } = useContext(ConfigContext)
+    const { business_salesman_followup_id } = useParams()
+    const navigate = useNavigate()
+    const headers = apiHeaderJson;
+
+    const [formData, setFormData] = useState({
+        date: getCurrentDate(),
+        response: "",
+        remark: "",
+    })
+    const [selectedType, setSelectedType] = useState(null)
+    const [selectedSalesman, setSelectedSalesman] = useState(null)
+    const [selectedBusiness, setSelectedBusiness] = useState(null)
+    const [errors, setErrors] = useState({})
+    const [submitLoading, setSubmitLoading] = useState(false)
+    const [salesmanOptions, setSalesmanOptions] = useState([])
+    const [businessOptions, setBusinessOptions] = useState([])
+
+    const typeOptions = [
+        { value: "Call", label: "Call" },
+        { value: "Meet", label: "Meet" }
+    ]
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        if (!selectedSalesman) newErrors.selectedSalesman = "Salesman is required";
+        if (!selectedBusiness) newErrors.selectedBusiness = "Business is required";
+        if (!selectedType) newErrors.selectedType = "Followup type is required";
+        if (!formData.date) newErrors.date = "Followup date is required";
+        if (!formData.response.trim()) newErrors.response = "Business response is required";
+        if (!formData.remark.trim()) newErrors.remark = "Followup remark is required";
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const resetForm = () => {
+        setFormData({
+            date: getCurrentDate(),
+            response: "",
+            remark: ""
+        })
+        setSelectedType(null)
+        setSelectedBusiness(null)
+        setSelectedSalesman(null)
+        setErrors({})
+    }
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value })
+        if (errors[name]) setErrors({ ...errors, [name]: null })
+    }
+
+    const getSalesmanList = async () => {
+        try {
+            const response = await axios.get(`${apiURL}Masters/GetSalesmanList`, { headers })
+            const { success, data } = response.data
+
+            if (success) {
+                const options = data.map((item) => ({
+                    value: item.business_salesman_id,
+                    label: item.business_salesmen_name
+                }));
+                setSalesmanOptions(options)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const getBusinessList = async () => {
+        try {
+            const response = await axios.get(`${apiURL}Business/GetBusinessesList`, { headers })
+            const { success, data } = response.data
+
+            if (success) {
+                const options = data.map((item) => ({
+                    value: item.business_id,
+                    label: item.business_name
+                }));
+                setBusinessOptions(options)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        if (!validateForm()) return
+
+        setSubmitLoading(true)
+        try {
+            const body = {
+                business_salesman_id: selectedSalesman,
+                business_id: selectedBusiness,
+                business_salesman_followup_type: selectedType,
+                business_salesman_followup_date: formData.date,
+                business_salesman_business_response: formData.response,
+                business_salesman_followup_remark: formData.remark
+            }
+
+            if (business_salesman_followup_id) body.business_salesman_followup_id = business_salesman_followup_id
+
+            const response = await axios.post(`${apiURL}Masters/CreateFollowup`, body, { headers })
+            const { success, message } = response.data
+
+            if (success) {
+                Swal.fire('Success!', message, 'success')
+                resetForm()
+                if (business_salesman_followup_id) {
+                    navigate("/Masters/FollowupList")
+                }
+            }
+        } catch (error) {
+            console.log("error", error)
+        } finally {
+            setSubmitLoading(false)
+        }
+    }
+
+    const getInfo = async () => {
+        try {
+            const response = await axios.get(`${apiURL}Masters/GetFollowupInfo`, {
+                headers,
+                params: { business_salesman_followup_id }
+            })
+            const { success, data } = response.data
+
+            if (success) {
+                const fields = data[0]
+
+                setFormData({
+                    date: fields?.business_salesman_followup_date,
+                    response: fields?.business_salesman_business_response,
+                    remark: fields?.business_salesman_followup_remark
+                })
+                setSelectedSalesman(fields?.business_salesman_id)
+                setSelectedBusiness(fields?.business_id)
+                setSelectedType(fields?.business_salesman_followup_type)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    useEffect(() => {
+        getSalesmanList()
+        getBusinessList()
+    }, [])
+    useEffect(() => {
+        business_salesman_followup_id && getInfo()
+    }, [business_salesman_followup_id])
+
+    return (
+        <>
+            <div className="main-content">
+                <div className="page-content">
+                    <div className="container-fluid">
+                        <PageTitle title="Manage Followup" primary="Masters" />
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="card">
+                                    <div className="card-header align-items-center d-flex" style={{ backgroundColor: primaryColor }}>
+                                        <h4 className="mb-0 flex-grow-1 text-white">
+                                            {business_salesman_followup_id ? "Edit" : "New"} Followup
+                                        </h4>
+                                        <Link to={"/Masters/FollowupList"}>
+                                            <button
+                                                type="button"
+                                                className="btn btn-light btn-sm rounded-circle"
+                                                title="View Followups"
+                                            >
+                                                <i className="ri-list-unordered"></i>
+                                            </button>
+                                        </Link>
+                                    </div>
+
+                                    <div className="card-body">
+                                        <div className="row g-3">
+                                            <div className="col-md-3">
+                                                <label className='form-label'>Salesman <span className='text-danger'>*</span></label>
+                                                <Select
+                                                    name="selectedSalesman"
+                                                    theme={selectTheme}
+                                                    styles={selectStyle}
+                                                    options={salesmanOptions}
+                                                    placeholder="Select Salesman"
+                                                    value={salesmanOptions.find(opt => opt.value === selectedSalesman) || null}
+                                                    onChange={(selected) => {
+                                                        setSelectedSalesman(selected ? selected.value : null);
+                                                        if (errors.selectedSalesman) {
+                                                            setErrors(prev => ({ ...prev, selectedSalesman: '' }));
+                                                        }
+                                                    }}
+                                                    classNamePrefix="react-select"
+                                                    className={errors.selectedSalesman ? "is-invalid" : ""}
+                                                    isClearable
+                                                />
+                                                {errors.selectedSalesman && <div className="text-danger d-block">{errors.selectedSalesman}</div>}
+                                            </div>
+
+                                            <div className="col-md-3">
+                                                <label className='form-label'>Business <span className='text-danger'>*</span></label>
+                                                <Select
+                                                    name="selectedBusiness"
+                                                    theme={selectTheme}
+                                                    styles={selectStyle}
+                                                    options={businessOptions}
+                                                    placeholder="Select Business"
+                                                    value={businessOptions.find(opt => opt.value === selectedBusiness) || null}
+                                                    onChange={(selected) => {
+                                                        setSelectedBusiness(selected ? selected.value : null);
+                                                        if (errors.selectedBusiness) {
+                                                            setErrors(prev => ({ ...prev, selectedBusiness: '' }));
+                                                        }
+                                                    }}
+                                                    classNamePrefix="react-select"
+                                                    className={errors.selectedBusiness ? "is-invalid" : ""}
+                                                    isClearable
+                                                />
+                                                {errors.selectedBusiness && <div className="text-danger d-block">{errors.selectedBusiness}</div>}
+                                            </div>
+
+                                            <div className="col-md-3">
+                                                <label className='form-label'>Followup Type <span className='text-danger'>*</span></label>
+                                                <Select
+                                                    name="selectedType"
+                                                    theme={selectTheme}
+                                                    styles={selectStyle}
+                                                    options={typeOptions}
+                                                    placeholder="Select Type"
+                                                    value={typeOptions.find(opt => opt.value === selectedType) || null}
+                                                    onChange={(selected) => {
+                                                        setSelectedType(selected ? selected.value : null);
+                                                        if (errors.selectedType) {
+                                                            setErrors(prev => ({ ...prev, selectedType: '' }));
+                                                        }
+                                                    }}
+                                                    classNamePrefix="react-select"
+                                                    className={errors.selectedType ? "is-invalid" : ""}
+                                                    isClearable
+                                                />
+                                                {errors.selectedType && <div className="text-danger d-block">{errors.selectedType}</div>}
+                                            </div>
+
+                                            <div className="col-md-3">
+                                                <label className='form-label'>Followup Date</label>
+                                                <Flatpickr
+                                                    options={{ dateFormat: "Y-m-d" }}
+                                                    className={`form-control ${errors.date ? "is-invalid" : ""}`}
+                                                    placeholder="Select Followup Date"
+                                                    value={formData.date || getCurrentDate()}
+                                                    onChange={(_, dateStr) => {
+                                                        setFormData({ ...formData, date: dateStr });
+                                                        if (errors.date) setErrors({ ...errors, date: null });
+                                                    }}
+                                                />
+                                                {errors.date && (
+                                                    <div className="invalid-feedback d-block">{errors.date}</div>
+                                                )}
+                                            </div>
+                                            <div className="col-md-6">
+                                                <label className='form-label'>Business Response</label>
+                                                <textarea
+                                                    rows={5}
+                                                    name="response"
+                                                    value={formData.response}
+                                                    onChange={handleInputChange}
+                                                    className={`form-control ${errors.response ? "is-invalid" : ""}`}
+                                                    placeholder='Enter Business response'
+                                                />
+                                                {errors.response && (
+                                                    <div className="invalid-feedback d-block">{errors.response}</div>
+                                                )}
+                                            </div>
+                                            <div className="col-md-6">
+                                                <label className='form-label'>Followup Remark</label>
+                                                <textarea
+                                                    rows={5}
+                                                    name="remark"
+                                                    value={formData.remark}
+                                                    onChange={handleInputChange}
+                                                    className={`form-control ${errors.remark ? "is-invalid" : ""}`}
+                                                    placeholder='Enter remark'
+                                                />
+                                                {errors.remark && (
+                                                    <div className="invalid-feedback d-block">{errors.remark}</div>
+                                                )}
+                                            </div>
+                                            <div className={`col-md-12 d-flex align-items-end justify-content-${business_salesman_followup_id ? "between" : "end"} gap-3`}>
+                                                {business_salesman_followup_id ? (
+                                                    <>
+                                                        <Link to={"/Masters/FollowupList"}>
+                                                            <button
+                                                                type="button"
+                                                                className="btn btn-light btn-label right me-auto"
+                                                            >
+                                                                Reset
+                                                                <i className="ri-arrow-right-line label-icon align-middle fs-16" />
+                                                            </button>
+                                                        </Link>
+                                                        <SubmitBtn
+                                                            icon="ri-save-line"
+                                                            text="Update"
+                                                            onClick={handleSubmit}
+                                                            type="primary"
+                                                            disabled={submitLoading}
+                                                        />
+                                                    </>
+                                                ) : (
+                                                    <SubmitBtn
+                                                        text={submitLoading ? 'Saving..' : 'Save'}
+                                                        type="primary"
+                                                        icon="ri-save-line"
+                                                        onClick={handleSubmit}
+                                                        disabled={submitLoading}
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
+
+export default ManageFollowup

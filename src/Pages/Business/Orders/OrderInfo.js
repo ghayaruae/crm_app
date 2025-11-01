@@ -25,7 +25,7 @@ const OrderInfo = () => {
         try {
 
             const headers = apiHeaderJson;
-            const response = await axios.get(`${apiURL}Orders/GetOrderTimeline`, { params: { business_order_id }, headers })
+            const response = await axios.get(`${apiURL}Business/GetOrderTimeline`, { params: { business_order_id }, headers })
 
             if (response?.data?.success) {
                 setOrderTimeLineDate(response?.data?.data)
@@ -82,7 +82,7 @@ const OrderInfo = () => {
                             <ContentLoader />
                         ) : (
                             <>
-                                <PageTitle title="Order Details" primary={"Dashboard"} />
+                                <PageTitle title="Order Details" primary={"Orders"} />
 
                                 <div className="row">
                                     <div className="col-md-10">
