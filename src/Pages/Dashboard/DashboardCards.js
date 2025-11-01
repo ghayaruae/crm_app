@@ -10,8 +10,6 @@ const DashboardCards = ({ data }) => {
             arrowColor: "text-success",
             iconColor: "text-primary",
             value: data?.total_orders,
-            prefix: "",
-            suffix: "",
         },
         {
             title: "Pending Orders",
@@ -20,8 +18,6 @@ const DashboardCards = ({ data }) => {
             arrowColor: "text-warning",
             iconColor: "text-warning",
             value: data?.total_pending_orders,
-            prefix: "",
-            suffix: "",
         },
         {
             title: "Active Businesses",
@@ -30,8 +26,6 @@ const DashboardCards = ({ data }) => {
             arrowColor: "text-success",
             iconColor: "text-success",
             value: data?.total_active_business,
-            prefix: "",
-            suffix: "",
         },
         {
             title: "Inactive Businesses",
@@ -40,8 +34,6 @@ const DashboardCards = ({ data }) => {
             arrowColor: "text-danger",
             iconColor: "text-danger",
             value: data?.total_inactive_business,
-            prefix: "",
-            suffix: "",
         },
         {
             title: "Pending Targets",
@@ -50,8 +42,6 @@ const DashboardCards = ({ data }) => {
             arrowColor: "text-warning",
             iconColor: "text-warning",
             value: data?.total_pending_targets,
-            prefix: "",
-            suffix: "",
         },
         {
             title: "Total Targets",
@@ -60,46 +50,39 @@ const DashboardCards = ({ data }) => {
             arrowColor: "text-success",
             iconColor: "text-primary",
             value: data?.total_targets,
-            prefix: "",
-            suffix: "",
         },
     ];
 
     return (
-        <>
-            <div className="col-md-12">
-                <div className="card crm-widget shadow">
-                    <div className="card-body p-0">
-                        <div className="row row-cols-xxl-6 row-cols-md-3 row-cols-1 g-0">
-                            {dashboardCards.map((card, index) => (
-                                <div className="col" key={index}>
-                                    <div className={`py-4 px-3 ${index > 0 ? "mt-3 mt-md-0" : ""}`}>
-                                        <h5 className="text-muted text-uppercase fs-13 mb-3">
-                                            {card.title}
-                                            <i className={`${card.arrowIcon} ${card.arrowColor} fs-18 float-end align-middle`} />
-                                        </h5>
-                                        <div className="d-flex align-items-center">
-                                            <div className="flex-shrink-0">
-                                                <i className={`${card.icon} fs-3 ${card.iconColor}`} />
-                                            </div>
-                                            <div className="flex-grow-1 ms-3">
-                                                <h4 className="mb-0">
-                                                    {card.prefix}
-                                                    <span className="counter-value" data-target={card.value}>
-                                                        {card.value ?? 0}
-                                                    </span>
-                                                    {card.suffix}
-                                                </h4>
-                                            </div>
+        <div className="col-12">
+            <div className="card crm-widget shadow border-0">
+                <div className="card-body p-0">
+                    {/* responsive grid */}
+                    <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-6 g-0">
+                        {dashboardCards.map((card, index) => (
+                            <div className="col" key={index}>
+                                <div className={`py-4 px-3 border-end ${index === dashboardCards.length - 1 ? 'border-0' : ''}`}>
+                                    <h5 className="text-muted text-uppercase fs-13 mb-3">
+                                        {card.title}
+                                        <i className={`${card.arrowIcon} ${card.arrowColor} fs-18 float-end align-middle`} />
+                                    </h5>
+                                    <div className="d-flex align-items-center">
+                                        <div className="flex-shrink-0">
+                                            <i className={`${card.icon} fs-3 ${card.iconColor}`} />
+                                        </div>
+                                        <div className="flex-grow-1 ms-3">
+                                            <h4 className="mb-0">
+                                                {card.value ?? 0}
+                                            </h4>
                                         </div>
                                     </div>
                                 </div>
-                            ))}
-                        </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 
