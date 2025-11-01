@@ -90,6 +90,12 @@ const Header = () => {
 
           ]
         },
+        {
+          id: "ManageUsers",
+          path: "/Masters/ManageUsers",
+          label: "Manage Users",
+          isDropdown: false,
+        },
       ],
     },
   ];

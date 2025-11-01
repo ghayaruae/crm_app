@@ -3,6 +3,7 @@ import React from 'react'
 const SalesmanInfo = ({ salesmanData }) => {
 
     const phoneNumber = salesmanData?.business_salesmen_contact_number;
+    const email = salesmanData?.business_salesman_email;
     const loginId = salesmanData?.business_salesman_login_id;
     const loginPassword = salesmanData?.business_salesman_login_password;
 
@@ -27,9 +28,9 @@ const SalesmanInfo = ({ salesmanData }) => {
                                 <i className="ri-phone-line align-middle fs-16"></i>
                             </a>
                             <a
-                                href={`mail:${phoneNumber}`}
+                                href={`mailto:${email}`}
                                 className="btn btn-soft-dark rounded-circle"
-                                title={`Mail ${phoneNumber}`}
+                                title={`Mail ${email}`}
                             >
                                 <i className="ri-mail-line align-middle fs-16"></i>
                             </a>
