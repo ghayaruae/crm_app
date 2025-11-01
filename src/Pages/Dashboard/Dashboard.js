@@ -5,6 +5,7 @@ import BusinessesChart from "./BusinessesChart";
 import { ConfigContext } from "../../Context/ConfigContext";
 import axios from "axios";
 import SalesmanInfo from "./SalesmanInfo";
+import BestSellingProducts from "./BestSellingProducts";
 
 const Dashboard = () => {
 
@@ -47,6 +48,7 @@ const Dashboard = () => {
             </div>
             <div className="row">
               <SalesmanInfo salesmanData={salesmanData} />
+              {/* <BestSellingProducts /> */}
             </div>
             <div className="row">
               <SalesChart />
