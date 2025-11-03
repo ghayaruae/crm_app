@@ -22,22 +22,23 @@ const ManageFollowup = () => {
         remark: "",
     })
     const [selectedType, setSelectedType] = useState(null)
-    const [selectedSalesman, setSelectedSalesman] = useState(null)
     const [selectedBusiness, setSelectedBusiness] = useState(null)
     const [errors, setErrors] = useState({})
     const [submitLoading, setSubmitLoading] = useState(false)
-    const [salesmanOptions, setSalesmanOptions] = useState([])
+
     const [businessOptions, setBusinessOptions] = useState([])
 
     const typeOptions = [
         { value: "Call", label: "Call" },
-        { value: "Meet", label: "Meet" }
+        { value: "Meet", label: "Meet" },
+        { value: "Visit", label: "Visit" },
+        { value: "WhatsApp", label: "WhatsApp" },
+        { value: "Mail", label: "Mail" },
     ]
 
     const validateForm = () => {
         const newErrors = {};
 
-        if (!selectedSalesman) newErrors.selectedSalesman = "Salesman is required";
         if (!selectedBusiness) newErrors.selectedBusiness = "Business is required";
         if (!selectedType) newErrors.selectedType = "Followup type is required";
         if (!formData.date) newErrors.date = "Followup date is required";
@@ -56,7 +57,6 @@ const ManageFollowup = () => {
         })
         setSelectedType(null)
         setSelectedBusiness(null)
-        setSelectedSalesman(null)
         setErrors({})
     }
 
@@ -64,23 +64,6 @@ const ManageFollowup = () => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value })
         if (errors[name]) setErrors({ ...errors, [name]: null })
-    }
-
-    const getSalesmanList = async () => {
-        try {
-            const response = await axios.get(`${apiURL}Masters/GetSalesmanList`, { headers })
-            const { success, data } = response.data
-
-            if (success) {
-                const options = data.map((item) => ({
-                    value: item.business_salesman_id,
-                    label: item.business_salesmen_name
-                }));
-                setSalesmanOptions(options)
-            }
-        } catch (error) {
-            console.error(error)
-        }
     }
 
     const getBusinessList = async () => {
@@ -107,7 +90,6 @@ const ManageFollowup = () => {
         setSubmitLoading(true)
         try {
             const body = {
-                business_salesman_id: selectedSalesman,
                 business_id: selectedBusiness,
                 business_salesman_followup_type: selectedType,
                 business_salesman_followup_date: formData.date,
@@ -150,7 +132,6 @@ const ManageFollowup = () => {
                     response: fields?.business_salesman_business_response,
                     remark: fields?.business_salesman_followup_remark
                 })
-                setSelectedSalesman(fields?.business_salesman_id)
                 setSelectedBusiness(fields?.business_id)
                 setSelectedType(fields?.business_salesman_followup_type)
             }
@@ -160,9 +141,9 @@ const ManageFollowup = () => {
     }
 
     useEffect(() => {
-        getSalesmanList()
         getBusinessList()
     }, [])
+
     useEffect(() => {
         business_salesman_followup_id && getInfo()
     }, [business_salesman_followup_id])
@@ -177,9 +158,7 @@ const ManageFollowup = () => {
                             <div className="col-md-12">
                                 <div className="card">
                                     <div className="card-header align-items-center d-flex" style={{ backgroundColor: primaryColor }}>
-                                        <h4 className="mb-0 flex-grow-1 text-white">
-                                            {business_salesman_followup_id ? "Edit" : "New"} Followup
-                                        </h4>
+                                        <h4 className="mb-0 flex-grow-1 text-white">Follow up</h4>
                                         <Link to={"/Masters/FollowupList"}>
                                             <button
                                                 type="button"
@@ -193,29 +172,9 @@ const ManageFollowup = () => {
 
                                     <div className="card-body">
                                         <div className="row g-3">
-                                            <div className="col-md-3">
-                                                <label className='form-label'>Salesman <span className='text-danger'>*</span></label>
-                                                <Select
-                                                    name="selectedSalesman"
-                                                    theme={selectTheme}
-                                                    styles={selectStyle}
-                                                    options={salesmanOptions}
-                                                    placeholder="Select Salesman"
-                                                    value={salesmanOptions.find(opt => opt.value === selectedSalesman) || null}
-                                                    onChange={(selected) => {
-                                                        setSelectedSalesman(selected ? selected.value : null);
-                                                        if (errors.selectedSalesman) {
-                                                            setErrors(prev => ({ ...prev, selectedSalesman: '' }));
-                                                        }
-                                                    }}
-                                                    classNamePrefix="react-select"
-                                                    className={errors.selectedSalesman ? "is-invalid" : ""}
-                                                    isClearable
-                                                />
-                                                {errors.selectedSalesman && <div className="text-danger d-block">{errors.selectedSalesman}</div>}
-                                            </div>
 
-                                            <div className="col-md-3">
+
+                                            <div className="col-md-4">
                                                 <label className='form-label'>Business <span className='text-danger'>*</span></label>
                                                 <Select
                                                     name="selectedBusiness"
@@ -237,7 +196,7 @@ const ManageFollowup = () => {
                                                 {errors.selectedBusiness && <div className="text-danger d-block">{errors.selectedBusiness}</div>}
                                             </div>
 
-                                            <div className="col-md-3">
+                                            <div className="col-md-4">
                                                 <label className='form-label'>Followup Type <span className='text-danger'>*</span></label>
                                                 <Select
                                                     name="selectedType"
@@ -259,8 +218,8 @@ const ManageFollowup = () => {
                                                 {errors.selectedType && <div className="text-danger d-block">{errors.selectedType}</div>}
                                             </div>
 
-                                            <div className="col-md-3">
-                                                <label className='form-label'>Followup Date</label>
+                                            <div className="col-md-4">
+                                                <label className='form-label'>Followup Date <span className='text-danger'>*</span></label>
                                                 <Flatpickr
                                                     options={{ dateFormat: "Y-m-d" }}
                                                     className={`form-control ${errors.date ? "is-invalid" : ""}`}
@@ -275,8 +234,8 @@ const ManageFollowup = () => {
                                                     <div className="invalid-feedback d-block">{errors.date}</div>
                                                 )}
                                             </div>
-                                            <div className="col-md-6">
-                                                <label className='form-label'>Business Response</label>
+                                            <div className="col-md-12">
+                                                <label className='form-label'>Business Response <span className='text-danger'>*</span></label>
                                                 <textarea
                                                     rows={5}
                                                     name="response"
@@ -289,8 +248,8 @@ const ManageFollowup = () => {
                                                     <div className="invalid-feedback d-block">{errors.response}</div>
                                                 )}
                                             </div>
-                                            <div className="col-md-6">
-                                                <label className='form-label'>Followup Remark</label>
+                                            <div className="col-md-12">
+                                                <label className='form-label'>Followup Remark <span className='text-danger'>*</span></label>
                                                 <textarea
                                                     rows={5}
                                                     name="remark"

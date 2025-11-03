@@ -1,7 +1,27 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ReactECharts from 'echarts-for-react'
+import axios from 'axios';
+import { ConfigContext } from '../../Context/ConfigContext';
 
-const BusinessesChart = ({ data }) => {
+const BusinessesChart = () => {
+    const { apiHeaderJson, apiURL } = useContext(ConfigContext)
+    const [getTargetAmount, setGetTargetAmount] = useState([]);
+
+    const GetSalesmanTargetChartData = async () => {
+        try {
+            const headers = apiHeaderJson;
+            const response = await axios.get(`${apiURL}Dashboard/GetSalesmanTargetChartData`, { headers })
+
+            if (response?.data?.success) {
+                const data = response?.data?.data;
+                setGetTargetAmount(data);
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const option = {
         tooltip: {
             trigger: 'item',
@@ -33,8 +53,8 @@ const BusinessesChart = ({ data }) => {
                 },
                 labelLine: { show: false },
                 data: [
-                    { value: data?.total_active_business, name: 'Active', itemStyle: { color: '#2b7a78' } },
-                    { value: data?.total_inactive_business, name: 'Inactive', itemStyle: { color: '#d9534f' } }
+                    { value: getTargetAmount?.total_achievement_amount, name: 'Achievement Amount', itemStyle: { color: '#2b7a78' } },
+                    { value: getTargetAmount?.total_pending_amount, name: 'Pending Amount', itemStyle: { color: '#d9534f' } }
                 ]
             }
         ]
@@ -46,12 +66,16 @@ const BusinessesChart = ({ data }) => {
         minHeight: '300px',
     }
 
+    useEffect(() => {
+        GetSalesmanTargetChartData();
+    }, [])
+
     return (
         <div className="col-12 col-md-5">
             <div className="card shadow border-0 rounded h-100">
                 <div className="card-body d-flex flex-column justify-content-between">
                     <h5 className="card-title mb-3 text-dark fw-semibold text-center text-md-start">
-                        Business Activity Overview
+                        Achievment Target Overview
                     </h5>
                     <div style={{ flex: 1 }}>
                         <ReactECharts

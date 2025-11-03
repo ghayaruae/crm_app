@@ -138,7 +138,6 @@ const FollowupList = () => {
                                                     <>
                                                         <thead className="table-light text-center">
                                                             <tr>
-                                                                <th>ID</th>
                                                                 <th>Salesman</th>
                                                                 <th>Business</th>
                                                                 <th>Type</th>
@@ -152,7 +151,6 @@ const FollowupList = () => {
                                                             {data.length > 0 ? (
                                                                 data.map((row) => (
                                                                     <tr key={row.business_salesman_followup_id} className="text-center">
-                                                                        <td>{row.business_salesman_followup_id}</td>
                                                                         <td>{row.business_salesmen_name}</td>
                                                                         <td>
                                                                             <Link style={{ color: primaryColor, fontWeight: "bolder" }} to={`/CustomerDashboard/${row.business_id}`}>
