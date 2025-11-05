@@ -30,7 +30,6 @@ const DashboardCards = ({ data, salesman_data }) => {
         },
     ];
 
-    // ✅ Push new salesman card if data exists
     if (salesman_data) {
         dashboardCards.push({
             title: "Salesman Target",
