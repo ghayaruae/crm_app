@@ -11,6 +11,7 @@ import BusinessDetails from "../Pages/Business/BusinessDetails";
 import BusinessOrders from "../Pages/Business/Orders/BusinessOrders";
 import OrderInfo from "../Pages/Business/Orders/OrderInfo";
 import Dashboard from "../Pages/Dashboard/Dashboard";
+import MainDashboard from "../Pages/Dashboard/TeamLeaderDashboard/MainDashboard";
 import FollowupList from "../Pages/Masters/Followup/FollowupList";
 import ManageFollowup from "../Pages/Masters/Followup/ManageFollowup";
 import ManageTarget from "../Pages/Masters/ManageTarget";
@@ -20,7 +21,8 @@ import AllOrders from "../Pages/SalesReports/AllOrders";
 
 const routes = [
   ////////////////////// Dashboard Routing ///////////////////////////
-  { path: "/", element: <Dashboard /> },
+  { path: "/", element: <MainDashboard /> },
+  { path: "/Dashboad/SalesmanDashboard", element: <Dashboard /> },
 
 
   ////////////////////// Business Routing ///////////////////////////

@@ -15,10 +15,26 @@ const Header = () => {
   const menuItems = [
     {
       id: "dashboard",
-      path: "/",
       icon: "ri-dashboard-2-fill",
       label: "Dashboard",
-      isDropdown: false,
+      isDropdown: true,
+      dropdownId: "sidebarDashboard",
+      items: [
+        {
+          id: "Dashboard",
+          icon: "ri-dashboard-2-fill",
+          label: "Dashboard",
+          path: "/",
+          isDropdown: false,
+        },
+        {
+          id: "Salesman Dashboard",
+          icon: "ri-dashboard-2-fill",
+          label: "Salesman Dashboard",
+          path: "/Dashboad/SalesmanDashboard",
+          isDropdown: false,
+        }
+      ]
     },
     {
       id: "Business",
