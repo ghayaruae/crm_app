@@ -6,7 +6,7 @@ import { TableRows, NoRecords } from '../../Components/Shimmer'
 import { Link } from 'react-router-dom'
 import { GlobalLimitChanger } from '../../Components/InputElements'
 
-const AllBusinesses = () => {
+const AllBusinessesReport = () => {
 
     const { primaryColor, apiHeaderJson, apiURL } = useContext(ConfigContext)
     const headers = apiHeaderJson
@@ -25,7 +25,7 @@ const AllBusinesses = () => {
     const getData = async () => {
         try {
             setLoading(true)
-            const response = await axios.get(`${apiURL}Business/GetBusinesses`, {
+            const response = await axios.get(`${apiURL}Reports/AllSalesmanAssignBusinessReport`, {
                 headers,
                 params: {
                     keyword,
@@ -90,7 +90,7 @@ const AllBusinesses = () => {
             <div className="main-content">
                 <div className="page-content">
                     <div className="container-fluid">
-                        <PageTitle title="Bussinnesses" primary="Business" />
+                        <PageTitle title="All Bussinnesses" primary="Business" />
 
                         <div className="row">
                             <div className="col-md-12">
@@ -100,7 +100,7 @@ const AllBusinesses = () => {
                                         style={{ backgroundColor: primaryColor }}
                                     >
                                         <h5 className="mb-0 text-white">
-                                            Businesses List via Salesman
+                                            All Businesses List
                                         </h5>
                                     </div>
 
@@ -158,22 +158,17 @@ const AllBusinesses = () => {
                                                                 <th>Email</th>
                                                                 <th>Reward Points</th>
                                                                 <th>Credit Limit</th>
-                                                                <th>Actions</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             {data.length > 0 ? (
                                                                 data.map((row) => (
                                                                     <tr key={row.business_id} className="text-center">
-                                                                        <td>
-                                                                            <Link style={{ color: primaryColor, fontWeight: "bolder" }} to={`/CustomerDashboard/${row.business_id}`}>
-                                                                                {row.business_id}
-                                                                            </Link>
+                                                                        <td style={{ color: primaryColor, fontWeight: "bolder" }}>
+                                                                            {row.business_id}
                                                                         </td>
-                                                                        <td>
-                                                                            <Link style={{ color: primaryColor, fontWeight: "bolder" }} to={`/CustomerDashboard/${row.business_id}`}>
-                                                                                {row.business_name}
-                                                                            </Link>
+                                                                        <td style={{ color: primaryColor, fontWeight: "bolder" }}>
+                                                                            {row.business_name}
                                                                         </td>
                                                                         <td>{row.business_contact_person}</td>
                                                                         <td>{row.business_contact_number}</td>
@@ -181,15 +176,6 @@ const AllBusinesses = () => {
                                                                         <td>{row.business_email}</td>
                                                                         <td>{row.business_reward_points_balance}</td>
                                                                         <td>AED {row.business_credit_limit}</td>
-                                                                        <td className='d-flex gap-2 justify-content-center'>
-                                                                            <Link to={`/CustomerDashboard/${row.business_id}`}>
-                                                                                <button
-                                                                                    className="btn btn-sm btn-soft-info"
-                                                                                >
-                                                                                    <i className='ri-eye-line'></i>
-                                                                                </button>
-                                                                            </Link>
-                                                                        </td>
                                                                     </tr>
                                                                 ))
                                                             ) : (
@@ -250,4 +236,4 @@ const AllBusinesses = () => {
     )
 }
 
-export default AllBusinesses
+export default AllBusinessesReport

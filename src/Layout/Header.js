@@ -37,42 +37,6 @@ const Header = () => {
       ]
     },
     {
-      id: "Business",
-      icon: "ri-briefcase-fill",
-      label: "Businesses",
-      isDropdown: true,
-      dropdownId: "sidebarBusiness",
-      items: [
-        {
-          id: "AllBusinesses",
-          path: "/AllBusinesses",
-          label: "Businesses",
-          isDropdown: false,
-        },
-        {
-          id: "BusinessOrders",
-          path: "/BusinessOrders",
-          label: "Businesse Orders",
-          isDropdown: false,
-        },
-      ],
-    },
-    {
-      id: "Reports",
-      icon: "ri-file-list-3-fill",
-      label: "Reports",
-      isDropdown: true,
-      dropdownId: "sidebarReports",
-      items: [
-        {
-          id: "AllOrders",
-          path: "/AllOrders",
-          label: "Orders Report",
-          isDropdown: false,
-        },
-      ],
-    },
-    {
       id: "Masters",
       icon: "ri-home-2-fill",
       label: "Masters",
@@ -114,6 +78,73 @@ const Header = () => {
         },
       ],
     },
+    {
+      id: "Business",
+      icon: "ri-briefcase-fill",
+      label: "Businesses",
+      isDropdown: true,
+      dropdownId: "sidebarBusiness",
+      items: [
+        {
+          id: "AllBusinesses",
+          path: "/AllBusinesses",
+          label: "Businesses",
+          isDropdown: false,
+        },
+        {
+          id: "BusinessOrders",
+          path: "/BusinessOrders",
+          label: "Businesse Orders",
+          isDropdown: false,
+        },
+      ],
+    },
+    {
+      id: "Reports",
+      icon: "ri-file-list-3-fill",
+      label: "Reports",
+      isDropdown: true,
+      dropdownId: "sidebarReports",
+      items: [
+        {
+          id: "Salesman",
+          path: "/Reports/SalesmanOrders",
+          label: "Salesman Orders Report",
+          isDropdown: false,
+        },
+        {
+          id: "TargetReport",
+          path: "/Reports/TargetReport",
+          label: "Target Report",
+          isDropdown: false,
+        },
+        {
+          id: "FollowupReport",
+          path: "/Reports/FollowupReport",
+          label: "Followup Report",
+          isDropdown: false,
+        },
+        {
+          id: "FullOrdersReport",
+          path: "/Reports/FullOrdersReport",
+          label: "All Orders Report",
+          isDropdown: false,
+        },
+        {
+          id: "AllBusinessesReport",
+          path: "/Reports/AllBusinessesReport",
+          label: "All Businesses Report",
+          isDropdown: false,
+        },
+        {
+          id: "AllSalesmanReport",
+          path: "/Reports/AllSalesmanReport",
+          label: "All Salesman Report",
+          isDropdown: false,
+        },
+      ],
+    },
+
   ];
 
   const renderMenuItems = (items) => {

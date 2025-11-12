@@ -42,9 +42,16 @@ function App() {
     ? [
 
       {
-        element: <ProtectedRoute><AppLayout /></ProtectedRoute>,
-        children: routes,
-        errorElement: <Page404 />
+        // element: <ProtectedRoute><AppLayout /></ProtectedRoute>,
+        element: <AppLayout />,
+        errorElement: <Page404 />,
+        // children: routes,
+        children: routes.map((route) => ({
+          ...route,
+          element: (
+            <ProtectedRoute element={route.element} routeName={route.routeName} />
+          ),
+        })),
       },
     ]
     : [
