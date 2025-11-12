@@ -16,44 +16,53 @@ import FollowupList from "../Pages/Masters/Followup/FollowupList";
 import ManageFollowup from "../Pages/Masters/Followup/ManageFollowup";
 import ManageTarget from "../Pages/Masters/ManageTarget";
 import ManageUsers from "../Pages/Masters/UsersManagement/ManageUsers";
-import AllOrders from "../Pages/SalesReports/AllOrders";
-
+import UserPermissions from "../Pages/Masters/UsersManagement/UserPermissions";
+import AllBusinessesReport from "../Pages/Reports/AllBusinessesReport";
+import AllOrders from "../Pages/Reports/AllOrders";
+import AllSalesmanReport from "../Pages/Reports/AllSalesmanReport";
+import FollowupReport from "../Pages/Reports/FollowupReport";
+import FullOrdersReport from "../Pages/Reports/FullOrdersReport";
+import OrderByStatusReport from "../Pages/Reports/OrderByStatusReport";
+import TargetReport from "../Pages/Reports/TargetReport";
 
 const routes = [
   ////////////////////// Dashboard Routing ///////////////////////////
-  { path: "/", element: <MainDashboard /> },
-  { path: "/Dashboad/SalesmanDashboard", element: <Dashboard /> },
-
+  { path: "/", element: <MainDashboard />, routeName: "/" },
+  { path: "/Dashboad/SalesmanDashboard", element: <Dashboard />, routeName: "/Dashboad/SalesmanDashboard" },
 
   ////////////////////// Business Routing ///////////////////////////
-  { path: "/AllBusinesses", element: <AllBusinesses /> },
-  { path: "/BusinessDetails/:business_id?", element: <BusinessDetails /> },
-
+  { path: "/AllBusinesses", element: <AllBusinesses />, routeName: "/AllBusinesses" },
+  { path: "/BusinessDetails/:business_id?", element: <BusinessDetails />, routeName: "/BusinessDetails" },
 
   ////////////////////// Orders Routing ///////////////////////////
-  { path: "/BusinessOrders", element: <BusinessOrders /> },
-  { path: "/OrderInfo/:business_order_id?", element: <OrderInfo /> },
-  { path: "/ViewOrderInvoice/:business_order_id?", element: <ViewOrderInvoice /> },
-
-
-  ////////////////////// Customer Dashboard Routing ///////////////////////////
-  { path: "/CustomerDashboard/:business_id?", element: <CustomerDashboardStates /> },
-  { path: "/CustomerInfo/:business_id?", element: <CustomerDetails /> },
-  { path: "/CustomerDocument/:business_id?", element: <CustomerDocument /> },
-  { path: "/CustomerBrands/:business_id?", element: <CustomerSelectedBrands /> },
-  { path: "/CustomerOrders/:business_id?", element: <CustomerOrders /> },
-  { path: "/CustomerRequestCreditLimit/:business_id?", element: <CustomerRequestedCreditLimit /> },
-  { path: "/CustomerRequestDueDays/:business_id?", element: <CustomerRequestedDueDays /> },
-
+  { path: "/BusinessOrders", element: <BusinessOrders />, routeName: "/BusinessOrders" },
+  { path: "/OrderInfo/:business_order_id?", element: <OrderInfo />, routeName: "/OrderInfo" },
+  { path: "/ViewOrderInvoice/:business_order_id?", element: <ViewOrderInvoice />, routeName: "/ViewOrderInvoice" },
 
   ////////////////////// Customer Dashboard Routing ///////////////////////////
-  { path: "/AllOrders", element: <AllOrders /> },
+  { path: "/CustomerDashboard/:business_id?", element: <CustomerDashboardStates />, routeName: "/CustomerDashboard" },
+  { path: "/CustomerInfo/:business_id?", element: <CustomerDetails />, routeName: "/CustomerInfo" },
+  { path: "/CustomerDocument/:business_id?", element: <CustomerDocument />, routeName: "/CustomerDocument" },
+  { path: "/CustomerBrands/:business_id?", element: <CustomerSelectedBrands />, routeName: "/CustomerBrands" },
+  { path: "/CustomerOrders/:business_id?", element: <CustomerOrders />, routeName: "/CustomerOrders" },
+  { path: "/CustomerRequestCreditLimit/:business_id?", element: <CustomerRequestedCreditLimit />, routeName: "/CustomerRequestCreditLimit" },
+  { path: "/CustomerRequestDueDays/:business_id?", element: <CustomerRequestedDueDays />, routeName: "/CustomerRequestDueDays" },
+
+  ////////////////////// Reports Routing ///////////////////////////
+  { path: "/Reports/SalesmanOrders", element: <AllOrders />, routeName: "/Reports/SalesmanOrders" },
+  { path: "/Reports/TargetReport", element: <TargetReport />, routeName: "/Reports/TargetReport" },
+  { path: "/Reports/FollowupReport", element: <FollowupReport />, routeName: "/Reports/FollowupReport" },
+  { path: "/Reports/FullOrdersReport", element: <FullOrdersReport />, routeName: "/Reports/FullOrdersReport" },
+  { path: "/Reports/AllBusinessesReport", element: <AllBusinessesReport />, routeName: "/Reports/AllBusinessesReport" },
+  { path: "/Reports/AllSalesmanReport", element: <AllSalesmanReport />, routeName: "/Reports/AllSalesmanReport" },
+  { path: "/Reports/OrderByStatusReport/:status?", element: <OrderByStatusReport />, routeName: "/Reports/OrderByStatusReport" },
 
   ////////////////////// Masters Routing ///////////////////////////
-  { path: "/Masters/ManageTarget", element: <ManageTarget /> },
-  { path: "/Masters/ManageFollowup/:business_salesman_followup_id?", element: <ManageFollowup /> },
-  { path: "/Masters/FollowupList", element: <FollowupList /> },
-  { path: "/Masters/ManageUsers", element: <ManageUsers /> },
+  { path: "/Masters/ManageTarget", element: <ManageTarget />, routeName: "/Masters/ManageTarget" },
+  { path: "/Masters/ManageFollowup/:business_salesman_followup_id?", element: <ManageFollowup />, routeName: "/Masters/ManageFollowup" },
+  { path: "/Masters/FollowupList", element: <FollowupList />, routeName: "/Masters/FollowupList" },
+  { path: "/Masters/ManageUsers", element: <ManageUsers />, routeName: "/Masters/ManageUsers" },
+  { path: "/UserPermissions/:business_salesman_id", element: <UserPermissions />, routeName: "/UserPermissions" },
 ];
 
 export default routes;

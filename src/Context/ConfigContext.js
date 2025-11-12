@@ -11,13 +11,14 @@ export const ConfigProvider = ({ children }) => {
   const [apiHeaderFile] = useState({ 'Content-Type': "multipart/form-data", token: `${token}`, 'business_salesman_id': business_salesman_id, 'business-salesman-id': business_salesman_id, business_salesman_id: business_salesman_id })
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString());
   const [selectedMonth, setSelectedMonth] = useState((new Date().getMonth() + 1).toString());
+  const [permissions] = useState(JSON.parse(localStorage.getItem("user_permissions")) || [])
   const primaryColor = '#132530';
 
-  const handleUpdateLogin = (data) => {
+  const handleUpdateLogin = (data, permissions) => {
     setToken(data.token);
     localStorage.setItem('token', data.token);
     localStorage.setItem('business_salesman_id', data.business_salesman_id);
-
+    localStorage.setItem("user_permissions", JSON.stringify(permissions))
   }
 
   const statusOptions = [
@@ -65,7 +66,8 @@ export const ConfigProvider = ({ children }) => {
     selectStyle,
     selectTheme,
     business_salesman_id,
-    statusOptions
+    statusOptions,
+    permissions
   };
 
   return (

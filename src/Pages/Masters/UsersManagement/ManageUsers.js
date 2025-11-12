@@ -8,6 +8,7 @@ import PageTitle from '../../../Components/PageTitle'
 import Swal from 'sweetalert2'
 import Flatpickr from "react-flatpickr";
 import { DateFormater } from '../../../Components/GlobalFunctions'
+import { Link } from 'react-router-dom'
 
 const ManageUsers = () => {
 
@@ -418,6 +419,13 @@ const ManageUsers = () => {
                                                                             >
                                                                                 <i className='ri-pencil-line'></i>
                                                                             </button>
+                                                                            <Link to={`/UserPermissions/${row.business_salesman_id}`}>
+                                                                                <button
+                                                                                    className='btn btn-sm btn-soft-success'
+                                                                                >
+                                                                                    <i className='ri-flag-line'></i>
+                                                                                </button>
+                                                                            </Link>
                                                                             <button
                                                                                 className='btn btn-sm btn-soft-danger'
                                                                                 onClick={() => handleDelete(row.business_salesman_id)}

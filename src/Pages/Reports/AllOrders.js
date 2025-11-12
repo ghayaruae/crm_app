@@ -26,7 +26,6 @@ const AllOrders = () => {
     const [keyword, setKeyword] = useState('')
     const [dateRange, setDateRange] = useState([])
     const [isUpdate, setIsUpdate] = useState(false)
-    const [filtersApplied, setFiltersApplied] = useState(false)
 
     const getData = async () => {
         try {
@@ -75,31 +74,22 @@ const AllOrders = () => {
     }
 
     const handleSearch = () => {
-        if (dateRange.length > 0 || keyword) {
-            setFiltersApplied(true) // Set filters as applied
-            getData();
-        } else {
-            return;
-        }
+        setPage(1)
+        getData();
     }
 
     const handelClear = () => {
-        if (dateRange.length > 0 || keyword) {
-            setKeyword("");
-            setDateRange([])
-            setFiltersApplied(false) // Reset filters applied state
-            if (datePickerRef.current && datePickerRef.current.flatpickr) {
-                datePickerRef.current.flatpickr.clear();
-            }
-            setIsUpdate(prev => !prev)
+        setKeyword("");
+        setDateRange([])
+        setPage(1)
+        if (datePickerRef.current && datePickerRef.current.flatpickr) {
+            datePickerRef.current.flatpickr.clear();
         }
+        setIsUpdate(prev => !prev)
     };
 
     useEffect(() => {
-        // Only fetch data if filters are applied
-        if (filtersApplied) {
-            getData();
-        }
+        getData();
     }, [limit, page, isUpdate])
 
     return (
@@ -107,7 +97,7 @@ const AllOrders = () => {
             <div className="main-content">
                 <div className="page-content">
                     <div className="container-fluid">
-                        <PageTitle title="All Orders" primary="Business" />
+                        <PageTitle title="Salesman Orders" primary="Reports" />
 
                         <div className="row">
                             <div className="col-md-12">
@@ -117,7 +107,7 @@ const AllOrders = () => {
                                         style={{ backgroundColor: primaryColor }}
                                     >
                                         <h5 className="mb-0 text-white">
-                                            All Orders List
+                                            Salesman Orders List
                                         </h5>
                                     </div>
 
@@ -157,8 +147,8 @@ const AllOrders = () => {
                                                     type="button"
                                                     className="btn btn-danger btn-label right"
                                                     onClick={handleSearch}
-                                                    disabled={dateRange.length > 0 || keyword ? false : true}
-                                                >
+                                                    disabled={!keyword && dateRange.length === 0}
+                                                    >
                                                     Filter
                                                     <i className="ri-filter-line label-icon align-middle fs-16 ms-2"></i>
                                                 </button>
@@ -167,7 +157,7 @@ const AllOrders = () => {
                                                     type="button"
                                                     className="btn btn-light"
                                                     onClick={handelClear}
-                                                    disabled={dateRange.length > 0 || keyword ? false : true}
+                                                    disabled={!keyword && dateRange.length === 0}
                                                 >
                                                     Reset
                                                 </button>
@@ -189,8 +179,9 @@ const AllOrders = () => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {/* Show data only when filters are applied and data exists */}
-                                                    {filtersApplied && data.length > 0 ? (
+                                                    {loading ? (
+                                                        <TableRows colspan={9} rows={10} />
+                                                    ) : data.length > 0 ? (
                                                         data.map((row) => (
                                                             <tr key={row.business_order_id} className="text-center">
                                                                 <td>
@@ -223,7 +214,7 @@ const AllOrders = () => {
                                                         </tr>
                                                     )}
                                                 </tbody>
-                                                {filtersApplied && data.length > 0 && (
+                                                {data.length > 0 && (
                                                     <tfoot className='table-light'>
                                                         <tr>
                                                             <th colSpan={8}>

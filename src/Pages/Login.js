@@ -33,7 +33,7 @@ const Login = () => {
             await validationSchema.validate({ userName, password }, { abortEarly: false });
             setIsShow(false);
             const response = await axios.post(`${apiURL}Users/Login`, formData);
-            const { data, success } = response.data;
+            const { data, success, permissions } = response.data;
 
             if (success) {
                 Swal.fire({
@@ -43,10 +43,9 @@ const Login = () => {
                     timer: 1000,
                     showConfirmButton: false,
                 });
-                handleUpdateLogin(data);
+                handleUpdateLogin(data, permissions);
                 setUserName('');
                 setPassword('');
-
                 setTimeout(() => {
                     window.location.href = "/";
                     setIsDisable(false);

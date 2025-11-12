@@ -1,6 +1,11 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import DashboardCards from '../../../Pages/Dashboard/DashboardCards'
 import { DateFormater } from '../../GlobalFunctions';
+import SalesChart from '../../../Pages/Dashboard/SalesChart';
+import BusinessesChart from '../../../Pages/Dashboard/BusinessesChart';
+import { ConfigContext } from '../../../Context/ConfigContext';
+import axios from 'axios';
+import NoRecentOrders from '../../../Pages/Dashboard/NoRecendsOrders';
 
 const DashboardTab = ({ data, salesman_data }) => {
 
@@ -45,6 +50,25 @@ const DashboardTab = ({ data, salesman_data }) => {
         });
     }
 
+    const { apiHeaderJson, apiURL } = useContext(ConfigContext);
+    const headers = apiHeaderJson;
+    const [noRecentOrders, setNoRecentOrders] = useState([]);
+
+    const GetBusinessesNoRecentOrders = async () => {
+        try {
+            const response = await axios.get(`${apiURL}Dashboard/GetBusinessesNoRecentOrders`, { headers });
+            if (response.data.success) {
+                setNoRecentOrders(response.data.data);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    useEffect(() => {
+        GetBusinessesNoRecentOrders()
+    }, [])
+
     return (
         <>
             <div className='tab-pane fade show active'>
@@ -82,6 +106,17 @@ const DashboardTab = ({ data, salesman_data }) => {
                                 </div>
                             </div>
                         ))}
+                    </div>
+
+                    <div className="row">
+                        <SalesChart />
+                        <BusinessesChart />
+                    </div>
+
+                    <div className="row mt-4">
+                        <div className="col-12">
+                            <NoRecentOrders list={noRecentOrders} />
+                        </div>
                     </div>
                 </div>
             </div>
