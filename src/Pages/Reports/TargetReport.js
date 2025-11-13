@@ -94,17 +94,21 @@ const TargetReport = () => {
     }
 
     const handleFilter = () => {
-        if (!selectedSalesman) return
-        setFiltersApplied(true)
+
+        if ((!from_date && !to_date) || !selectedSalesman) return;
+
+        setFiltersApplied(prev => !prev)
         setPage(1)
         getData()
     }
 
     const handleReset = () => {
+        if ((!from_date && !to_date) || !selectedSalesman) return;
+
         setSelectedSalesman(null)
         setFrom_date("")
         setTo_date("")
-        setFiltersApplied(false)
+        setFiltersApplied(prev => !prev)
         setData([])
         setPage(1)
         setLimit(10)
@@ -161,7 +165,6 @@ const TargetReport = () => {
                                                 value={from_date}
                                                 placeholder="From Date"
                                                 name='from_date'
-                                                disabled={!selectedSalesman}
                                             />
                                         </div>
 
@@ -172,7 +175,6 @@ const TargetReport = () => {
                                                 value={to_date}
                                                 placeholder="To Date"
                                                 name='to_date'
-                                                disabled={!selectedSalesman}
                                             />
                                         </div>
 
@@ -181,7 +183,6 @@ const TargetReport = () => {
                                                 type="button"
                                                 className="btn btn-danger btn-label right"
                                                 onClick={handleFilter}
-                                                disabled={!selectedSalesman}
                                             >
                                                 Filter
                                                 <i className="ri-filter-line label-icon align-middle fs-16 ms-2"></i>
@@ -191,7 +192,6 @@ const TargetReport = () => {
                                                 type="button"
                                                 className="btn btn-light"
                                                 onClick={handleReset}
-                                                disabled={!filtersApplied && !selectedSalesman && !from_date && !to_date}
                                             >
                                                 Reset
                                             </button>

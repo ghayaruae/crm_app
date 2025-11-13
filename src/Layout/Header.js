@@ -1,17 +1,19 @@
-import React, { useContext, useEffect, useState } from "react";
-import { NavLink, Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { NavLink } from "react-router-dom";
 import { ConfigContext } from "../Context/ConfigContext";
-import axios from "axios";
 
 const Header = () => {
-  const { user_id, apiHeaderJson, apiURL } = useContext(ConfigContext)
+  const { permissions } = useContext(ConfigContext)
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user_id");
+    localStorage.removeItem("business_salesman_id");
     window.location.href = "/";
   };
 
+
+
+  // ===================== MENU STRUCTURE =====================
   const menuItems = [
     {
       id: "dashboard",
@@ -21,20 +23,20 @@ const Header = () => {
       dropdownId: "sidebarDashboard",
       items: [
         {
-          id: "Dashboard",
+          id: "MainDashboard",
           icon: "ri-dashboard-2-fill",
           label: "Dashboard",
           path: "/",
           isDropdown: false,
         },
         {
-          id: "Salesman Dashboard",
+          id: "SalesmanDashboard",
           icon: "ri-dashboard-2-fill",
           label: "Salesman Dashboard",
           path: "/Dashboad/SalesmanDashboard",
           isDropdown: false,
-        }
-      ]
+        },
+      ],
     },
     {
       id: "Masters",
@@ -64,37 +66,15 @@ const Header = () => {
             {
               id: "FollowupList",
               path: "/Masters/FollowupList",
-              label: "Followups List",
+              label: "Followup List",
               isDropdown: false,
             },
-
-          ]
+          ],
         },
         {
           id: "ManageUsers",
           path: "/Masters/ManageUsers",
           label: "Manage Users",
-          isDropdown: false,
-        },
-      ],
-    },
-    {
-      id: "Business",
-      icon: "ri-briefcase-fill",
-      label: "Businesses",
-      isDropdown: true,
-      dropdownId: "sidebarBusiness",
-      items: [
-        {
-          id: "AllBusinesses",
-          path: "/AllBusinesses",
-          label: "Businesses",
-          isDropdown: false,
-        },
-        {
-          id: "BusinessOrders",
-          path: "/BusinessOrders",
-          label: "Businesse Orders",
           isDropdown: false,
         },
       ],
@@ -107,7 +87,7 @@ const Header = () => {
       dropdownId: "sidebarReports",
       items: [
         {
-          id: "Salesman",
+          id: "SalesmanOrders",
           path: "/Reports/SalesmanOrders",
           label: "Salesman Orders Report",
           isDropdown: false,
@@ -144,42 +124,58 @@ const Header = () => {
         },
       ],
     },
-
   ];
 
-  const renderMenuItems = (items) => {
-    return items.map((item, index) => {
-      if (item.isDropdown) {
-        return (
-          <li className="nav-item" key={`${item.id || item.label}-${index}`}>
-            <a
-              className="nav-link collapsed"
-              href={`#${item.dropdownId}`}
-              data-bs-toggle="collapse"
-              role="button"
-              aria-expanded="false"
-              aria-controls={item.dropdownId}
-            >
-              {item.label}
-            </a>
-            <div className="collapse menu-dropdown" id={item.dropdownId}>
-              <ul className="nav nav-sm flex-column">
-                {renderMenuItems(item.items)}
-              </ul>
-            </div>
-          </li>
-        );
-      } else {
-        return (
-          <li className="nav-item" key={`${item.id || item.label}-${index}`}>
-            <NavLink to={item.path} className="nav-link">
-              {item.label}
-            </NavLink>
-          </li>
-        );
-      }
-    });
+  // ===================== PERMISSION HELPERS =====================
+  const hasPermission = (path) => {
+    if (!permissions || permissions.length === 0) return false;
+    // Make sure your permission key matches actual API response
+    return permissions.some((perm) => perm.salesman_description === path);
   };
+
+  const hasNestedPermission = (item) => {
+    if (item.path && hasPermission(item.path)) return true;
+    if (item.items && item.items.length > 0) {
+      return item.items.some(hasNestedPermission);
+    }
+    return false;
+  };
+
+  // ===================== RECURSIVE MENU RENDERER =====================
+  const renderMenuItems = (items) =>
+    items
+      ?.filter((item) => hasNestedPermission(item))
+      .map((item, index) => {
+        if (item.isDropdown) {
+          return (
+            <li className="nav-item" key={`${item.id}-${index}`}>
+              <a
+                className="nav-link collapsed"
+                href={`#${item.dropdownId}`}
+                data-bs-toggle="collapse"
+                role="button"
+                aria-expanded="false"
+                aria-controls={item.dropdownId}
+              >
+                {item.label}
+              </a>
+              <div className="collapse menu-dropdown" id={item.dropdownId}>
+                <ul className="nav nav-sm flex-column">
+                  {renderMenuItems(item.items)}
+                </ul>
+              </div>
+            </li>
+          );
+        } else {
+          return (
+            <li className="nav-item" key={`${item.id}-${index}`}>
+              <NavLink to={item.path} className="nav-link">
+                {item.label}
+              </NavLink>
+            </li>
+          );
+        }
+      });
 
   return (
     <div>
@@ -310,47 +306,49 @@ const Header = () => {
                 <span data-key="t-menu">Menu</span>
               </li>
 
-              {menuItems.map((item) => (
-                <li className="nav-item" key={item.id}>
-                  {item.isDropdown ? (
-                    <>
-                      <a
+
+
+              {menuItems
+                .filter((item) => hasNestedPermission(item))
+                .map((item) => (
+                  <li className="nav-item" key={item.id}>
+                    {item.isDropdown ? (
+                      <>
+                        <a
+                          className="nav-link menu-link"
+                          href={`#${item.dropdownId}`}
+                          data-bs-toggle="collapse"
+                          role="button"
+                          aria-expanded="false"
+                          aria-controls={item.dropdownId}
+                          title={item.label}
+                        >
+                          <i className={item.icon} />
+                          <span>{item.label}</span>
+                        </a>
+                        <div
+                          className="collapse menu-dropdown"
+                          id={item.dropdownId}
+                        >
+                          <ul className="nav nav-sm flex-column">
+                            {renderMenuItems(item.items)}
+                          </ul>
+                        </div>
+                      </>
+                    ) : (
+                      <NavLink
                         className="nav-link menu-link"
-                        href={`#${item.dropdownId}`}
-                        data-bs-toggle="collapse"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="right"
-                        role="button"
-                        aria-expanded="false"
-                        aria-controls={item.dropdownId}
+                        to={item.path}
                         title={item.label}
                       >
                         <i className={item.icon} />
-                        <span data-key="t-dashboards">{item.label}</span>
-                      </a>
-                      <div
-                        className="collapse menu-dropdown"
-                        id={item.dropdownId}
-                      >
-                        <ul className="nav nav-sm flex-column">
-                          {renderMenuItems(item.items)}
-                        </ul>
-                      </div>
-                    </>
-                  ) : (
-                    <NavLink
-                      className="nav-link menu-link"
-                      to={item.path}
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="right"
-                      title={item.label}
-                    >
-                      <i className={item.icon} />
-                      <span data-key="t-dashboards">{item.label}</span>
-                    </NavLink>
-                  )}
-                </li>
-              ))}
+                        <span>{item.label}</span>
+                      </NavLink>
+                    )}
+                  </li>
+                ))}
+
+
             </ul>
           </div>
         </div>

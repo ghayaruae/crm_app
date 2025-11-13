@@ -85,6 +85,12 @@ const AllBusinessesReport = () => {
         getData();
     }, [limit, page, isUpdate])
 
+    useEffect(() => {
+        if (keyword === "") {
+            getData();
+        }
+    }, [keyword])
+
     return (
         <>
             <div className="main-content">
@@ -151,12 +157,12 @@ const AllBusinessesReport = () => {
                                                         <thead className="table-light text-center">
                                                             <tr>
                                                                 <th>Business ID</th>
+                                                                <th>Salesman Name</th>
                                                                 <th>Business Name</th>
-                                                                <th>Owner</th>
-                                                                <th>Contact No.</th>
-                                                                <th>TRN No.</th>
+                                                                <th>Owner Name</th>
+                                                                <th>Contact No</th>
+                                                                <th>TRN No</th>
                                                                 <th>Email</th>
-                                                                <th>Reward Points</th>
                                                                 <th>Credit Limit</th>
                                                             </tr>
                                                         </thead>
@@ -165,17 +171,21 @@ const AllBusinessesReport = () => {
                                                                 data.map((row) => (
                                                                     <tr key={row.business_id} className="text-center">
                                                                         <td style={{ color: primaryColor, fontWeight: "bolder" }}>
-                                                                            {row.business_id}
+                                                                            <Link to={`/CustomerDashboard/${row?.business_id}`}>
+                                                                                {row.business_id}
+                                                                            </Link>
                                                                         </td>
                                                                         <td style={{ color: primaryColor, fontWeight: "bolder" }}>
                                                                             {row.business_name}
                                                                         </td>
-                                                                        <td>{row.business_contact_person}</td>
+
+                                                                        <td className='text-success fw-bold'>{row?.business_salesmen_name}</td>
+
+                                                                        <td className='text-info fw-bold'>{row.business_contact_person}</td>
                                                                         <td>{row.business_contact_number}</td>
                                                                         <td>{row.busienss_trn}</td>
                                                                         <td>{row.business_email}</td>
-                                                                        <td>{row.business_reward_points_balance}</td>
-                                                                        <td>AED {row.business_credit_limit}</td>
+                                                                        <td className='text-danger fw-bold'>AED {row.business_credit_limit}</td>
                                                                     </tr>
                                                                 ))
                                                             ) : (

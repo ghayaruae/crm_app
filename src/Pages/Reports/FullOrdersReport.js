@@ -199,7 +199,7 @@ const FullOrdersReport = () => {
                                                         data.map((row) => (
                                                             <tr key={row.business_order_id} className="text-center">
                                                                 <td>
-                                                                    <Link style={{ color: primaryColor, fontWeight: "bolder" }} to={`/Inventory/OrderDetails/${row.business_order_id}`}>
+                                                                    <Link style={{ color: primaryColor, fontWeight: "bolder" }} to={`/OrderInfo/${row.business_order_id}`}>
                                                                         {row.secret_order_id}
                                                                     </Link>
                                                                 </td>
@@ -215,8 +215,12 @@ const FullOrdersReport = () => {
                                                                 </td>
                                                                 <td>{DateFormater(row.business_order_date)}</td>
                                                                 <td>{row.business_order_payment_method}</td>
-                                                                <td className='text-success fw-bold'>AED {row.business_order_grand_total}</td>
-                                                                <td>{row.business_order_earned_points}</td>
+                                                                <td className='text-success fw-bold'>AED {parseFloat(row.business_order_grand_total).toFixed(2)}</td>
+                                                                <td>
+                                                                    <span className='badge bg-success'>
+                                                                        {row?.business_order_earned_points} Points
+                                                                    </span>
+                                                                </td>
                                                                 <td>{GetStatusBadge(row.business_order_status)}</td>
                                                             </tr>
                                                         ))

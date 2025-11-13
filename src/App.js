@@ -1,7 +1,7 @@
 import './App.css';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Page404 from './Layout/Page404';
-import { ConfigProvider } from '../src/Context/ConfigContext';
+import { ConfigProvider } from './Context/ConfigContext';
 import routes from './Routes/Routes';
 import AppLayout from './Layout/AppLayout';
 import Login from './Pages/Login';
@@ -11,6 +11,7 @@ import "flatpickr/dist/flatpickr.css";
 
 const isTokenValid = () => {
   const token = localStorage.getItem('token');
+
   if (!token) {
     return false;
   }
@@ -42,10 +43,8 @@ function App() {
     ? [
 
       {
-        // element: <ProtectedRoute><AppLayout /></ProtectedRoute>,
         element: <AppLayout />,
         errorElement: <Page404 />,
-        // children: routes,
         children: routes.map((route) => ({
           ...route,
           element: (
