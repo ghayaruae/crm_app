@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { ConfigContext } from "../../Context/ConfigContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const NoRecentOrders = ({ list }) => {
 
@@ -57,10 +57,11 @@ const NoRecentOrders = ({ list }) => {
                                         {item.last_order_date ?? "No Orders Yet"}
                                     </td>
                                     <td>
-                                        <button
-                                            onClick={() => navigate("/Masters/ManageFollowup")}
-                                            className="btn btn-dark btn-sm"
-                                        >Follow up</button>
+                                        <Link to={`/Masters/ManageFollowup/0/${item.business_id}`}>
+                                            <button className="btn btn-dark btn-sm">
+                                                Follow up
+                                            </button>
+                                        </Link>
                                     </td>
                                 </tr>
                             ))}

@@ -11,9 +11,6 @@ const Header = () => {
     window.location.href = "/";
   };
 
-
-
-  // ===================== MENU STRUCTURE =====================
   const menuItems = [
     {
       id: "dashboard",
@@ -25,7 +22,7 @@ const Header = () => {
         {
           id: "MainDashboard",
           icon: "ri-dashboard-2-fill",
-          label: "Dashboard",
+          label: "Main Dashboard",
           path: "/",
           isDropdown: false,
         },
@@ -38,49 +35,12 @@ const Header = () => {
         },
       ],
     },
-
     {
-      id: "Masters",
-      icon: "ri-home-2-fill",
-      label: "Masters",
+      id: "Orders",
+      icon: "ri-shopping-cart-2-fill",
+      label: "Orders",
       isDropdown: true,
-      dropdownId: "sidebarMasters",
-      items: [
-        {
-          id: "ManageTarget",
-          path: "/Masters/ManageTarget",
-          label: "Manage Target",
-          isDropdown: false,
-        },
-        {
-          id: "Followups",
-          label: "Followups",
-          isDropdown: true,
-          dropdownId: "sidebarFollowups",
-          items: [
-            {
-              id: "ManageFollowup",
-              path: "/Masters/ManageFollowup",
-              label: "Manage Followup",
-              isDropdown: false,
-            },
-            {
-              id: "FollowupList",
-              path: "/Masters/FollowupList",
-              label: "Followup List",
-              isDropdown: false,
-            },
-          ],
-        },
-      ],
-    },
-
-    {
-      id: "Reports",
-      icon: "ri-file-list-3-fill",
-      label: "Reports",
-      isDropdown: true,
-      dropdownId: "sidebarReports",
+      dropdownId: "sidebarOrders",
       items: [
         {
           id: "SalesmanOrders",
@@ -89,9 +49,24 @@ const Header = () => {
           isDropdown: false,
         },
         {
-          id: "SalesmanBusiness",
-          path: "/Salesman/AllBusinesses",
-          label: "Salesman Businesses Reports",
+          id: "FullOrdersReport",
+          path: "/Reports/FullOrdersReport",
+          label: "All Orders Report",
+          isDropdown: false,
+        }
+      ],
+    },
+    {
+      id: "Targets",
+      icon: "mdi mdi-bullseye",
+      label: "Targets",
+      isDropdown: true,
+      dropdownId: "sidebarTargets",
+      items: [
+        {
+          id: "ManageTarget",
+          path: "/Masters/ManageTarget",
+          label: "Manage Target",
           isDropdown: false,
         },
         {
@@ -99,17 +74,47 @@ const Header = () => {
           path: "/Reports/TargetReport",
           label: "Target Report",
           isDropdown: false,
+        }
+      ]
+    },
+    {
+      id: "Followups",
+      icon: "ri-phone-fill",
+      label: "Followups",
+      isDropdown: true,
+      dropdownId: "sidebarFollowupsMenu",
+      items: [
+        {
+          id: "ManageFollowup",
+          path: "/Masters/ManageFollowup",
+          label: "Manage Followup",
+          isDropdown: false,
+        },
+        {
+          id: "FollowupList",
+          path: "/Masters/FollowupList",
+          label: "Followup List",
+          isDropdown: false,
         },
         {
           id: "FollowupReport",
           path: "/Reports/FollowupReport",
           label: "Followup Report",
           isDropdown: false,
-        },
+        }
+      ],
+    },
+    {
+      id: "Business",
+      icon: "ri-briefcase-4-fill",
+      label: "Business",
+      isDropdown: true,
+      dropdownId: "sidebarBusiness",
+      items: [
         {
-          id: "FullOrdersReport",
-          path: "/Reports/FullOrdersReport",
-          label: "All Orders Report",
+          id: "SalesmanBusiness",
+          path: "/Salesman/AllBusinesses",
+          label: "Salesman Businesses Reports",
           isDropdown: false,
         },
         {
@@ -123,14 +128,13 @@ const Header = () => {
           path: "/Reports/AllSalesmanReport",
           label: "All Salesman Report",
           isDropdown: false,
-        },
+        }
       ],
     },
-
     {
       id: "Setting",
       icon: "mdi mdi-spin mdi-cog-outline fs-22",
-      label: "Setting",
+      label: "Settings",
       isDropdown: true,
       dropdownId: "sidebarSettings",
       items: [
@@ -142,10 +146,8 @@ const Header = () => {
         },
       ],
     },
-
-
-
   ];
+
 
   // ===================== PERMISSION HELPERS =====================
   const hasPermission = (path) => {

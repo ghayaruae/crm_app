@@ -60,7 +60,7 @@ const routes = [
 
   ////////////////////// Masters Routing ///////////////////////////
   { path: "/Masters/ManageTarget", element: <ManageTarget />, routeName: "/Masters/ManageTarget" },
-  { path: "/Masters/ManageFollowup/:business_salesman_followup_id?", element: <ManageFollowup />, routeName: "/Masters/ManageFollowup" },
+  { path: "/Masters/ManageFollowup/:business_salesman_followup_id?/:business_id?", element: <ManageFollowup />, routeName: "/Masters/ManageFollowup" },
   { path: "/Masters/FollowupList", element: <FollowupList />, routeName: "/Masters/FollowupList" },
   { path: "/Masters/ManageUsers", element: <ManageUsers />, routeName: "/Masters/ManageUsers" },
   { path: "/UserPermissions/:business_salesman_id", element: <UserPermissions />, routeName: "/UserPermissions" },
