@@ -90,7 +90,7 @@ const Header = () => {
         },
         {
           id: "SalesmanBusiness",
-          path: "/AllBusinesses",
+          path: "/Salesman/AllBusinesses",
           label: "Salesman Businesses Reports",
           isDropdown: false,
         },

@@ -31,7 +31,7 @@ const routes = [
   { path: "/Dashboad/SalesmanDashboard", element: <Dashboard />, routeName: "/Dashboad/SalesmanDashboard" },
 
   ////////////////////// Business Routing ///////////////////////////
-  { path: "/AllBusinesses", element: <AllBusinesses />, routeName: "/AllBusinesses" },
+  { path: "/Salesman/AllBusinesses", element: <AllBusinesses />, routeName: "/Salesman/AllBusinesses" },
   { path: "/BusinessDetails/:business_id?", element: <BusinessDetails />, routeName: "/BusinessDetails" },
 
   ////////////////////// Orders Routing ///////////////////////////
