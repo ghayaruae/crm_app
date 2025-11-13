@@ -89,6 +89,12 @@ const Header = () => {
           isDropdown: false,
         },
         {
+          id: "SalesmanBusiness",
+          path: "/AllBusinesses",
+          label: "Salesman Businesses Reports",
+          isDropdown: false,
+        },
+        {
           id: "TargetReport",
           path: "/Reports/TargetReport",
           label: "Target Report",
@@ -137,12 +143,13 @@ const Header = () => {
       ],
     },
 
+
+
   ];
 
   // ===================== PERMISSION HELPERS =====================
   const hasPermission = (path) => {
     if (!permissions || permissions.length === 0) return false;
-    // Make sure your permission key matches actual API response
     return permissions.some((perm) => perm.salesman_description === path);
   };
 
@@ -156,39 +163,37 @@ const Header = () => {
 
   // ===================== RECURSIVE MENU RENDERER =====================
   const renderMenuItems = (items) =>
-    items
-      ?.filter((item) => hasNestedPermission(item))
-      .map((item, index) => {
-        if (item.isDropdown) {
-          return (
-            <li className="nav-item" key={`${item.id}-${index}`}>
-              <a
-                className="nav-link collapsed"
-                href={`#${item.dropdownId}`}
-                data-bs-toggle="collapse"
-                role="button"
-                aria-expanded="false"
-                aria-controls={item.dropdownId}
-              >
-                {item.label}
-              </a>
-              <div className="collapse menu-dropdown" id={item.dropdownId}>
-                <ul className="nav nav-sm flex-column">
-                  {renderMenuItems(item.items)}
-                </ul>
-              </div>
-            </li>
-          );
-        } else {
-          return (
-            <li className="nav-item" key={`${item.id}-${index}`}>
-              <NavLink to={item.path} className="nav-link">
-                {item.label}
-              </NavLink>
-            </li>
-          );
-        }
-      });
+    items?.filter((item) => hasNestedPermission(item)).map((item, index) => {
+      if (item.isDropdown) {
+        return (
+          <li className="nav-item" key={`${item.id}-${index}`}>
+            <a
+              className="nav-link collapsed"
+              href={`#${item.dropdownId}`}
+              data-bs-toggle="collapse"
+              role="button"
+              aria-expanded="false"
+              aria-controls={item.dropdownId}
+            >
+              {item.label}
+            </a>
+            <div className="collapse menu-dropdown" id={item.dropdownId}>
+              <ul className="nav nav-sm flex-column">
+                {renderMenuItems(item.items)}
+              </ul>
+            </div>
+          </li>
+        );
+      } else {
+        return (
+          <li className="nav-item" key={`${item.id}-${index}`}>
+            <NavLink to={item.path} className="nav-link">
+              {item.label}
+            </NavLink>
+          </li>
+        );
+      }
+    });
 
   return (
     <div>
