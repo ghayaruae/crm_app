@@ -105,9 +105,9 @@ const MainDashboard = () => {
 
                     <div className="row mb-4">
                         <div className="col-12">
-                            <h4 className="fw-bold">CRM Ghayar</h4>
+                            <h4 className="fw-bold">Welcome to Ghayar CRM Management</h4>
                             <p className="text-muted mb-0">
-                                Overview of your team’s performance and order status.
+                                Manage your customers, track sales performance, and monitor team progress efficiently.
                             </p>
                         </div>
                     </div>

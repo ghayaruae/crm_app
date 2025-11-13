@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { ConfigContext } from "../Context/ConfigContext";
 
 const Header = () => {
-  const { permissions } = useContext(ConfigContext)
+  const { permissions } = useContext(ConfigContext);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -38,6 +38,7 @@ const Header = () => {
         },
       ],
     },
+
     {
       id: "Masters",
       icon: "ri-home-2-fill",
@@ -71,14 +72,9 @@ const Header = () => {
             },
           ],
         },
-        {
-          id: "ManageUsers",
-          path: "/Masters/ManageUsers",
-          label: "Manage Users",
-          isDropdown: false,
-        },
       ],
     },
+
     {
       id: "Reports",
       icon: "ri-file-list-3-fill",
@@ -124,6 +120,23 @@ const Header = () => {
         },
       ],
     },
+
+    {
+      id: "Setting",
+      icon: "mdi mdi-spin mdi-cog-outline fs-22",
+      label: "Setting",
+      isDropdown: true,
+      dropdownId: "sidebarSettings",
+      items: [
+        {
+          id: "ManageUsers",
+          path: "/Masters/ManageUsers",
+          label: "Manage Users",
+          isDropdown: false,
+        },
+      ],
+    },
+
   ];
 
   // ===================== PERMISSION HELPERS =====================
