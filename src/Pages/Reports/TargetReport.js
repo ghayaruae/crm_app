@@ -95,25 +95,25 @@ const TargetReport = () => {
 
     const handleFilter = () => {
 
-        if ((!from_date && !to_date) || !selectedSalesman) return;
-
-        setFiltersApplied(prev => !prev)
-        setPage(1)
-        getData()
+        if ((from_date && to_date) || selectedSalesman) {
+            setFiltersApplied(prev => !prev)
+            setPage(1)
+            getData()
+        }
     }
 
     const handleReset = () => {
-        if ((!from_date && !to_date) || !selectedSalesman) return;
-
-        setSelectedSalesman(null)
-        setFrom_date("")
-        setTo_date("")
-        setFiltersApplied(prev => !prev)
-        setData([])
-        setPage(1)
-        setLimit(10)
-        setTotalRecords(0)
-        setTotalPages(0)
+        if ((from_date && to_date) || selectedSalesman) {
+            setSelectedSalesman(null)
+            setFrom_date("")
+            setTo_date("")
+            setFiltersApplied(prev => !prev)
+            setData([])
+            setPage(1)
+            setLimit(10)
+            setTotalRecords(0)
+            setTotalPages(0)
+        }
     }
 
     const handleLimitChange = (newLimit) => {
