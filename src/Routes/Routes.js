@@ -55,6 +55,7 @@ const routes = [
   { path: "/Reports/FullOrdersReport", element: <FullOrdersReport />, routeName: "/Reports/FullOrdersReport" },
   { path: "/Reports/AllBusinessesReport", element: <AllBusinessesReport />, routeName: "/Reports/AllBusinessesReport" },
   { path: "/Reports/AllSalesmanReport", element: <AllSalesmanReport />, routeName: "/Reports/AllSalesmanReport" },
+  { path: "/Reports/OrderByStatusReport", element: <OrderByStatusReport />, routeName: "/Reports/OrderByStatusReport" },
   { path: "/Reports/OrderByStatusReport/:status?", element: <OrderByStatusReport />, routeName: "/Reports/OrderByStatusReport" },
 
   ////////////////////// Masters Routing ///////////////////////////

@@ -86,7 +86,7 @@ const MainDashboard = () => {
             color: "text-secondary",
             bg: "bg-secondary-subtle",
             icon: "mdi mdi-progress-wrench",
-            link: "/Reports/OrderByStatusReport/1"
+            link: "/Reports/OrderByStatusReport"
         },
         {
             title: "Pending Orders",

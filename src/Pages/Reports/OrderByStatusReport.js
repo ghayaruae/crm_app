@@ -8,15 +8,14 @@ import { Link, useParams } from 'react-router-dom'
 import { GlobalLimitChanger } from '../../Components/InputElements'
 import { DateFormater } from '../../Components/GlobalFunctions'
 import { GetStatusBadge } from '../../Utils/GetStatusBadge'
-import Select from 'react-select';
 
 const OrderByStatusReport = () => {
 
-    const { primaryColor, apiHeaderJson, apiURL, statusOptions } = useContext(ConfigContext)
+    const { primaryColor, apiHeaderJson, apiURL } = useContext(ConfigContext)
     const headers = apiHeaderJson
     const datePickerRef = useRef(null)
+
     const { status } = useParams();
-    const StatusName = statusOptions.find(opt => opt.value === status)
 
     const [data, setData] = useState([])
     const [next, setNext] = useState(false)
@@ -41,7 +40,7 @@ const OrderByStatusReport = () => {
                     limit,
                     from_date: dateRange[0] || "",
                     to_date: dateRange[1] || "",
-                    status: status
+                    status: status ? status : JSON.stringify([0, 1, 2, 3, 4])
                 }
             })
             const { success, data, page: currentPage, next, prev, total_pages, total_records } = response.data
@@ -101,7 +100,7 @@ const OrderByStatusReport = () => {
             <div className="main-content">
                 <div className="page-content">
                     <div className="container-fluid">
-                        <PageTitle title={`${StatusName?.label} Orders`} primary="Reports" />
+                        <PageTitle title={`${status ? "Pending" : "In Process"} Orders`} primary="Reports" />
 
                         <div className="row">
                             <div className="col-md-12">
@@ -111,7 +110,7 @@ const OrderByStatusReport = () => {
                                         style={{ backgroundColor: primaryColor }}
                                     >
                                         <h5 className="mb-0 text-white">
-                                            {StatusName?.label} Orders List
+                                            {status ? "Pending" : "In Process"} Orders List
                                         </h5>
                                     </div>
 
