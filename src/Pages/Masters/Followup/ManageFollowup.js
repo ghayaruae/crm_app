@@ -12,7 +12,7 @@ import { getCurrentDate } from '../../../Components/GlobalFunctions'
 const ManageFollowup = () => {
 
     const { primaryColor, apiHeaderJson, apiURL, selectTheme, selectStyle } = useContext(ConfigContext)
-    const { business_salesman_followup_id } = useParams()
+    const { business_salesman_followup_id, business_id } = useParams()
     const navigate = useNavigate()
     const headers = apiHeaderJson;
 
@@ -118,6 +118,8 @@ const ManageFollowup = () => {
 
     const getInfo = async () => {
         try {
+            if (business_salesman_followup_id === 0) return;
+
             const response = await axios.get(`${apiURL}Masters/GetFollowupInfo`, {
                 headers,
                 params: { business_salesman_followup_id }
@@ -145,8 +147,18 @@ const ManageFollowup = () => {
     }, [])
 
     useEffect(() => {
-        business_salesman_followup_id && getInfo()
+        business_salesman_followup_id != 0 && getInfo()
     }, [business_salesman_followup_id])
+
+    useEffect(() => {
+        if (business_id && businessOptions.length > 0) {
+            setSelectedBusiness(Number(business_id));
+            if (errors.selectedBusiness) {
+                setErrors(prev => ({ ...prev, selectedBusiness: '' }));
+            }
+        }
+    }, [business_id, businessOptions]);
+
 
     return (
         <>
