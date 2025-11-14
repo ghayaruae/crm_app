@@ -5,6 +5,7 @@ import CountUp from "react-countup";
 import { Link } from "react-router-dom";
 import PendingAmount from "./PendingAmount";
 import AchievementStats from "./AchievementStats";
+import LastPartInquiries from "./LastPartInquiries";
 
 const MainDashboard = () => {
     const { apiHeaderJson, apiURL } = useContext(ConfigContext);
@@ -13,12 +14,26 @@ const MainDashboard = () => {
     const [info, setInfo] = useState({});
     const [aboveTargetData, setAboveTargetData] = useState([]);
     const [belowTargetData, setBelowTargetData] = useState([]);
+    const [inquiryData, setInquiryData] = useState([]);
 
     const GetTeamLeaderDashboardStates = async () => {
         try {
             const response = await axios.get(`${apiURL}Dashboard/GetTeamLeaderDashboardStates`, { headers });
             if (response?.data?.success) {
                 setInfo(response?.data?.data);
+            } else {
+                console.log("Dashboard error");
+            }
+        } catch (error) {
+            console.log("error", error);
+        }
+    };
+
+    const GetLastPartInquiries = async () => {
+        try {
+            const response = await axios.get(`${apiURL}Dashboard/GetLastPartInquiries`, { headers });
+            if (response?.data?.success) {
+                setInquiryData(response?.data?.data)
             } else {
                 console.log("Dashboard error");
             }
@@ -45,6 +60,7 @@ const MainDashboard = () => {
     useEffect(() => {
         GetTeamLeaderDashboardStates();
         getAchievementReports()
+        GetLastPartInquiries()
     }, []);
 
     const cardItems = [
@@ -158,6 +174,11 @@ const MainDashboard = () => {
                         <AchievementStats
                             aboveTargetData={aboveTargetData}
                             belowTargetData={belowTargetData}
+                        />
+                    </div>
+                    <div className="row">
+                        <LastPartInquiries
+                            inquiryData={inquiryData}
                         />
                     </div>
                 </div>

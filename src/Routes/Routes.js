@@ -68,7 +68,7 @@ const routes = [
   { path: "/UserPermissions/:business_salesman_id", element: <UserPermissions />, routeName: "/UserPermissions" },
 
 
-  { path: "/Request/RequestPartInquiry", element: <CreateRequest />, routeName: "/Request/RequestPartInquiry" },
+  { path: "/Request/RequestPartInquiry/:inventory_part_request_id?", element: <CreateRequest />, routeName: "/Request/RequestPartInquiry" },
   { path: "/Request/RequestPartInquiryList", element: <RequestPartList />, routeName: "/Request/RequestPartInquiryList" },
 
 ];
