@@ -7,7 +7,7 @@ import Swal from "sweetalert2"
 
 const UserPermissions = () => {
     const { business_salesman_id } = useParams();
-    const { apiURL, apiHeaderJson } = useContext(ConfigContext);
+    const { apiURL, apiHeaderJson, primaryColor } = useContext(ConfigContext);
 
     const [routes, setRoutes] = useState([]);
     const [user, setUser] = useState(null);
@@ -19,7 +19,6 @@ const UserPermissions = () => {
     const [expandedCategories, setExpandedCategories] = useState({});
     const navigate = useNavigate();
 
-    // Define category mapping based on your routes
     const categoryConfig = {
         'Dashboard': ['dashboard', 'maindashboard'],
         'Business': ['business', 'allbusinesses', 'businessdetails'],
@@ -244,8 +243,9 @@ const UserPermissions = () => {
                                         <div className="d-flex align-items-center">
                                             <div className="flex-shrink-0">
                                                 <div
-                                                    className="rounded-circle d-flex align-items-center justify-content-center bg-primary text-white shadow"
+                                                    className="rounded-circle d-flex align-items-center justify-content-center text-white shadow"
                                                     style={{
+                                                        backgroundColor: primaryColor,
                                                         width: "80px",
                                                         height: "80px",
                                                         fontSize: "2rem",
@@ -315,13 +315,13 @@ const UserPermissions = () => {
                     <div className="card border-0 shadow-sm">
                         <div className="card-header bg-transparent border-0 py-3">
                             <div className="row align-items-center">
-                                <div className="col-md-6">
+                                <div className="col-md-8">
                                     <h4 className="mb-0">
                                         <i className="bx bx-shield-alt me-2"></i>
                                         Manage Permissions
                                     </h4>
                                 </div>
-                                <div className="col-md-6">
+                                <div className="col-md-4">
                                     <div className="search-box position-relative">
                                         <input
                                             type="text"
@@ -341,7 +341,7 @@ const UserPermissions = () => {
                                     <div className="category-header bg-light rounded p-3 mb-3">
                                         <div className="d-flex justify-content-between align-items-center">
                                             <div className="d-flex align-items-center">
-                                                <i className={`${getCategoryIcon(category)} me-2 fs-5 text-primary`}></i>
+                                                <i className={`${getCategoryIcon(category)} me-2 fs-5`} style={{ color: primaryColor }}></i>
                                                 <h5 className="mb-0 text-capitalize">{category}</h5>
                                                 <span className="badge bg-primary ms-2">
                                                     {permissions.length} {permissions.length === 1 ? 'permission' : 'permissions'}
@@ -370,7 +370,7 @@ const UserPermissions = () => {
                                         <div className="row g-3">
                                             {permissions.map(route => (
                                                 <div key={route.salesman_privilage_id} className="col-xl-4 col-lg-6">
-                                                    <div className={`permission-card card border h-100 ${selectedPermissions.includes(route.salesman_privilage_id) ? 'border-none bg-light bg-opacity-5' : ''}`}>
+                                                    <div className={`permission-card card border h-100 ${selectedPermissions.includes(route.salesman_privilage_id) ? 'border-none bg-dark-subtle bg-opacity-5' : ''}`}>
                                                         <div className="card-body p-3">
                                                             <div className="d-flex align-items-start">
                                                                 <div className="flex-shrink-0 mt-1">
