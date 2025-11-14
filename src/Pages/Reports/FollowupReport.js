@@ -35,7 +35,7 @@ const FollowupReport = () => {
                 params: {
                     page,
                     limit,
-                    business_salesman_id: selectedSalesman || "",
+                    business_salesman_id: selectedSalesman || null,
                     from_date: from_date || "",
                     to_date: to_date || ""
                 }
@@ -95,15 +95,14 @@ const FollowupReport = () => {
     }
 
     const handleFilter = () => {
-        if ((!from_date && !to_date) || !selectedSalesman) return;
+        if (!selectedSalesman && !from_date && !to_date) return;
         setFiltersApplied(prev => !prev)
         setPage(1)
         getData()
     }
-
+    
     const handleReset = () => {
-        if ((!from_date && !to_date) || !selectedSalesman) return;
-
+        if (!selectedSalesman && !from_date && !to_date) return;
         setSelectedSalesman(null)
         setFrom_date("")
         setTo_date("")

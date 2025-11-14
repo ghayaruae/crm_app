@@ -338,6 +338,8 @@ const Header = () => {
                           className="nav-link menu-link"
                           href={`#${item.dropdownId}`}
                           data-bs-toggle="collapse"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="right"
                           role="button"
                           aria-expanded="false"
                           aria-controls={item.dropdownId}

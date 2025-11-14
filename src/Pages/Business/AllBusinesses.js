@@ -90,7 +90,7 @@ const AllBusinesses = () => {
             <div className="main-content">
                 <div className="page-content">
                     <div className="container-fluid">
-                        <PageTitle title="Bussinnesses" primary="Business" />
+                        <PageTitle title="Bussinnesses" primary="Reports" />
 
                         <div className="row">
                             <div className="col-md-12">
