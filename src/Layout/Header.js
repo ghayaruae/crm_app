@@ -132,6 +132,27 @@ const Header = () => {
       ],
     },
     {
+      id: "Request Part Inquiry",
+      icon: "mdi mdi-clipboard-text-outline fs-22",
+      label: "Request Part Inquiry",
+      isDropdown: true,
+      dropdownId: "sidebarRequestPartInquiry",
+      items: [
+        {
+          id: "RequestPartInquiry",
+          path: "/Request/RequestPartInquiry",
+          label: "Request Part Inquiry",
+          isDropdown: false,
+        },
+        {
+          id: "RequestPartInquiryList",
+          path: "/Request/RequestPartInquiryList",
+          label: "Request Part Inquiry List",
+          isDropdown: false,
+        },
+      ],
+    },
+    {
       id: "Setting",
       icon: "mdi mdi-spin mdi-cog-outline fs-22",
       label: "Settings",

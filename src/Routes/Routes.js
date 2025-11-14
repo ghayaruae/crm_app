@@ -24,6 +24,8 @@ import FollowupReport from "../Pages/Reports/FollowupReport";
 import FullOrdersReport from "../Pages/Reports/FullOrdersReport";
 import OrderByStatusReport from "../Pages/Reports/OrderByStatusReport";
 import TargetReport from "../Pages/Reports/TargetReport";
+import CreateRequest from "../Pages/RequestInquiry/CreateRequest";
+import RequestPartList from "../Pages/RequestInquiry/RequestPartList";
 
 const routes = [
   ////////////////////// Dashboard Routing ///////////////////////////
@@ -64,6 +66,11 @@ const routes = [
   { path: "/Masters/FollowupList", element: <FollowupList />, routeName: "/Masters/FollowupList" },
   { path: "/Masters/ManageUsers", element: <ManageUsers />, routeName: "/Masters/ManageUsers" },
   { path: "/UserPermissions/:business_salesman_id", element: <UserPermissions />, routeName: "/UserPermissions" },
+
+
+  { path: "/Request/RequestPartInquiry", element: <CreateRequest />, routeName: "/Request/RequestPartInquiry" },
+  { path: "/Request/RequestPartInquiryList", element: <RequestPartList />, routeName: "/Request/RequestPartInquiryList" },
+
 ];
 
 export default routes;
