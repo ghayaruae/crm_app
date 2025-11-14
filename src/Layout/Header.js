@@ -22,7 +22,7 @@ const Header = () => {
         {
           id: "MainDashboard",
           icon: "ri-dashboard-2-fill",
-          label: "Main Dashboard",
+          label: "Dashboard",
           path: "/",
           isDropdown: false,
         },
