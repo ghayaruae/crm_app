@@ -4,7 +4,7 @@ import { ConfigContext } from '../../Context/ConfigContext'
 import axios from 'axios'
 import Flatpicker from "react-flatpickr";
 import { TableRows, NoRecords } from '../../Components/Shimmer'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { GlobalLimitChanger } from '../../Components/InputElements'
 import { DateFormater } from '../../Components/GlobalFunctions'
 import { GetStatusBadge } from '../../Utils/GetStatusBadge'
@@ -14,6 +14,7 @@ const AllOrders = () => {
     const { primaryColor, apiHeaderJson, apiURL } = useContext(ConfigContext)
     const headers = apiHeaderJson
     const datePickerRef = useRef(null)
+    const { status } = useParams()
 
     const [data, setData] = useState([])
     const [next, setNext] = useState(false)
@@ -38,6 +39,7 @@ const AllOrders = () => {
                     limit,
                     from_date: dateRange[0] || "",
                     to_date: dateRange[1] || "",
+                    status
                 }
             })
             const { success, data, page: currentPage, next, prev, total_pages, total_records } = response.data
@@ -148,7 +150,7 @@ const AllOrders = () => {
                                                     className="btn btn-danger btn-label right"
                                                     onClick={handleSearch}
                                                     disabled={!keyword && dateRange.length === 0}
-                                                    >
+                                                >
                                                     Filter
                                                     <i className="ri-filter-line label-icon align-middle fs-16 ms-2"></i>
                                                 </button>

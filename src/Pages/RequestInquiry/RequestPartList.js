@@ -141,7 +141,7 @@ const RequestPartList = () => {
                                                     <input
                                                         type="text"
                                                         className="form-control pe-5"
-                                                        placeholder="Search by Part name or Brand"
+                                                        placeholder="Search by Part name"
                                                         value={keyword}
                                                         onChange={(e) => setKeyword(e.target.value)}
                                                     />
@@ -161,14 +161,13 @@ const RequestPartList = () => {
                                                     <>
                                                         <thead className="table-light text-center">
                                                             <tr>
+                                                                <th>Salesman Name</th>
                                                                 <th>Part Name</th>
                                                                 <th>Brand</th>
                                                                 <th>Part Number</th>
                                                                 <th>Qty</th>
                                                                 <th>Market Price</th>
-                                                                <th>Supersedes</th>
                                                                 <th>Request Date</th>
-                                                                <th>Note</th>
                                                                 <th>Action</th>
                                                             </tr>
                                                         </thead>
@@ -178,14 +177,13 @@ const RequestPartList = () => {
                                                                 data.map((row) => (
                                                                     <tr key={row.inventory_part_request_id} className="text-center">
 
+                                                                        <td>{row.business_salesmen_name}</td>
                                                                         <td>{row.request_part_name}</td>
                                                                         <td>{row.request_brand_name}</td>
                                                                         <td>{row.request_part_number}</td>
                                                                         <td>{row.request_part_qty}</td>
                                                                         <td>{row.request_part_market_price}</td>
-                                                                        <td>{row.request_supersedes}</td>
                                                                         <td>{DateFormater(row.request_date)}</td>
-                                                                        <td>{row.request_note}</td>
 
                                                                         <td className="d-flex align-items-center justify-content-center gap-2">
                                                                             <Link to={`/Request/RequestPartInquiry/${row.inventory_part_request_id}`}>

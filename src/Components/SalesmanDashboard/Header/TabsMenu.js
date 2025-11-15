@@ -5,6 +5,7 @@ import { ConfigContext } from '../../../Context/ConfigContext';
 import axios from 'axios';
 import TargetsTab from '../Tabs/TargetsTab';
 import FollowupsTab from '../Tabs/FollowupsTab';
+import InquiriesTab from '../Tabs/InquiriesTab';
 
 const TabsMenu = () => {
 
@@ -75,6 +76,16 @@ const TabsMenu = () => {
                             <span className="d-none d-md-inline-block">Followups</span>
                         </a>
                     </li>
+                    <li className="nav-item">
+                        <a
+                            className={`nav-link fs-14 ${activeTab === "inquiries" ? "active" : ""}`}
+                            role='button'
+                            onClick={() => handleTabChange("inquiries")}
+                        >
+                            <i className="ri-dashboard-3-line d-inline-block d-md-none" />
+                            <span className="d-none d-md-inline-block">Part Inquiries</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
             <div className="tab-content pt-4 text-muted">
@@ -89,6 +100,9 @@ const TabsMenu = () => {
                 )}
                 {activeTab === "followup" && (
                     <FollowupsTab />
+                )}
+                {activeTab === "inquiries" && (
+                    <InquiriesTab />
                 )}
             </div>
         </>

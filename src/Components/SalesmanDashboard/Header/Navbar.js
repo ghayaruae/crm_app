@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios';
 import { ConfigContext } from '../../../Context/ConfigContext';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
 
@@ -38,6 +39,7 @@ const Navbar = () => {
             </div>
             <div className="pt-4 mb-4 mb-lg-3 pb-lg-4 profile-wrapper">
                 <div className="row g-4">
+
                     <div className="col-auto">
                         <div className="avatar-lg">
                             <img
@@ -47,40 +49,43 @@ const Navbar = () => {
                             />
                         </div>
                     </div>
-                    {/*end col*/}
+
                     <div className="col">
                         <div className="p-2">
                             {
-                                loading ?
+                                loading ? (
                                     <>
                                         <h3 className="text-white mb-1">LOADING...</h3>
-                                        <p className="text-white text-opacity-75"></p>
-                                        <p className="text-white text-opacity-75"> </p>
-                                        <div className="hstack text-white-50 gap-1">
-                                            <div className='me-2'>
-
-                                            </div>
-                                            <div>
-                                            </div>
-                                        </div>
+                                        <p className="text-white text-opacity-75 mb-1"></p>
                                     </>
-                                    :
+                                ) : (
                                     <>
                                         <h3 className="text-white mb-1">{data?.business_salesmen_name}</h3>
-                                        <p className="text-white text-opacity-75 mb-1">{data?.business_salesmen_contact_number}</p>
-                                        {/* <p className="text-white text-opacity-75 mb-1">TRN : {data?.busienss_trn ?? "0"}</p> */}
+                                        <p className="text-white text-opacity-75 mb-1">
+                                            {data?.business_salesmen_contact_number}
+                                        </p>
 
                                         <div className="hstack text-white-50 gap-1">
                                             <div>
-                                                <i className="ri-map-pin-user-line me-1 text-white text-opacity-75 fs-16 align-middle" />{data?.business_salesman_email}
+                                                <i className="ri-map-pin-user-line me-1 text-white text-opacity-75 fs-16 align-middle" />
+                                                {data?.business_salesman_email}
                                             </div>
                                         </div>
                                     </>
+                                )
                             }
                         </div>
                     </div>
+
+                    <div className="col-auto ms-auto">
+                        <Link to={"/Masters/ManageFollowup"}>
+                            <button className='btn btn-danger btn-label'>
+                                <i className='ri-phone-line label-icon align-middle'></i> Followup
+                            </button>
+                        </Link>
+                    </div>
+
                 </div>
-                {/*end row*/}
             </div>
         </>
     )

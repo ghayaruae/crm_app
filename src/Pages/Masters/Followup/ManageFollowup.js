@@ -16,16 +16,22 @@ const ManageFollowup = () => {
     const navigate = useNavigate()
     const headers = apiHeaderJson;
 
+    // Convert params to usable numbers
+    const followupId = Number(business_salesman_followup_id) || 0;
+    const autoBusinessId = Number(business_id) || 0;
+
+    const isEdit = followupId > 0;
+
     const [formData, setFormData] = useState({
         date: getCurrentDate(),
         response: "",
         remark: "",
     })
+
     const [selectedType, setSelectedType] = useState(null)
     const [selectedBusiness, setSelectedBusiness] = useState(null)
     const [errors, setErrors] = useState({})
     const [submitLoading, setSubmitLoading] = useState(false)
-
     const [businessOptions, setBusinessOptions] = useState([])
 
     const typeOptions = [
@@ -97,7 +103,9 @@ const ManageFollowup = () => {
                 business_salesman_followup_remark: formData.remark
             }
 
-            if (business_salesman_followup_id) body.business_salesman_followup_id = business_salesman_followup_id
+            if (isEdit) {
+                body.business_salesman_followup_id = followupId;
+            }
 
             const response = await axios.post(`${apiURL}Masters/CreateFollowup`, body, { headers })
             const { success, message } = response.data
@@ -105,9 +113,7 @@ const ManageFollowup = () => {
             if (success) {
                 Swal.fire('Success!', message, 'success')
                 resetForm()
-                if (business_salesman_followup_id) {
-                    navigate("/Masters/FollowupList")
-                }
+                if (isEdit) navigate("/Masters/FollowupList")
             }
         } catch (error) {
             console.log("error", error)
@@ -118,16 +124,16 @@ const ManageFollowup = () => {
 
     const getInfo = async () => {
         try {
-            if (business_salesman_followup_id === 0) return;
+            if (!isEdit) return;
 
             const response = await axios.get(`${apiURL}Masters/GetFollowupInfo`, {
                 headers,
-                params: { business_salesman_followup_id }
+                params: { business_salesman_followup_id: followupId }
             })
             const { success, data } = response.data
 
-            if (success) {
-                const fields = data[0]
+            if (success && data.length > 0) {
+                const fields = data[0];
 
                 setFormData({
                     date: fields?.business_salesman_followup_date,
@@ -142,22 +148,25 @@ const ManageFollowup = () => {
         }
     }
 
+    /** Load Business List Initially */
     useEffect(() => {
         getBusinessList()
     }, [])
 
+    /** Load Edit Info */
     useEffect(() => {
-        business_salesman_followup_id != 0 && getInfo()
-    }, [business_salesman_followup_id])
-
-    useEffect(() => {
-        if (business_id && businessOptions.length > 0) {
-            setSelectedBusiness(Number(business_id));
-            if (errors.selectedBusiness) {
-                setErrors(prev => ({ ...prev, selectedBusiness: '' }));
-            }
+        if (isEdit) {
+            getInfo();
         }
-    }, [business_id, businessOptions]);
+    }, [followupId])
+
+    /** Auto-select Business if Create Mode AND business_id exists */
+    useEffect(() => {
+        if (!isEdit && autoBusinessId > 0 && businessOptions.length > 0) {
+            setSelectedBusiness(autoBusinessId);
+            setErrors(prev => ({ ...prev, selectedBusiness: "" }));
+        }
+    }, [autoBusinessId, businessOptions]);
 
 
     return (
@@ -166,11 +175,13 @@ const ManageFollowup = () => {
                 <div className="page-content">
                     <div className="container-fluid">
                         <PageTitle title="Manage Followup" primary="Masters" />
+
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="card">
+
                                     <div className="card-header align-items-center d-flex" style={{ backgroundColor: primaryColor }}>
-                                        <h4 className="mb-0 flex-grow-1 text-white">Follow up</h4>
+                                        <h4 className="mb-0 flex-grow-1 text-white">Follow Up</h4>
                                         <Link to={"/Masters/FollowupList"}>
                                             <button
                                                 type="button"
@@ -185,11 +196,11 @@ const ManageFollowup = () => {
                                     <div className="card-body">
                                         <div className="row g-3">
 
-
                                             <div className="col-md-4">
-                                                <label className='form-label'>Business <span className='text-danger'>*</span></label>
+                                                <label className="form-label">
+                                                    Business <span className="text-danger">*</span>
+                                                </label>
                                                 <Select
-                                                    name="selectedBusiness"
                                                     theme={selectTheme}
                                                     styles={selectStyle}
                                                     options={businessOptions}
@@ -205,13 +216,16 @@ const ManageFollowup = () => {
                                                     className={errors.selectedBusiness ? "is-invalid" : ""}
                                                     isClearable
                                                 />
-                                                {errors.selectedBusiness && <div className="text-danger d-block">{errors.selectedBusiness}</div>}
+                                                {errors.selectedBusiness && (
+                                                    <div className="text-danger d-block">{errors.selectedBusiness}</div>
+                                                )}
                                             </div>
 
                                             <div className="col-md-4">
-                                                <label className='form-label'>Followup Type <span className='text-danger'>*</span></label>
+                                                <label className="form-label">
+                                                    Followup Type <span className="text-danger">*</span>
+                                                </label>
                                                 <Select
-                                                    name="selectedType"
                                                     theme={selectTheme}
                                                     styles={selectStyle}
                                                     options={typeOptions}
@@ -220,72 +234,83 @@ const ManageFollowup = () => {
                                                     onChange={(selected) => {
                                                         setSelectedType(selected ? selected.value : null);
                                                         if (errors.selectedType) {
-                                                            setErrors(prev => ({ ...prev, selectedType: '' }));
+                                                            setErrors(prev => ({ ...prev, selectedType: "" }));
                                                         }
                                                     }}
                                                     classNamePrefix="react-select"
                                                     className={errors.selectedType ? "is-invalid" : ""}
                                                     isClearable
                                                 />
-                                                {errors.selectedType && <div className="text-danger d-block">{errors.selectedType}</div>}
+                                                {errors.selectedType && (
+                                                    <div className="text-danger d-block">{errors.selectedType}</div>
+                                                )}
                                             </div>
 
                                             <div className="col-md-4">
-                                                <label className='form-label'>Followup Date <span className='text-danger'>*</span></label>
+                                                <label className="form-label">
+                                                    Followup Date <span className="text-danger">*</span>
+                                                </label>
                                                 <Flatpickr
                                                     options={{ dateFormat: "Y-m-d" }}
                                                     className={`form-control ${errors.date ? "is-invalid" : ""}`}
-                                                    placeholder="Select Followup Date"
-                                                    value={formData.date || getCurrentDate()}
+                                                    value={formData.date}
                                                     onChange={(_, dateStr) => {
-                                                        setFormData({ ...formData, date: dateStr });
-                                                        if (errors.date) setErrors({ ...errors, date: null });
+                                                        setFormData({ ...formData, date: dateStr })
+                                                        if (errors.date) {
+                                                            setErrors(prev => ({ ...prev, date: '' }))
+                                                        }
                                                     }}
                                                 />
                                                 {errors.date && (
                                                     <div className="invalid-feedback d-block">{errors.date}</div>
                                                 )}
                                             </div>
+
                                             <div className="col-md-12">
-                                                <label className='form-label'>Business Response <span className='text-danger'>*</span></label>
+                                                <label className="form-label">
+                                                    Business Response <span className="text-danger">*</span>
+                                                </label>
                                                 <textarea
                                                     rows={5}
                                                     name="response"
                                                     value={formData.response}
                                                     onChange={handleInputChange}
                                                     className={`form-control ${errors.response ? "is-invalid" : ""}`}
-                                                    placeholder='Enter Business response'
+                                                    placeholder="Enter Business Response"
                                                 />
                                                 {errors.response && (
                                                     <div className="invalid-feedback d-block">{errors.response}</div>
                                                 )}
                                             </div>
+
                                             <div className="col-md-12">
-                                                <label className='form-label'>Followup Remark <span className='text-danger'>*</span></label>
+                                                <label className="form-label">
+                                                    Followup Remark <span className="text-danger">*</span>
+                                                </label>
                                                 <textarea
                                                     rows={5}
                                                     name="remark"
                                                     value={formData.remark}
                                                     onChange={handleInputChange}
                                                     className={`form-control ${errors.remark ? "is-invalid" : ""}`}
-                                                    placeholder='Enter remark'
+                                                    placeholder="Enter Remark"
                                                 />
                                                 {errors.remark && (
                                                     <div className="invalid-feedback d-block">{errors.remark}</div>
                                                 )}
                                             </div>
-                                            <div className={`col-md-12 d-flex align-items-end justify-content-${business_salesman_followup_id ? "between" : "end"} gap-3`}>
-                                                {business_salesman_followup_id ? (
+
+                                            <div className={`col-md-12 d-flex align-items-end justify-content-${isEdit ? "between" : "end"} gap-3`}>
+
+                                                {isEdit ? (
                                                     <>
-                                                        <Link to={"/Masters/FollowupList"}>
-                                                            <button
-                                                                type="button"
-                                                                className="btn btn-light btn-label right me-auto"
-                                                            >
+                                                        <Link to="/Masters/FollowupList">
+                                                            <button type="button" className="btn btn-light btn-label right me-auto">
                                                                 Reset
                                                                 <i className="ri-arrow-right-line label-icon align-middle fs-16" />
                                                             </button>
                                                         </Link>
+
                                                         <SubmitBtn
                                                             icon="ri-save-line"
                                                             text="Update"
@@ -296,19 +321,24 @@ const ManageFollowup = () => {
                                                     </>
                                                 ) : (
                                                     <SubmitBtn
-                                                        text={submitLoading ? 'Saving..' : 'Save'}
+                                                        text={submitLoading ? "Saving..." : "Save"}
                                                         type="primary"
                                                         icon="ri-save-line"
                                                         onClick={handleSubmit}
                                                         disabled={submitLoading}
                                                     />
                                                 )}
+
                                             </div>
+
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>
@@ -316,4 +346,4 @@ const ManageFollowup = () => {
     )
 }
 
-export default ManageFollowup
+export default ManageFollowup;

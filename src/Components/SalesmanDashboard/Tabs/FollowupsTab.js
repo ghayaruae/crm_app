@@ -6,7 +6,7 @@ import { DateFormater } from '../../GlobalFunctions'
 
 const FollowupsTab = () => {
 
-    const { primaryColor, apiHeaderJson, apiURL } = useContext(ConfigContext)
+    const { apiHeaderJson, apiURL } = useContext(ConfigContext)
 
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
@@ -110,15 +110,6 @@ const FollowupsTab = () => {
                                                                     ))}
                                                                 </select>
                                                             </div>
-                                                            {/* <div className='col-md-2'>
-                                                                            <GlobalLimitChanger
-                                                                                placeholder="Set limit:"
-                                                                                name="globalLimit"
-                                                                                value={limit}
-                                                                                onChange={setLimit}
-                                                                                showAllValue={totalRecords}
-                                                                            />
-                                                                        </div> */}
                                                             <button disabled={!next || loading} type="button" onClick={handleNext} className="btn btn-primary btn-label waves-effect right waves-light">
                                                                 <i className="ri-arrow-right-line label-icon align-middle fs-16 ms-2" /> Next
                                                             </button>
