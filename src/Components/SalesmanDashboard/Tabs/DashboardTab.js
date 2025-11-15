@@ -6,6 +6,7 @@ import BusinessesChart from '../../../Pages/Dashboard/BusinessesChart';
 import { ConfigContext } from '../../../Context/ConfigContext';
 import axios from 'axios';
 import NoRecentOrders from '../../../Pages/Dashboard/NoRecendsOrders';
+import { Link } from 'react-router-dom';
 
 const DashboardTab = ({ data, salesman_data }) => {
 
@@ -17,6 +18,7 @@ const DashboardTab = ({ data, salesman_data }) => {
             arrowColor: "text-warning",
             iconColor: "text-warning",
             value: data?.total_pending_orders,
+            link: "/Reports/SalesmanOrders/0" 
         },
         {
             title: "Inactive Businesses",
@@ -25,6 +27,7 @@ const DashboardTab = ({ data, salesman_data }) => {
             arrowColor: "text-danger",
             iconColor: "text-danger",
             value: data?.total_inactive_business,
+            link: "/business/inactive"
         },
         {
             title: "Total Assign Business",
@@ -33,8 +36,10 @@ const DashboardTab = ({ data, salesman_data }) => {
             arrowColor: "text-success",
             iconColor: "text-primary",
             value: data?.total_assign_business,
+            link: "/Salesman/AllBusinesses"
         },
     ];
+
 
     if (salesman_data) {
         dashboardCards.push({
@@ -91,15 +96,27 @@ const DashboardTab = ({ data, salesman_data }) => {
                                                 </div>
                                             </div>
                                         ) : (
-                                            <div className="d-flex align-items-center">
-                                                <div className="flex-shrink-0">
-                                                    <i className={`${card.icon} fs-3 ${card.iconColor}`} />
+                                            <div className="d-flex align-items-center justify-content-between">
+                                                <div className="d-flex align-items-center mt-1">
+                                                    <div className="flex-shrink-0">
+                                                        <i className={`${card.icon} fs-3 ${card.iconColor}`} />
+                                                    </div>
+
+                                                    <div className="flex-grow-1 ms-3">
+                                                        <h4 className="mb-0 fw-semibold">
+                                                            {card.value ?? 0}
+                                                        </h4>
+                                                    </div>
                                                 </div>
-                                                <div className="flex-grow-1 ms-3">
-                                                    <h4 className="mb-0 fw-semibold">
-                                                        {card.value ?? 0}
-                                                    </h4>
-                                                </div>
+                                                {card.link && (
+                                                    <Link
+                                                        to={card.link}
+                                                        className="text-decoration-underline text-muted small fw-semibold ms-3 mt-auto"
+                                                    >
+                                                        View Report
+                                                    </Link>
+                                                )}
+
                                             </div>
                                         )}
                                     </div>

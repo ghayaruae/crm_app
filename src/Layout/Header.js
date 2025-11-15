@@ -153,6 +153,27 @@ const Header = () => {
       ],
     },
     {
+      id: "Search",
+      icon: "ri-search-line fs-22",
+      label: "Search Parts",
+      isDropdown: true,
+      dropdownId: "sidebarSearch",
+      items: [
+        {
+          id: "SearchOEParts",
+          path: "/Search/SearchOEParts",
+          label: "Search OE Parts",
+          isDropdown: false,
+        },
+        {
+          id: "OEPartDetails",
+          path: "/Search/OEPartDetails",
+          label: "Part Details",
+          isDropdown: false,
+        },
+      ],
+    },
+    {
       id: "Setting",
       icon: "mdi mdi-spin mdi-cog-outline fs-22",
       label: "Settings",
@@ -170,7 +191,6 @@ const Header = () => {
   ];
 
 
-  // ===================== PERMISSION HELPERS =====================
   const hasPermission = (path) => {
     if (!permissions || permissions.length === 0) return false;
     return permissions.some((perm) => perm.salesman_description === path);

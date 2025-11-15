@@ -26,6 +26,8 @@ import OrderByStatusReport from "../Pages/Reports/OrderByStatusReport";
 import TargetReport from "../Pages/Reports/TargetReport";
 import CreateRequest from "../Pages/RequestInquiry/CreateRequest";
 import RequestPartList from "../Pages/RequestInquiry/RequestPartList";
+import OEPartDetails from "../Pages/Search/OEPartDetails";
+import SearchOEParts from "../Pages/Search/SearchOEParts";
 
 const routes = [
   ////////////////////// Dashboard Routing ///////////////////////////
@@ -51,7 +53,7 @@ const routes = [
   { path: "/CustomerRequestDueDays/:business_id?", element: <CustomerRequestedDueDays />, routeName: "/CustomerRequestDueDays" },
 
   ////////////////////// Reports Routing ///////////////////////////
-  { path: "/Reports/SalesmanOrders", element: <AllOrders />, routeName: "/Reports/SalesmanOrders" },
+  { path: "/Reports/SalesmanOrders/:status?", element: <AllOrders />, routeName: "/Reports/SalesmanOrders" },
   { path: "/Reports/TargetReport", element: <TargetReport />, routeName: "/Reports/TargetReport" },
   { path: "/Reports/FollowupReport", element: <FollowupReport />, routeName: "/Reports/FollowupReport" },
   { path: "/Reports/FullOrdersReport", element: <FullOrdersReport />, routeName: "/Reports/FullOrdersReport" },
@@ -67,9 +69,13 @@ const routes = [
   { path: "/Masters/ManageUsers", element: <ManageUsers />, routeName: "/Masters/ManageUsers" },
   { path: "/UserPermissions/:business_salesman_id", element: <UserPermissions />, routeName: "/UserPermissions" },
 
-
+  ////////////////////// Request Routing ///////////////////////////
   { path: "/Request/RequestPartInquiry/:inventory_part_request_id?", element: <CreateRequest />, routeName: "/Request/RequestPartInquiry" },
   { path: "/Request/RequestPartInquiryList", element: <RequestPartList />, routeName: "/Request/RequestPartInquiryList" },
+
+  ////////////////////// Search Routing ///////////////////////////
+  { path: "/Search/SearchOEParts", element: <SearchOEParts />, routeName: "/Search/SearchOEParts" },
+  { path: "/Search/OEPartDetails", element: <OEPartDetails />, routeName: "/Search/OEPartDetails" },
 
 ];
 

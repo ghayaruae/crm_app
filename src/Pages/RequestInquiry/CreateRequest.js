@@ -11,7 +11,7 @@ import { getCurrentDate } from '../../Components/GlobalFunctions'
 
 const CreateRequest = () => {
 
-    const { primaryColor, apiHeaderJson, apiURL, selectTheme, selectStyle } = useContext(ConfigContext)
+    const { primaryColor, apiHeaderJson, apiURL, business_salesman_id } = useContext(ConfigContext)
     const { inventory_part_request_id } = useParams()
     const navigate = useNavigate()
     const headers = apiHeaderJson;
@@ -24,7 +24,6 @@ const CreateRequest = () => {
         request_note: "",
         request_part_market_price: "",
         request_supersedes: "",
-        request_date: getCurrentDate()
     })
 
     const [errors, setErrors] = useState({})
@@ -38,7 +37,6 @@ const CreateRequest = () => {
         if (!formData.request_part_number.trim()) newErrors.request_part_number = "Part number is required";
         if (!formData.request_part_qty) newErrors.request_part_qty = "Quantity is required";
         if (!formData.request_part_market_price) newErrors.request_part_market_price = "Market price is required";
-        if (!formData.request_date) newErrors.request_date = "Request date is required";
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -53,7 +51,6 @@ const CreateRequest = () => {
             request_note: "",
             request_part_market_price: "",
             request_supersedes: "",
-            request_date: getCurrentDate()
         })
         setErrors({})
     }
@@ -71,6 +68,7 @@ const CreateRequest = () => {
         setSubmitLoading(true)
         try {
             const body = {
+                business_salesman_id,
                 request_part_name: formData.request_part_name,
                 request_brand_name: formData.request_brand_name,
                 request_part_number: formData.request_part_number,
@@ -78,7 +76,6 @@ const CreateRequest = () => {
                 request_note: formData.request_note,
                 request_part_market_price: formData.request_part_market_price,
                 request_supersedes: formData.request_supersedes,
-                request_date: formData.request_date
             }
 
             if (inventory_part_request_id) {
@@ -120,7 +117,6 @@ const CreateRequest = () => {
                     request_note: data?.request_note,
                     request_part_market_price: data?.request_part_market_price,
                     request_supersedes: data?.request_supersedes,
-                    request_date: data?.request_date
                 })
             }
         } catch (error) {
@@ -157,7 +153,7 @@ const CreateRequest = () => {
                                     <div className="card-body">
                                         <div className="row g-3">
 
-                                            <div className="col-md-4">
+                                            <div className="col-md-6">
                                                 <label className="form-label">Part Name <span className="text-danger">*</span></label>
                                                 <input
                                                     type="text"
@@ -170,7 +166,7 @@ const CreateRequest = () => {
                                                 {errors.request_part_name && <div className="invalid-feedback d-block">{errors.request_part_name}</div>}
                                             </div>
 
-                                            <div className="col-md-4">
+                                            <div className="col-md-6">
                                                 <label className="form-label">Brand Name <span className="text-danger">*</span></label>
                                                 <input
                                                     type="text"
@@ -222,10 +218,10 @@ const CreateRequest = () => {
                                                 {errors.request_part_market_price && <div className="invalid-feedback d-block">{errors.request_part_market_price}</div>}
                                             </div>
 
-                                            <div className="col-md-4">
-                                                <label className="form-label">Supersedes</label>
-                                                <input
-                                                    type="text"
+                                            <div className="col-md-6">
+                                                <label className="form-label">Supersedes (optional)</label>
+                                                <textarea
+                                                    rows={4}
                                                     name="request_supersedes"
                                                     className={`form-control`}
                                                     value={formData.request_supersedes}
@@ -234,24 +230,10 @@ const CreateRequest = () => {
                                                 />
                                             </div>
 
-                                            <div className="col-md-4">
-                                                <label className="form-label">Request Date <span className="text-danger">*</span></label>
-                                                <Flatpickr
-                                                    options={{ dateFormat: "Y-m-d" }}
-                                                    className={`form-control ${errors.request_date ? "is-invalid" : ""}`}
-                                                    value={formData.request_date}
-                                                    onChange={(_, dateStr) => {
-                                                        setFormData({ ...formData, request_date: dateStr });
-                                                        if (errors.request_date) setErrors({ ...errors, request_date: null });
-                                                    }}
-                                                />
-                                                {errors.request_date && <div className="invalid-feedback d-block">{errors.request_date}</div>}
-                                            </div>
-
-                                            <div className="col-md-8">
-                                                <label className="form-label">Request Note</label>
+                                            <div className="col-md-6">
+                                                <label className="form-label">Request Note (optional)</label>
                                                 <textarea
-                                                    rows={3}
+                                                    rows={4}
                                                     name="request_note"
                                                     className={`form-control`}
                                                     value={formData.request_note}
