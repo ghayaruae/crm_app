@@ -167,7 +167,6 @@ const RequestPartList = () => {
                                                                 <th>Part Number</th>
                                                                 <th>Qty</th>
                                                                 <th>Market Price</th>
-                                                                <th>Request Date</th>
                                                                 <th>Action</th>
                                                             </tr>
                                                         </thead>
@@ -183,8 +182,6 @@ const RequestPartList = () => {
                                                                         <td>{row.request_part_number}</td>
                                                                         <td>{row.request_part_qty}</td>
                                                                         <td>{row.request_part_market_price}</td>
-                                                                        <td>{DateFormater(row.request_date)}</td>
-
                                                                         <td className="d-flex align-items-center justify-content-center gap-2">
                                                                             <Link to={`/Request/RequestPartInquiry/${row.inventory_part_request_id}`}>
                                                                                 <button className="btn btn-sm btn-soft-primary">

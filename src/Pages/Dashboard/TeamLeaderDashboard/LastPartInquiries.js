@@ -22,8 +22,6 @@ const LastPartInquiries = ({ inquiryData }) => {
                                         <th>Part Number</th>
                                         <th>Qty</th>
                                         <th>Market Price</th>
-                                        <th>Status</th>
-                                        <th>Request Date</th>
                                     </tr>
                                 </thead>
 
@@ -43,13 +41,6 @@ const LastPartInquiries = ({ inquiryData }) => {
                                                 <td>{item.request_part_number}</td>
                                                 <td>{item.request_part_qty}</td>
                                                 <td>{item.request_part_market_price}</td>
-                                                <td>
-                                                    {item.request_status === 0 ? "Pending" :
-                                                        item.request_status === 1 ? "Approved" :
-                                                            item.request_status === 2 ? "Rejected" :
-                                                                "Unknown"}
-                                                </td>
-                                                <td>{DateFormater(item.request_date)}</td>
                                             </tr>
                                         ))
                                     )}
