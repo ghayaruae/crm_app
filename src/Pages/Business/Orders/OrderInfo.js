@@ -18,7 +18,7 @@ const OrderInfo = () => {
     const [orderAddress, setOrderAddress] = useState({})
     const [orderTimeLineDate, setOrderTimeLineDate] = useState([])
 
-    const { business_order_id } = useParams();
+    const { business_order_id, secret_order_id, business_order_business_id } = useParams();
     const [loading, setLoading] = useState(true);
 
     const GetOrdersTimeLine = async () => {
@@ -45,14 +45,17 @@ const OrderInfo = () => {
             setLoading(true);
             const headers = apiHeaderJson;
             const response = await axios.get(`${apiURL}Business/GetOrderInfo`, {
-                params: { business_order_id },
+                params: {
+                    secret_order_id,
+                    business_id: business_order_business_id
+                },
                 headers
             });
 
             if (response.data.success) {
-                setOrderDetails(response.data.data[0]);
+                setOrderDetails(response.data.data);
                 setOrderItems(response.data.items);
-                setOrderAddress(response.data.order_address[0]);
+                setOrderAddress(response.data.address);
                 setLoading(false)
             } else {
                 console.log(response.data.message);
@@ -67,7 +70,7 @@ const OrderInfo = () => {
 
     useEffect(() => {
         getData();
-    }, [business_order_id]);
+    }, [secret_order_id, business_order_business_id]);
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -95,7 +98,7 @@ const OrderInfo = () => {
                                     </div>
 
                                     <div className="col-md-2 d-flex justify-content-end align-items-center">
-                                        <Link to={`/ViewOrderInvoice/${orderDetails?.business_order_id}`}>
+                                        <Link to={`/ViewOrderInvoice/${orderDetails?.secret_order_id}/${orderDetails?.business_order_business_id}`}>
                                             <span className="d-flex align-items-center me-4 cursor-pointer">
                                                 <i className="ri-download-cloud-2-line me-2 text-danger fs-5" />
                                                 <span className="text-decoration-underline text-danger">View Invoice</span>
@@ -112,7 +115,7 @@ const OrderInfo = () => {
                                                 <div className="d-flex justify-content-between align-items-center">
                                                     <div className="d-flex gap-3">
                                                         <h5 className="card-title flex-grow-1 mb-0">Order ID #{orderDetails?.secret_order_id}</h5>
-                                                        {GetStatusBadge(orderDetails.business_order_status)}
+                                                        {GetStatusBadge(orderDetails?.business_order_status)}
                                                     </div>
 
                                                     <div className="d-flex gap-3">

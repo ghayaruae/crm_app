@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import PageTitle from './PageTitle'
+import PageTitle from '../Components/PageTitle'
 import { useParams } from 'react-router-dom'
 import axios from 'axios';
 import Invoice from './Invoice';
-import html2pdf from 'html2pdf.js';
 import { ConfigContext } from '../Context/ConfigContext';
+import html2pdf from 'html2pdf.js';
 
 
 const ViewOrderInvoice = () => {
 
-    const { business_order_id } = useParams();
+    const { secret_order_id, business_order_business_id } = useParams();
 
 
     const { apiURL, apiHeaderJson } = useContext(ConfigContext);
@@ -21,14 +21,14 @@ const ViewOrderInvoice = () => {
         try {
             const headers = apiHeaderJson;
             const response = await axios.get(`${apiURL}Business/GetOrderInfo`, {
-                params: { business_order_id },
+                params: { secret_order_id, business_id: business_order_business_id },
                 headers
             });
 
             if (response.data.success) {
-                setOrderDetails(response.data.data[0]);
+                setOrderDetails(response.data.data);
                 setOrderItems(response.data.items);
-                setOrderAddress(response.data.order_address[0]);
+                setOrderAddress(response.data.address);
             } else {
                 console.log(response.data.message);
             }
@@ -68,7 +68,7 @@ const ViewOrderInvoice = () => {
 
     useEffect(() => {
         getData();
-    }, [business_order_id]);
+    }, [secret_order_id, business_order_business_id]);
 
     useEffect(() => {
         window.scrollTo(0, 0)

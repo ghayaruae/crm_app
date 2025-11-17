@@ -26,7 +26,7 @@ const statusOptions = [
 
 export const GetStatusBadge = (status) => {
 
-    const statusStr = status.toString();
+    const statusStr = status?.toString();
     const statusOption = statusOptions.find(opt => opt.value === statusStr);
 
     const badgeClass = statusStyles[statusStr] || 'bg-secondary-subtle text-secondary';

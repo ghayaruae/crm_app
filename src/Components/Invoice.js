@@ -152,20 +152,20 @@ const Invoice = ({ order, orderItems, address }) => {
                         {orderItems?.map((item) => (
                             <tr key={item.item_number} style={invoiceStyles.item}>
                                 <td style={invoiceStyles.itemCell}>
-                                    {item.business_order_item_name}<br />
-                                    <small>{item.business_order_item_number}</small>
+                                    {item.item_name}<br />
+                                    <small>{item.item_number}</small>
                                 </td>
                                 <td style={invoiceStyles.itemCell} align="right">
-                                    AED {(Number(item.business_order_item_price) - Number(item.business_order_item_price) * 0.05).toFixed(2)}
+                                    AED {(Number(item.item_price) - Number(item.item_price) * 0.05).toFixed(2)}
                                 </td>
                                 <td style={invoiceStyles.itemCell} align="right">
-                                    {item.business_order_qty}
+                                    {item.item_qty}
                                 </td>
                                 <td style={invoiceStyles.itemCell} align="right">
-                                    AED {(Number(item.business_order_qty) * Number(item.business_order_item_price) * 0.05).toFixed(2)}
+                                    AED {item.item_vat_amount}
                                 </td>
                                 <td style={invoiceStyles.itemCell} align="right">
-                                    AED {(Number(item.business_order_qty) * Number(item.business_order_item_price)).toFixed(2)}
+                                    AED {item.item_sub_total}
                                 </td>
                             </tr>
                         ))}
@@ -175,7 +175,7 @@ const Invoice = ({ order, orderItems, address }) => {
                                 <span style={{ lineHeight: '0' }}>Sub Total : <div><small>(Including VAT)</small></div></span>
                             </td>
                             <td style={invoiceStyles.itemCell} align="right">
-                                AED {order.business_order_grand_total ? (Number(order.business_order_grand_total) - Number(order.business_order_total_saving ?? 0)).toFixed(2) : 0}
+                                {order.display_sub_total}
                             </td>
                         </tr>
                         {Number(order.business_order_total_saving) > 0 && (
@@ -208,7 +208,7 @@ const Invoice = ({ order, orderItems, address }) => {
                                 <span style={{ lineHeight: '0' }}>Amount : <div><small>(Excluding VAT)</small></div></span>
                             </td>
                             <td style={invoiceStyles.itemCell} align="right">
-                                <strong>AED {order.business_order_grand_total ? (Number(order.business_order_grand_total) - (Number(order.business_order_grand_total) * 0.05)).toFixed(2) : 0}</strong>
+                                <strong>{order.display_excl_vat}</strong>
                             </td>
                         </tr>
                         <tr style={{ ...invoiceStyles.total, fontSize: '12px' }}>
@@ -216,7 +216,7 @@ const Invoice = ({ order, orderItems, address }) => {
                                 <strong>VAT 5% : </strong>
                             </td>
                             <td style={invoiceStyles.itemCell} align="right">
-                                <strong>AED {order.business_order_grand_total ? (Number(order.business_order_grand_total) * 0.05).toFixed(2) : '00.0'}</strong>
+                                <strong>{order.display_vat_amount}</strong>
                             </td>
                         </tr>
 
@@ -225,7 +225,7 @@ const Invoice = ({ order, orderItems, address }) => {
                                 <strong>Grand Total : </strong>
                             </td>
                             <td style={invoiceStyles.itemCell} align="right">
-                                <strong>AED {order.business_order_grand_total}</strong>
+                                <strong>AED {order.display_grand_total}</strong>
                             </td>
                         </tr>
                     </tbody>

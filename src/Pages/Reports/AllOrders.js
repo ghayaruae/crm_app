@@ -178,6 +178,7 @@ const AllOrders = () => {
                                                         <th width="15%">Total Amount</th>
                                                         <th width="10%">Reward Points</th>
                                                         <th width="7%">Status</th>
+                                                        <th width="7%">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -187,7 +188,7 @@ const AllOrders = () => {
                                                         data.map((row) => (
                                                             <tr key={row.business_order_id} className="text-center">
                                                                 <td>
-                                                                    <Link style={{ color: primaryColor, fontWeight: "bolder" }} to={`/OrderInfo/${row.business_order_id}`}>
+                                                                    <Link style={{ color: primaryColor, fontWeight: "bolder" }} to={`/OrderInfo/${row.business_order_id}/${row.secret_order_id}/${row.business_order_business_id}`}>
                                                                         {row.secret_order_id}
                                                                     </Link>
                                                                 </td>
@@ -206,6 +207,15 @@ const AllOrders = () => {
                                                                 <td className='text-success fw-bold'>AED {row.business_order_grand_total}</td>
                                                                 <td>{row.business_order_earned_points}</td>
                                                                 <td>{GetStatusBadge(row.business_order_status)}</td>
+                                                                <td className='d-flex gap-2 justify-content-center'>
+                                                                    <Link to={`/OrderInfo/${row.business_order_id}/${row.secret_order_id}/${row.business_order_business_id}`}>
+                                                                        <button
+                                                                            className="btn btn-sm btn-soft-info"
+                                                                        >
+                                                                            <i className='ri-eye-line'></i>
+                                                                        </button>
+                                                                    </Link>
+                                                                </td>
                                                             </tr>
                                                         ))
                                                     ) : (

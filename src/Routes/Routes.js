@@ -40,8 +40,8 @@ const routes = [
 
   ////////////////////// Orders Routing ///////////////////////////
   { path: "/BusinessOrders", element: <BusinessOrders />, routeName: "/BusinessOrders" },
-  { path: "/OrderInfo/:business_order_id?", element: <OrderInfo />, routeName: "/OrderInfo" },
-  { path: "/ViewOrderInvoice/:business_order_id?", element: <ViewOrderInvoice />, routeName: "/ViewOrderInvoice" },
+  { path: "/OrderInfo/:business_order_id?/:secret_order_id?/:business_order_business_id?", element: <OrderInfo />, routeName: "/OrderInfo" },
+  { path: "/ViewOrderInvoice/:secret_order_id?/:business_order_business_id?", element: <ViewOrderInvoice />, routeName: "/ViewOrderInvoice" },
 
   ////////////////////// Customer Dashboard Routing ///////////////////////////
   { path: "/CustomerDashboard/:business_id?", element: <CustomerDashboardStates />, routeName: "/CustomerDashboard" },
