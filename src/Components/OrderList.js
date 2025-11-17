@@ -14,6 +14,7 @@ const OrderList = ({ orderItems, orderDetails }) => {
               <th scope="col">Part Number</th>
               <th scope="col">Qty</th>
               <th scope="col">Price</th>
+              <th scope="col">VAT</th>
               <th scope="col" className='text-end'>Sub Total</th>
             </tr>
           </thead>
@@ -27,12 +28,12 @@ const OrderList = ({ orderItems, orderDetails }) => {
                         <div className="d-flex">
                           <div className="flex-shrink-0 avatar-md bg-light rounded p-1">
                             <img
-                              src={item?.business_order_item_picture_url}
+                              src={item?.item_img_url}
                               alt className="img-fluid d-block" />
                           </div>
                           <div className="flex-grow-1 ms-3">
                             <h5 className="fs-15">
-                              <a className="text-reset cursor-pointer">{item?.business_order_item_name}</a>
+                              <a className="text-reset cursor-pointer">{item?.item_name}</a>
                             </h5>
                             <p className="text-muted mb-0">
                               <span className="fw-medium">{item?.secret_order_id}</span>
@@ -40,14 +41,19 @@ const OrderList = ({ orderItems, orderDetails }) => {
                           </div>
                         </div>
                       </td>
-                      <td>{item?.business_order_item_number}</td>
-                      <td>{item?.business_order_qty}</td>
+                      <td>{item?.business_order_item_numberitem_number}</td>
+                      <td>{item?.item_qty}</td>
                       <td>
                         <div className="text-warning fw-bold fs-15">
-                          AED {item.business_order_item_price}
+                          AED {item.item_price}
                         </div>
                       </td>
-                      <td className="fw-medium text-end">AED {item.business_order_sub_total}</td>
+                      <td>
+                        <div className="text-danger fw-bold fs-15">
+                          AED {item.item_vat_amount}
+                        </div>
+                      </td>
+                      <td className="fw-medium text-end">AED {item.item_sub_total}</td>
                     </tr>
                   )
                 })
@@ -59,21 +65,29 @@ const OrderList = ({ orderItems, orderDetails }) => {
             }
 
             <tr className="border-top border-top-dashed">
-              <td colSpan={3} />
+              <td colSpan={4} />
               <td colSpan={2} className="fw-medium p-0">
                 <table className="table table-borderless mb-0">
                   <tbody>
                     <tr>
                       <td>Sub Total :</td>
-                      <td className="text-end">AED {orderDetails.business_order_sub_total}</td>
+                      <td className="text-end">{orderDetails.display_sub_total}</td>
+                    </tr>
+                    <tr>
+                      <td>Total Exc. Tax :</td>
+                      <td className="text-end">{orderDetails.display_excl_vat}</td>
+                    </tr>
+                    <tr>
+                      <td>VAT :</td>
+                      <td className="text-end">{orderDetails.display_vat_amount}</td>
                     </tr>
                     <tr>
                       <td>Coupon Discount :</td>
-                      <td className="text-end">AED {orderDetails.business_order_total_saving}</td>
+                      <td className="text-end">{orderDetails.item_discount}</td>
                     </tr>
                     <tr className="border-top border-top-dashed">
                       <th scope='row'>Grand Total</th>
-                      <th className="text-end">AED {orderDetails?.business_order_grand_total}</th>
+                      <th className="text-end">{orderDetails?.display_grand_total}</th>
                     </tr>
                   </tbody>
                 </table>

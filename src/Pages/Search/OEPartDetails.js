@@ -3,34 +3,62 @@ import PageTitle from '../../Components/PageTitle'
 import { ConfigContext } from '../../Context/ConfigContext'
 import axios from 'axios'
 import Select from 'react-select'
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/thumbs';
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Thumbs } from 'swiper/modules'
+import ImageGallery from 'react-image-gallery'
+import 'react-image-gallery/styles/css/image-gallery.css'
 
 const OEPartDetails = () => {
-
     const { primaryColor, apiHeaderJson, dcapiurl, apiURL, selectTheme, selectStyle } =
         useContext(ConfigContext)
     const headers = apiHeaderJson
 
     const [data, setData] = useState([])
     const [images, setImages] = useState([])
-    const [thumbsSwiper, setThumbsSwiper] = useState(null)
+    const [galleryImages, setGalleryImages] = useState([])
+    const [artId, setArtId] = useState(null)
 
     const [loading, setLoading] = useState(false)
     const [selectedBrand, setSelectedBrand] = useState(null)
     const [part_number, setPart_number] = useState('')
     const [brandOptions, setBrandOptions] = useState([])
     const [filtersApplied, setFiltersApplied] = useState(false)
+    const [error, setError] = useState('')
 
     useEffect(() => {
         getBrandsList()
     }, [])
 
+    // Reset artId when brand or part number changes
+    useEffect(() => {
+        setArtId(null)
+        setImages([])
+        setGalleryImages([])
+    }, [selectedBrand, part_number])
+
+    // Convert images to gallery format when images change
+    useEffect(() => {
+        if (images.length > 0) {
+            const formattedImages = images.map(img => ({
+                original: `https://dcapi.carz7.com/images/${img.ART_MEDIA_SOURCE}`,
+                thumbnail: `https://dcapi.carz7.com/images/${img.ART_MEDIA_SOURCE}`,
+                originalAlt: `Part ${part_number}`,
+                thumbnailAlt: `Part ${part_number} thumbnail`,
+            }))
+            setGalleryImages(formattedImages)
+        } else {
+            setGalleryImages([])
+        }
+    }, [images, part_number])
+
+    // Fetch images when artId is available and filters are applied
+    useEffect(() => {
+        if (artId && filtersApplied) {
+            getPartsMedia()
+        }
+    }, [artId, filtersApplied])
+
     const getBrandsList = async () => {
         try {
+            setError('')
             const response = await axios.get(`${apiURL}Reports/GetSupplierBrands`, { headers })
             const { success, data } = response.data
             if (success) {
@@ -38,40 +66,100 @@ const OEPartDetails = () => {
                     data.map(i => ({ value: i.SUP_ID, label: i.SUP_BRAND }))
                 )
             }
-        } catch (e) { }
+        } catch (error) {
+            console.error('Error fetching brands:', error)
+            setError('Failed to load brands list')
+        }
     }
 
     const getData = async () => {
+        if (!selectedBrand || !part_number) {
+            setError('Please select both brand and part number')
+            return
+        }
+
         setLoading(true)
+        setError('')
+        setData([])
+        setImages([])
+        setGalleryImages([])
+        setArtId(null)
+
         try {
             const response = await axios.get(`${apiURL}Reports/GetPartInfo`, {
                 headers,
-                params: { part_number, sup_id: selectedBrand }
+                params: {
+                    part_number: part_number.trim(),
+                    sup_id: selectedBrand
+                }
             })
             const { success, data } = response.data
-            setData(success ? data : [])
-        } catch (e) {
+
+            if (success && data && data.length > 0) {
+                setData(data)
+                // Set artId from the first item for media fetching
+                const firstArtId = data[0]?.ART_ID
+                if (firstArtId) {
+                    setArtId(firstArtId)
+                } else {
+                    setImages([])
+                    setGalleryImages([])
+                }
+            } else {
+                setData([])
+                setError('No part found for the selected criteria')
+            }
+        } catch (error) {
+            console.error('Error fetching part data:', error)
+            setError('Failed to fetch part details')
             setData([])
+            setImages([])
+            setGalleryImages([])
+        } finally {
+            setLoading(false)
         }
-        setLoading(false)
     }
 
     const getPartsMedia = async () => {
+        if (!artId || !selectedBrand || !part_number) {
+            setImages([])
+            setGalleryImages([])
+            return
+        }
+
         try {
             const response = await axios.get(`${dcapiurl}Parts/GetPartMedias`, {
-                params: { lang: 'en', part_number, sup_id: selectedBrand }
+                params: {
+                    lang: 'en',
+                    part_number: part_number.trim(),
+                    sup_id: selectedBrand,
+                    art_id: artId
+                }
             })
-            const { success, data } = response.data
-            setImages(success ? data : [])
-        } catch (e) {
+
+            const { sucess, data } = response.data
+
+            if (sucess && data && data.length > 0) {
+                setImages(data)
+            } else {
+                setImages([])
+                setGalleryImages([])
+            }
+        } catch (error) {
+            console.error('Error fetching part media:', error)
             setImages([])
+            setGalleryImages([])
         }
     }
 
     const handleFilter = async () => {
-        if (!selectedBrand || !part_number) return
+        if (!selectedBrand || !part_number.trim()) {
+            setError('Please select both brand and enter part number')
+            return
+        }
+
         setFiltersApplied(true)
-        await Promise.all([getData(), getPartsMedia()])
+        await getData()
     }
 
     const handleReset = () => {
@@ -80,6 +168,9 @@ const OEPartDetails = () => {
         setFiltersApplied(false)
         setData([])
         setImages([])
+        setGalleryImages([])
+        setArtId(null)
+        setError('')
     }
 
     const formatDate = (d) => {
@@ -100,6 +191,30 @@ const OEPartDetails = () => {
     const oemGroups = current ? groupOEMByBrand(current.OEM_NUMBERS) : {}
     const criteria = current?.ARTICLE_CRITERIA ?? []
 
+    const renderImageGallery = () => {
+        if (galleryImages.length === 0) {
+            return (
+                <div className="text-center text-muted p-5 border rounded">
+                    <i className="ri-image-line display-4 d-block mb-2"></i>
+                    No images available
+                </div>
+            )
+        }
+
+        return (
+            <ImageGallery
+                items={galleryImages}
+                showPlayButton={false}
+                showFullscreenButton={false}
+                showNav={false}
+                showBullets={false}
+                thumbnailPosition="bottom"
+                lazyLoad={true}
+                additionalClass="part-image-gallery"
+            />
+        )
+    }
+
     return (
         <>
             <style>{`
@@ -108,6 +223,21 @@ const OEPartDetails = () => {
                         position: sticky;
                         top: 90px;
                     }
+                }
+                .part-image-gallery .image-gallery-slide img {
+                    height: 300px;
+                    object-fit: contain;
+                }
+                .part-image-gallery .image-gallery-thumbnail img {
+                    height: 80px;
+                    object-fit: cover;
+                }
+                .part-image-gallery .image-gallery-thumbnails-container {
+                    text-align: center;
+                }
+                .part-image-gallery .image-gallery-thumbnail:hover,
+                .part-image-gallery .image-gallery-thumbnail.active {
+                    border: 2px solid ${primaryColor};
                 }
             `}</style>
 
@@ -123,6 +253,12 @@ const OEPartDetails = () => {
                             </div>
 
                             <div className="card-body">
+                                {error && (
+                                    <div className="alert alert-danger mb-3">
+                                        {error}
+                                    </div>
+                                )}
+
                                 <div className="row g-3">
                                     <div className="col-md-3">
                                         <Select
@@ -130,8 +266,12 @@ const OEPartDetails = () => {
                                             styles={selectStyle}
                                             options={brandOptions}
                                             value={brandOptions.find(opt => opt.value === selectedBrand) || null}
-                                            onChange={(s) => setSelectedBrand(s?.value)}
+                                            onChange={(s) => {
+                                                setSelectedBrand(s?.value)
+                                                setError('')
+                                            }}
                                             placeholder="Select Brand"
+                                            isClearable
                                         />
                                     </div>
 
@@ -139,7 +279,10 @@ const OEPartDetails = () => {
                                         <input
                                             className="form-control"
                                             value={part_number}
-                                            onChange={(e) => setPart_number(e.target.value)}
+                                            onChange={(e) => {
+                                                setPart_number(e.target.value)
+                                                setError('')
+                                            }}
                                             placeholder="Enter part number"
                                         />
                                     </div>
@@ -148,15 +291,16 @@ const OEPartDetails = () => {
                                         <button
                                             className="btn btn-danger btn-label"
                                             onClick={handleFilter}
-                                            disabled={!selectedBrand || !part_number}
+                                            disabled={!selectedBrand || !part_number.trim() || loading}
                                         >
-                                            <i className='ri-filter-line label-icon align-middle' /> {loading ? "Searching..." : "Filter"}
+                                            <i className='ri-filter-line label-icon align-middle' />
+                                            {loading ? "Searching..." : "Filter"}
                                         </button>
 
                                         <button
                                             className="btn btn-light"
                                             onClick={handleReset}
-                                            disabled={!filtersApplied}
+                                            disabled={!filtersApplied && !data.length}
                                         >
                                             Reset
                                         </button>
@@ -165,12 +309,20 @@ const OEPartDetails = () => {
                             </div>
                         </div>
 
-                        {current && (
+                        {loading && (
+                            <div className="text-center mt-3">
+                                <div className="spinner-border text-primary" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                </div>
+                                <p className="mt-2">Loading part details...</p>
+                            </div>
+                        )}
+
+                        {current && !loading && (
                             <div className="card mt-3">
                                 <div className="card-body">
                                     <div className="row">
-                                    </div>
-                                    <div className="row">
+
                                         <div className="col-md-12">
                                             <div className="d-flex justify-content-between">
                                                 <h3 className="mb-4">
@@ -178,91 +330,42 @@ const OEPartDetails = () => {
                                                 </h3>
                                             </div>
                                         </div>
+
                                         <div className="col-md-4 sticky-image mb-3">
                                             <div className="border rounded p-2">
-
-                                                {images.length > 0 ? (
-                                                    <>
-                                                        <Swiper
-                                                            modules={[Navigation, Thumbs]}
-                                                            navigation
-                                                            thumbs={{ swiper: thumbsSwiper }}
-                                                            className="mb-2"
-                                                            style={{ height: 300 }}
-                                                        >
-                                                            {images.map(img => (
-                                                                <SwiperSlide key={img.ART_MEDIA_ID}>
-                                                                    <img
-                                                                        src={`${dcapiurl}${img.ART_MEDIA_SOURCE}`}
-                                                                        className="img-fluid rounded w-100 h-100"
-                                                                        style={{ objectFit: "contain" }}
-                                                                    />
-                                                                </SwiperSlide>
-                                                            ))}
-                                                        </Swiper>
-
-                                                        {/* THUMBNAILS */}
-                                                        <Swiper
-                                                            modules={[Thumbs]}
-                                                            onSwiper={setThumbsSwiper}
-                                                            slidesPerView={4}
-                                                            spaceBetween={10}
-                                                        >
-                                                            {images.map(img => (
-                                                                <SwiperSlide key={img.ART_MEDIA_ID}>
-                                                                    <img
-                                                                        src={`${dcapiurl}${img.ART_MEDIA_SOURCE}`}
-                                                                        className="img-fluid rounded"
-                                                                        style={{
-                                                                            height: 70,
-                                                                            objectFit: "cover"
-                                                                        }}
-                                                                    />
-                                                                </SwiperSlide>
-                                                            ))}
-                                                        </Swiper>
-                                                    </>
-                                                ) : (
-                                                    <div className="text-center text-muted p-5">
-                                                        No images available
-                                                    </div>
-                                                )}
-
-                                                {/* <div className="mt-3 small text-muted">
-                                                    <div><strong>Supplier:</strong> {current.SUP_FULL_NAME}</div>
-                                                    <div><strong>Stock Qty:</strong> {current.stock_available_qty}</div>
-                                                    <div><strong>MRP:</strong> {current.stock_price_mrp}</div>
-                                                </div> */}
+                                                {renderImageGallery()}
                                             </div>
                                         </div>
 
+                                        {/* ---------- RIGHT SIDE DETAILS ---------- */}
                                         <div className="col-md-8">
                                             <div className="row gx-3">
+
                                                 <div className="col-md-6 mb-2">
                                                     <div className="text-muted small">Manufacturer</div>
-                                                    <div className="fw-semibold">{current.MFA_BRAND}</div>
+                                                    <div className="fw-semibold">{current.MFA_BRAND || '-'}</div>
                                                 </div>
 
                                                 <div className="col-md-6 mb-2">
                                                     <div className="text-muted small">Article Number</div>
-                                                    <div className="fw-semibold">{current.ART_ARTICLE_NR}</div>
+                                                    <div className="fw-semibold">{current.ART_ARTICLE_NR || '-'}</div>
                                                 </div>
 
                                                 <div className="col-md-6 mb-2">
                                                     <div className="text-muted small">Car Model</div>
-                                                    <div className="fw-semibold">{current.MS_NAME}</div>
+                                                    <div className="fw-semibold">{current.MS_NAME || '-'}</div>
                                                 </div>
 
                                                 <div className="col-md-6 mb-2">
                                                     <div className="text-muted small">Engine / Capacity</div>
                                                     <div className="fw-semibold">
-                                                        {current.PC_ENG_CODES} | {current.PC_CAPACITY_LT}L
+                                                        {current.PC_ENG_CODES || '-'} | {current.PC_CAPACITY_LT || '-'}L
                                                     </div>
                                                 </div>
 
                                                 <div className="col-md-6 mb-2">
                                                     <div className="text-muted small">Fuel Type</div>
-                                                    <div className="fw-semibold">{current.FUEL_TYPE}</div>
+                                                    <div className="fw-semibold">{current.FUEL_TYPE || '-'}</div>
                                                 </div>
 
                                                 <div className="col-md-6 mb-2">
@@ -277,17 +380,17 @@ const OEPartDetails = () => {
                                                     <div className="d-flex gap-3 flex-wrap">
                                                         <div className="border rounded p-3 flex-grow-1">
                                                             <div className="small text-muted">Purchase Price</div>
-                                                            <div className="h5 mb-0">{current.stock_purchase_price}</div>
+                                                            <div className="h5 mb-0">{current.stock_purchase_price || '0'}</div>
                                                         </div>
 
                                                         <div className="border rounded p-3 flex-grow-1">
                                                             <div className="small text-muted">Retail (MRP)</div>
-                                                            <div className="h5 mb-0">{current.stock_price_mrp}</div>
+                                                            <div className="h5 mb-0">{current.stock_price_mrp || '0'}</div>
                                                         </div>
 
                                                         <div className="border rounded p-3" style={{ minWidth: 130 }}>
                                                             <div className="small text-muted">Available Qty</div>
-                                                            <div className="h5 mb-0">{current.stock_available_qty}</div>
+                                                            <div className="h5 mb-0">{current.stock_available_qty || '0'}</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -307,8 +410,8 @@ const OEPartDetails = () => {
                                                                 <tbody>
                                                                     {criteria.map(c => (
                                                                         <tr key={c.criteria_id}>
-                                                                            <td>{c.criteria_en}</td>
-                                                                            <td>{c.value_en}</td>
+                                                                            <td>{c.criteria_en || c.criteria_id}</td>
+                                                                            <td>{c.value_en || c.value}</td>
                                                                         </tr>
                                                                     ))}
                                                                 </tbody>
@@ -318,45 +421,10 @@ const OEPartDetails = () => {
                                                         <div className="text-muted small">No criteria available.</div>
                                                     )}
                                                 </div>
+
                                             </div>
                                         </div>
-                                        {/* OEM Accordion */}
-                                        {/* <div className="col-md-12 mt-4">
-                                            <h6>OEM Numbers</h6>
 
-                                            <div className="accordion" id="oemAccordion">
-
-                                                {Object.keys(oemGroups).map((brand, idx) => (
-                                                    <div className="accordion-item" key={brand}>
-                                                        <h2 className="accordion-header" id={`head-${idx}`}>
-                                                            <button
-                                                                className="accordion-button collapsed"
-                                                                data-bs-toggle="collapse"
-                                                                data-bs-target={`#col-${idx}`}
-                                                            >
-                                                                {brand} ({oemGroups[brand].length})
-                                                            </button>
-                                                        </h2>
-
-                                                        <div
-                                                            id={`col-${idx}`}
-                                                            className="accordion-collapse collapse"
-                                                            data-bs-parent="#oemAccordion"
-                                                        >
-                                                            <div className="accordion-body">
-                                                                {oemGroups[brand].map((oem, i) => (
-                                                                    <div key={i} className="d-flex justify-content-between">
-                                                                        <span>{oem.ARL_DISPLAY_NR}</span>
-                                                                        <small className="text-muted">{oem.ARL_SEARCH_NUMBER}</small>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                ))}
-
-                                            </div>
-                                        </div> */}
                                     </div>
                                 </div>
                             </div>
