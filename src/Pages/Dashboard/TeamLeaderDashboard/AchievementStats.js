@@ -12,10 +12,11 @@ const AchievementStats = ({ aboveTargetData = [], belowTargetData = [] }) => {
                     <table className="table align-middle table-striped table-hover mb-0">
                         <thead className="table-light">
                             <tr>
-                                <th style={{ width: "50px" }}>#</th>
                                 <th>Salesman</th>
                                 <th>Email</th>
                                 <th>Contact</th>
+                                <th>From Date</th>
+                                <th>To Date</th>
                                 <th className="text-end">Target (AED)</th>
                                 <th className="text-end">Achievement (AED)</th>
                                 <th className={`text-end fw-semibold ${isAbove ? 'text-success' : 'text-danger'}`}>
@@ -25,19 +26,23 @@ const AchievementStats = ({ aboveTargetData = [], belowTargetData = [] }) => {
                         </thead>
                         <tbody>
                             {data.map((item, index) => (
-                                <tr key={item.business_salesman_id}>
-                                    <td>{index + 1}</td>
+                                <tr key={item?.business_salesman_id}>
                                     <td>
-                                        <div className="fw-semibold">{item.business_salesman_name || '-'}</div>
+                                        <div className="fw-semibold">{item?.business_salesman_name || '-'}</div>
                                     </td>
-                                    <td>{item.business_salesman_email || '-'}</td>
-                                    <td>{item.business_salesman_contact_number || '-'}</td>
-                                    <td className="text-end">{item.total_target?.toLocaleString()}</td>
+                                    <td>{item?.business_salesman_email || '-'}</td>
+                                    <td>{item?.business_salesman_contact_number || '-'}</td>
+                                    <td className='text-dark fw-bold'>{item?.business_salesman_target_from || '-'}</td>
+                                    <td className='text-dark fw-bold'>{item?.business_salesman_target_to || '-'}</td>
+
+
+                                    <td className='text-success fw-bold text-end'>{item?.total_target?.toLocaleString()}</td>
+
                                     <td className="text-end text-primary fw-semibold">
-                                        {item.total_achievement?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        {item?.total_achievement?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                     </td>
                                     <td className={`text-end fw-semibold ${isAbove ? 'text-success' : 'text-danger'}`}>
-                                        {item.difference?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        {item?.difference?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                     </td>
                                 </tr>
                             ))}
@@ -57,7 +62,7 @@ const AchievementStats = ({ aboveTargetData = [], belowTargetData = [] }) => {
             <div className="card">
                 <div className="card-body">
                     <div className="d-flex align-items-center justify-content-between mb-4">
-                        <h4 className="card-title fw-bold mb-0" style={{color:"#132530"}}>
+                        <h4 className="card-title fw-bold mb-0" style={{ color: "#132530" }}>
                             <i className="ri-bar-chart-2-line me-2"></i>Salesman Achievement Report
                         </h4>
                     </div>
@@ -71,7 +76,7 @@ const AchievementStats = ({ aboveTargetData = [], belowTargetData = [] }) => {
                                 role="tab"
                             >
                                 <i className="ri-arrow-up-line me-1 text-success"></i>
-                                Above Target
+                                Achievement Target
                                 <span className="badge bg-success-subtle text-success rounded-pill ms-2">
                                     {aboveTargetData.length}
                                 </span>

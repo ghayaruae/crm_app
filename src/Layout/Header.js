@@ -204,6 +204,11 @@ const Header = () => {
     return false;
   };
 
+  const getAllowedChildren = (item) => {
+    if (!item.items) return [];
+    return item.items.filter((child) => hasNestedPermission(child));
+  };
+
   // ===================== RECURSIVE MENU RENDERER =====================
   const renderMenuItems = (items) =>
     items?.filter((item) => hasNestedPermission(item)).map((item, index) => {
@@ -303,7 +308,7 @@ const Header = () => {
                     <span className="text-start ms-xl-2">
                       <span className="d-xl-infill-block ms-1 fw-medium user-name-text">
                         {/* {data.user_name || "No user found!"} */}
-                        Admin
+                        CRM
                       </span>
                       <span className="d-none d-xl-block ms-1 fs-12 user-name-sub-text">
                         {/* Founder */}
@@ -312,7 +317,7 @@ const Header = () => {
                   </span>
                 </button>
                 <div className="dropdown-menu dropdown-menu-end">
-                  <h6 className="dropdown-header">Welcome Master Admin!</h6>
+                  <h6 className="dropdown-header">Welcome Master CRM !</h6>
                   <div className="dropdown-divider" />
                   <NavLink
                     className="dropdown-item"
@@ -362,55 +367,76 @@ const Header = () => {
         <div id="scrollbar">
           <div className="container-fluid">
             <div id="two-column-menu"></div>
+
             <ul className="navbar-nav" id="navbar-nav">
+
               <li className="menu-title">
                 <span data-key="t-menu">Menu</span>
               </li>
 
-
-
               {menuItems
                 .filter((item) => hasNestedPermission(item))
-                .map((item) => (
-                  <li className="nav-item" key={item.id}>
-                    {item.isDropdown ? (
-                      <>
-                        <a
+                .map((item) => {
+                  const allowedChildren = getAllowedChildren(item);
+
+                  // 🔥 RULE: If dropdown has only 1 permitted child -> direct open
+                  if (item.isDropdown && allowedChildren.length === 1) {
+                    const onlyChild = allowedChildren[0];
+
+                    return (
+                      <li className="nav-item" key={item.id}>
+                        <NavLink
                           className="nav-link menu-link"
-                          href={`#${item.dropdownId}`}
-                          data-bs-toggle="collapse"
-                          role="button"
-                          aria-expanded="false"
-                          aria-controls={item.dropdownId}
+                          to={onlyChild.path}
+                          title={onlyChild.label}
+                        >
+                          <i className={item.icon}></i>
+                          <span>{onlyChild.label}</span>
+                        </NavLink>
+                      </li>
+                    );
+                  }
+
+                  // NORMAL DROPDOWN (2+ children)
+                  return (
+                    <li className="nav-item" key={item.id}>
+                      {item.isDropdown ? (
+                        <>
+                          <a
+                            className="nav-link menu-link"
+                            href={`#${item.dropdownId}`}
+                            data-bs-toggle="collapse"
+                            role="button"
+                            aria-expanded="false"
+                            aria-controls={item.dropdownId}
+                            title={item.label}
+                          >
+                            <i className={item.icon} />
+                            <span>{item.label}</span>
+                          </a>
+
+                          <div className="collapse menu-dropdown" id={item.dropdownId}>
+                            <ul className="nav nav-sm flex-column">
+                              {renderMenuItems(item.items)}
+                            </ul>
+                          </div>
+                        </>
+                      ) : (
+                        <NavLink
+                          className="nav-link menu-link"
+                          to={item.path}
                           title={item.label}
                         >
                           <i className={item.icon} />
                           <span>{item.label}</span>
-                        </a>
-                        <div
-                          className="collapse menu-dropdown"
-                          id={item.dropdownId}
-                        >
-                          <ul className="nav nav-sm flex-column">
-                            {renderMenuItems(item.items)}
-                          </ul>
-                        </div>
-                      </>
-                    ) : (
-                      <NavLink
-                        className="nav-link menu-link"
-                        to={item.path}
-                        title={item.label}
-                      >
-                        <i className={item.icon} />
-                        <span>{item.label}</span>
-                      </NavLink>
-                    )}
-                  </li>
-                ))}
-
-
+                        </NavLink>
+                      )}
+                    </li>
+                  );
+                })}
             </ul>
+
+
           </div>
         </div>
         {/* Sidebar */}

@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { ConfigContext } from "../../Context/ConfigContext";
 import { Link, useNavigate } from "react-router-dom";
+import { DateFormater } from "../../Components/GlobalFunctions";
 
 const NoRecentOrders = ({ list }) => {
 
@@ -38,7 +39,7 @@ const NoRecentOrders = ({ list }) => {
                                 <th className="text-start">Business Name</th>
                                 <th>Contact</th>
                                 <th>Email</th>
-                                <th>Last Order</th>
+                                <th>Last Order Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -53,8 +54,8 @@ const NoRecentOrders = ({ list }) => {
                                     </td>
                                     <td>{item.business_contact_number ?? "N/A"}</td>
                                     <td>{item.business_email ?? "N/A"}</td>
-                                    <td className="text-muted small">
-                                        {item.last_order_date ?? "No Orders Yet"}
+                                    <td className="text-dark fw-bold">
+                                        {DateFormater(item.last_order_date) ?? "No Orders Yet"}
                                     </td>
                                     <td>
                                         <Link to={`/Masters/ManageFollowup/0/${item.business_id}`}>

@@ -52,7 +52,7 @@ const InquiriesTab = () => {
                                         <>
                                             <thead className="table-light text-center">
                                                 <tr>
-                                                    <th>Salesman</th>
+                                                    <th>Salesman Id</th>
                                                     <th>Part</th>
                                                     <th>Brand</th>
                                                     <th>Part Number</th>
@@ -64,12 +64,12 @@ const InquiriesTab = () => {
                                                 {data.length > 0 ? (
                                                     data.map((row) => (
                                                         <tr key={row.business_salesman_followup_id} className="text-center">
-                                                            <td>{row.business_salesmen_name}</td>
+                                                            <td className='text-dark fw-bold'>{row.business_salesman_id}</td>
                                                             <td>{row.request_part_name}</td>
                                                             <td>{row.request_brand_name}</td>
                                                             <td>{row.request_part_number}</td>
-                                                            <td>{row.request_part_qty}</td>
-                                                            <td>{row.request_part_market_price}</td>
+                                                            <td className='text-dark fw-bold'>{row.request_part_qty}</td>
+                                                            <td className='text-danger fw-bold'>AED {row.request_part_market_price}</td>
                                                         </tr>
                                                     ))
                                                 ) : (

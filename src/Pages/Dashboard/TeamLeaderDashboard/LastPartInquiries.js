@@ -2,7 +2,6 @@ import React from 'react'
 import { DateFormater } from '../../../Components/GlobalFunctions'
 
 const LastPartInquiries = ({ inquiryData }) => {
-
     return (
         <>
             <div className='col-md-12'>
@@ -22,6 +21,7 @@ const LastPartInquiries = ({ inquiryData }) => {
                                         <th>Part Number</th>
                                         <th>Qty</th>
                                         <th>Market Price</th>
+                                        <th>Request Date</th>
                                     </tr>
                                 </thead>
 
@@ -34,13 +34,14 @@ const LastPartInquiries = ({ inquiryData }) => {
                                         </tr>
                                     ) : (
                                         inquiryData.map((item, index) => (
-                                            <tr key={item.inventory_part_request_id}>
-                                                <td>{item.business_salesmen_name}</td>
-                                                <td>{item.request_part_name}</td>
-                                                <td>{item.request_brand_name}</td>
-                                                <td>{item.request_part_number}</td>
-                                                <td>{item.request_part_qty}</td>
-                                                <td>{item.request_part_market_price}</td>
+                                            <tr key={item?.inventory_part_request_id}>
+                                                <td className='text-dark fw-bold'>{item?.business_salesmen_name}</td>
+                                                <td className='text-primary fw-bold'>{item?.request_part_name}</td>
+                                                <td>{item?.request_brand_name}</td>
+                                                <td>{item?.request_part_number}</td>
+                                                <td className='text-success fw-bold'>{item?.request_part_qty}</td>
+                                                <td className='text-danger fw-bold'>AED {item?.request_part_market_price}</td>
+                                                <td className='text-dark fw-bold'>{DateFormater(item?.request_date)}</td>
                                             </tr>
                                         ))
                                     )}
