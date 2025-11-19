@@ -69,7 +69,8 @@ const MainDashboard = () => {
             color: "text-success",
             bg: "bg-success-subtle",
             icon: "ri-user-3-line",
-            link: "/Reports/AllSalesmanReport"
+            link: "/Reports/AllSalesmanReport",
+            link_text: "View Salesmen"
         },
         {
             title: "Total Salesman Targets Amount",
@@ -77,7 +78,8 @@ const MainDashboard = () => {
             color: "text-info",
             bg: "bg-info-subtle",
             icon: "mdi mdi-bullseye-arrow",
-            link: "/Reports/TargetReport"
+            link: "/Reports/TargetReport",
+            link_text: "View Targets"
         },
         {
             title: "Total business Assigned by salesman",
@@ -85,7 +87,8 @@ const MainDashboard = () => {
             color: "text-warning",
             bg: "bg-warning-subtle",
             icon: "ri-briefcase-line",
-            link: "/Reports/AllBusinessesReport"
+            link: "/Reports/AllBusinessesReport",
+            link_text: "View Businesses"
         },
         {
             title: "Business In-Active",
@@ -93,7 +96,8 @@ const MainDashboard = () => {
             color: "text-secondary",
             bg: "bg-secondary-subtle",
             icon: "ri-alert-line",
-            link: "/Reports/AllBusinessesReport?status=inactive"
+            link: "/Reports/AllBusinessesReport?status=inactive",
+            link_text: "View Businesses"
         },
         {
             title: "Total Orders",
@@ -101,7 +105,8 @@ const MainDashboard = () => {
             color: "text-primary",
             bg: "bg-primary-subtle",
             icon: "ri-shopping-bag-3-line",
-            link: "/Reports/FullOrdersReport"
+            link: "/Reports/FullOrdersReport",
+            link_text: "View Orders"
         },
         {
             title: "Pending Orders",
@@ -109,81 +114,13 @@ const MainDashboard = () => {
             color: "text-danger",
             bg: "bg-danger-subtle",
             icon: "ri-time-line",
-            link: "/Reports/OrderByStatusReport/0"
+            link: "/Reports/OrderByStatusReport/0",
+            link_text: "View Orders"
         }
     ];
 
-    // Custom CSS for alert animation
-    const alertCardStyle = `
-        .alert-card {
-            border-left: 4px solid #6c757d;
-            animation: pulse-alert 2s infinite;
-            box-shadow: 0 0.5rem 1rem rgba(108, 117, 125, 0.15);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .alert-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(108, 117, 125, 0.05) 0%, transparent 50%);
-            z-index: 0;
-        }
-        
-        .alert-card .card-body {
-            position: relative;
-            z-index: 1;
-        }
-        
-        @keyframes pulse-alert {
-            0% {
-                box-shadow: 0 0.5rem 1rem rgba(108, 117, 125, 0.15);
-            }
-            50% {
-                box-shadow: 0 0.5rem 1.5rem rgba(108, 117, 125, 0.25);
-            }
-            100% {
-                box-shadow: 0 0.5rem 1rem rgba(108, 117, 125, 0.15);
-            }
-        }
-        
-        .alert-icon {
-            animation: shake 2s infinite;
-        }
-        
-        @keyframes shake {
-            0%, 100% {
-                transform: rotate(0deg);
-            }
-            10%, 30%, 50%, 70%, 90% {
-                transform: rotate(-5deg);
-            }
-            20%, 40%, 60%, 80% {
-                transform: rotate(5deg);
-            }
-        }
-        
-        .alert-badge {
-            animation: blink 2s infinite;
-        }
-        
-        @keyframes blink {
-            0%, 50% {
-                opacity: 1;
-            }
-            51%, 100% {
-                opacity: 0.5;
-            }
-        }
-    `;
-
     return (
         <div className="main-content">
-            <style>{alertCardStyle}</style>
             <div className="page-content">
                 <div className="container-fluid">
 
@@ -198,53 +135,6 @@ const MainDashboard = () => {
 
                     <div className="row">
                         {cardItems.map((item, index) => {
-                            // Special design for Business In-Active card
-                            if (item.key === "business_in_active") {
-                                return (
-                                    <div className="col-xl-4 col-md-6" key={index}>
-                                        <div className="card alert-card">
-                                            <div className="card-body">
-                                                <div className="d-flex align-items-center justify-content-between">
-                                                    <div>
-                                                        <div className="d-flex align-items-center mb-2">
-                                                            <p className="text-uppercase fw-medium text-muted mb-0 me-2">
-                                                                {item.title}
-                                                            </p>
-                                                            <span className="badge alert-badge bg-danger">Attention Required</span>
-                                                        </div>
-                                                        <h4 className="mb-0 fw-semibold text-secondary">
-                                                            <CountUp
-                                                                end={info?.[item.key] ?? 0}
-                                                                duration={1.5}
-                                                                separator=","
-                                                            />
-                                                        </h4>
-                                                    </div>
-                                                    <div
-                                                        className={`avatar-sm flex-shrink-0 bg-secondary-subtle rounded-circle d-flex align-items-center justify-content-center alert-icon`}
-                                                    >
-                                                        <i className={`ri-alert-line fs-3 text-secondary`}></i>
-                                                    </div>
-                                                </div>
-
-                                                <div className="mt-3 d-flex justify-content-between align-items-center">
-                                                    <Link
-                                                        to={item.link}
-                                                        className="text-decoration-underline text-danger small fw-semibold"
-                                                    >
-                                                        Review Inactive Businesses
-                                                    </Link>
-                                                    <span className="badge bg-light text-muted border">
-                                                        Requires Action
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            }
-
-                            // Regular design for other cards
                             return (
                                 <div className="col-xl-4 col-md-6" key={index}>
                                     <div className="card card-animate">
@@ -275,11 +165,18 @@ const MainDashboard = () => {
                                                     to={item.link}
                                                     className="text-decoration-underline text-muted small fw-semibold"
                                                 >
-                                                    View Report
+                                                    {item.link_text}
                                                 </Link>
-                                                <span className="badge bg-light text-muted border">
-                                                    Updated just now
-                                                </span>
+                                                {
+                                                    item.title === "Business In-Active" ?
+                                                        <span className="badge bg-danger-subtle text-danger border">
+                                                            Action Required
+                                                        </span>
+                                                        :
+                                                        <span className="badge bg-light text-muted border">
+                                                            Updated just now
+                                                        </span>
+                                                }
                                             </div>
                                         </div>
                                     </div>
