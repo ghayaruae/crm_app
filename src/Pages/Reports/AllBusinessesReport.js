@@ -172,20 +172,33 @@ const AllBusinessesReport = () => {
                                                                     <tr key={row.business_id} className="text-center">
                                                                         <td style={{ color: primaryColor, fontWeight: "bolder" }}>
                                                                             <Link to={`/CustomerDashboard/${row?.business_id}`}>
-                                                                                {row.business_id}
+                                                                                {row?.business_id}
                                                                             </Link>
-                                                                        </td>
-                                                                        <td style={{ color: primaryColor, fontWeight: "bolder" }}>
-                                                                            {row.business_name}
                                                                         </td>
 
                                                                         <td className='text-success fw-bold'>{row?.business_salesmen_name}</td>
 
-                                                                        <td className='text-info fw-bold'>{row.business_contact_person}</td>
-                                                                        <td>{row.business_contact_number}</td>
-                                                                        <td>{row.busienss_trn}</td>
-                                                                        <td>{row.business_email}</td>
-                                                                        <td className='text-danger fw-bold'>AED {row.business_credit_limit}</td>
+                                                                        <td style={{ color: primaryColor, fontWeight: "bolder" }}>
+                                                                            <span
+                                                                                className="text-ellipsis" title={row?.business_name}
+                                                                            >
+                                                                                {row?.business_name}
+                                                                            </span>
+                                                                        </td>
+
+
+                                                                        <td className='text-info fw-bold'>
+                                                                            <span
+                                                                                className="text-ellipsis" title={row?.business_contact_person}
+                                                                            >
+                                                                                {row?.business_contact_person}
+                                                                            </span>
+                                                                        </td>
+
+                                                                        <td>{row?.business_contact_number}</td>
+                                                                        <td>{row?.busienss_trn}</td>
+                                                                        <td>{row?.business_email}</td>
+                                                                        <td className='text-danger fw-bold'>AED {row?.business_credit_limit}</td>
                                                                     </tr>
                                                                 ))
                                                             ) : (

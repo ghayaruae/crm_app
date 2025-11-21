@@ -1,19 +1,19 @@
 .custom-text-primary {
-    color: #132530;
+  color: #132530;
 }
 
 .custom-bg-primary {
-    color: #132530;
+  color: #132530;
 }
 
 .custom-border-primary {
-    border: #132530 1px solid;
+  border: #132530 1px solid;
 }
 
 /* flatpickr-custom.css */
 .flatpickr-calendar {
-    font-family: inherit;
-    border: 1px solid #132530;
+  font-family: inherit;
+  border: 1px solid #132530;
 }
 
 .flatpickr-day.selected,
@@ -28,47 +28,56 @@
 .flatpickr-day.selected:hover,
 .flatpickr-day.startRange:hover,
 .flatpickr-day.endRange:hover {
-    background: #132530 !important;
-    border-color: #132530 !important;
-    color: #fff !important;
+  background: #132530 !important;
+  border-color: #132530 !important;
+  color: #fff !important;
 }
 
 .flatpickr-months .flatpickr-month {
-    background: #132530;
-    color: #fff;
+  background: #132530;
+  color: #fff;
 }
 
 .flatpickr-current-month .cur-month,
 .flatpickr-current-month .cur-year {
-    color: #fff;
+  color: #fff;
 }
 
 .flatpickr-weekdays {
-    background: #132530;
-    color: #fff;
+  background: #132530;
+  color: #fff;
 }
 
 .flatpickr-day.today {
-    border: 1px solid #132530;
-    color: #132530;
+  border: 1px solid #132530;
+  color: #132530;
 }
 
 /* flatpickr-custom.css */
 .flatpickr-months .flatpickr-month {
-    background-color: #132530 !important;
-    color: #fff !important;
+  background-color: #132530 !important;
+  color: #fff !important;
 }
 
 .flatpickr-weekdays {
-    background-color: #132530 !important;
-    color: #fff !important;
+  background-color: #132530 !important;
+  color: #fff !important;
 }
 
 .flatpickr-weekdays span {
-    color: #fff !important;
+  color: #fff !important;
 }
 
 .flatpickr-current-month .cur-month,
 .flatpickr-current-month .cur-year {
-    color: #fff !important;
+  color: #fff !important;
+}
+
+.text-ellipsis {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: middle;
 }

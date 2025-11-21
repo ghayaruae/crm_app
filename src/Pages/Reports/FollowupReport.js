@@ -100,7 +100,7 @@ const FollowupReport = () => {
         setPage(1)
         getData()
     }
-    
+
     const handleReset = () => {
         if (!selectedSalesman && !from_date && !to_date) return;
         setSelectedSalesman(null)
@@ -224,8 +224,20 @@ const FollowupReport = () => {
                                                                 <td>{row.business_salesman_email}</td>
                                                                 <td>{row.business_salesman_followup_type}</td>
                                                                 <td>{DateFormater(row.business_salesman_followup_date)}</td>
-                                                                <td>{row.business_salesman_business_response}</td>
-                                                                <td>{row.business_salesman_followup_remark}</td>
+                                                                <td>
+                                                                    <span
+                                                                        className="text-ellipsis" title={row?.business_salesman_business_response}
+                                                                    >
+                                                                        {row?.business_salesman_business_response}
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    <span
+                                                                        className="text-ellipsis" title={row.business_salesman_followup_remark}
+                                                                    >
+                                                                        {row.business_salesman_followup_remark}
+                                                                    </span>
+                                                                </td>
                                                             </tr>
                                                         ))
                                                     ) : (

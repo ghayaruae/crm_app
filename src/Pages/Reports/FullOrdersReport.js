@@ -184,6 +184,7 @@ const FullOrdersReport = () => {
                                                     <tr>
                                                         <th width="5%">Order ID</th>
                                                         <th width="5%">Business ID</th>
+                                                        <th width="5%">Salesman Name</th>
                                                         <th width="5%">Business Name</th>
                                                         <th width="10%">Order Date</th>
                                                         <th width="5%">Payment Method</th>
@@ -204,13 +205,23 @@ const FullOrdersReport = () => {
                                                                     </Link>
                                                                 </td>
                                                                 <td>
-                                                                    <Link style={{ color: primaryColor, fontWeight: "bolder" }} to={`/CustomerDashboard/${row.business_order_business_id}`}>
+                                                                    <Link
+                                                                        style={{ color: primaryColor, fontWeight: "bolder" }}
+                                                                        to={`/CustomerDashboard/${row.business_order_business_id}`}
+                                                                    >
                                                                         {row.business_order_business_id}
                                                                     </Link>
                                                                 </td>
+
+                                                                <td className='text-primary fw-bold'>{row?.business_salesmen_name}</td>
+
                                                                 <td>
                                                                     <Link style={{ color: primaryColor, fontWeight: "bolder" }} to={`/CustomerDashboard/${row.business_order_business_id}`}>
-                                                                        {row.business_name}
+                                                                        <span
+                                                                            className="text-ellipsis" title={row?.business_name}
+                                                                        >
+                                                                            {row?.business_name}
+                                                                        </span>
                                                                     </Link>
                                                                 </td>
                                                                 <td>{DateFormater(row.business_order_date)}</td>
@@ -235,7 +246,7 @@ const FullOrdersReport = () => {
                                                 {data.length > 0 && (
                                                     <tfoot className='table-light'>
                                                         <tr>
-                                                            <th colSpan={8}>
+                                                            <th colSpan={10}>
                                                                 <div className="d-flex justify-content-between">
                                                                     <button disabled={!prev && !loading} type="button" onClick={handlePrev} className={`btn btn-warning btn-label waves-effect waves-light`}>
                                                                         <i className="ri-arrow-left-line label-icon align-middle fs-16 me-2" /> Previous

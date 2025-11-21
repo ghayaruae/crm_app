@@ -5,11 +5,20 @@ import axios from 'axios'
 import Select from 'react-select'
 import ImageGallery from 'react-image-gallery'
 import 'react-image-gallery/styles/css/image-gallery.css'
+import { useNavigate } from 'react-router-dom'
 
 const OEPartDetails = () => {
-    const { primaryColor, apiHeaderJson, dcapiurl, apiURL, selectTheme, selectStyle } =
-        useContext(ConfigContext)
+    const {
+        primaryColor,
+        apiHeaderJson,
+        dcapiurl,
+        apiURL,
+        selectTheme,
+        selectStyle
+    } = useContext(ConfigContext)
     const headers = apiHeaderJson
+
+    const navigate = useNavigate();
 
     const [data, setData] = useState([])
     const [images, setImages] = useState([])
@@ -305,6 +314,11 @@ const OEPartDetails = () => {
                                             Reset
                                         </button>
                                     </div>
+
+                                    <div className="col-md-3 d-flex justify-content-end align-items-center">
+                                        <button className='btn btn-dark' onClick={() => navigate("/Search/SearchOEParts")}>After Market</button>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
