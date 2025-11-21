@@ -130,7 +130,6 @@ const BusinessesChart = () => {
         GetSalesmanTargetChartData();
     }, [])
 
-    // 🛑 No Data Condition
     const noData =
         !getTargetAmount ||
         (parseFloat(getTargetAmount.total_achievement_amount) === 0 &&
@@ -167,8 +166,8 @@ const BusinessesChart = () => {
                 },
                 labelLine: { show: false },
                 data: [
-                    { value: getTargetAmount?.total_achievement_amount, name: 'Achievement Amount', itemStyle: { color: '#2b7a78' } },
-                    { value: getTargetAmount?.total_pending_amount, name: 'Pending Amount', itemStyle: { color: '#d9534f' } }
+                    { value: getTargetAmount?.total_achievement_amount?.toFixed(2), name: 'Achievement Amount', itemStyle: { color: '#2b7a78' } },
+                    { value: getTargetAmount?.total_pending_amount?.toFixed(2), name: 'Pending Amount', itemStyle: { color: '#d9534f' } }
                 ]
             }
         ]

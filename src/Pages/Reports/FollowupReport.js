@@ -8,6 +8,7 @@ import { GlobalLimitChanger } from '../../Components/InputElements'
 import { DateFormater } from '../../Components/GlobalFunctions'
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
+import * as XLSX from 'xlsx';
 
 const FollowupReport = () => {
     const { primaryColor, apiHeaderJson, apiURL, selectTheme, selectStyle } = useContext(ConfigContext)
@@ -27,6 +28,10 @@ const FollowupReport = () => {
     const [to_date, setTo_date] = useState("")
     const [filtersApplied, setFiltersApplied] = useState(false)
 
+    /* NEW STATES FOR EXPORT */
+    const [exporting, setExporting] = useState(false)
+    const [progress, setProgress] = useState(0)
+
     const getData = async () => {
         try {
             setLoading(true)
@@ -40,7 +45,9 @@ const FollowupReport = () => {
                     to_date: to_date || ""
                 }
             })
+
             const { success, data, page: currentPage, next, prev, total_pages, total_records } = response.data
+
             if (success) {
                 setData(data)
                 setPage(currentPage)
@@ -62,6 +69,7 @@ const FollowupReport = () => {
         try {
             const response = await axios.get(`${apiURL}Masters/GetSalesmanList`, { headers })
             const { success, data } = response.data
+
             if (success) {
                 const options = data.map((item) => ({
                     value: item.business_salesman_id,
@@ -122,6 +130,49 @@ const FollowupReport = () => {
         }
     }
 
+    const handleExportExcel = () => {
+        if (!data.length) return
+
+        try {
+            setExporting(true)
+            setProgress(20)
+
+            const exportData = data.map((row) => ({
+                ID: row.business_salesman_followup_id,
+                Salesman: row.business_salesmen_name,
+                Contact: row.business_salesmen_contact_number,
+                Email: row.business_salesman_email,
+                Type: row.business_salesman_followup_type,
+                Date: DateFormater(row.business_salesman_followup_date),
+                Response: row.business_salesman_business_response,
+                Remark: row.business_salesman_followup_remark,
+            }))
+
+            setProgress(60)
+
+            const worksheet = XLSX.utils.json_to_sheet(exportData)
+            const workbook = XLSX.utils.book_new()
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Followup Report")
+
+            setProgress(90)
+
+            XLSX.writeFile(
+                workbook,
+                `Followup_Report_Page_${page}.xlsx`
+            )
+
+            setProgress(100)
+
+        } catch (err) {
+            console.error("Export Error:", err)
+        } finally {
+            setTimeout(() => {
+                setExporting(false)
+                setProgress(0)
+            }, 500)
+        }
+    }
+
     useEffect(() => {
         getSalesmanList()
     }, [])
@@ -135,12 +186,51 @@ const FollowupReport = () => {
                     <div className="row">
                         <div className="col-md-12">
                             <div className="card">
+
                                 <div
                                     className="card-header d-flex align-items-center justify-content-between"
                                     style={{ backgroundColor: primaryColor }}
                                 >
                                     <h5 className="mb-0 text-white">Followup List</h5>
+
+                                    {filtersApplied && data.length > 0 && (
+                                        <button
+                                            className="btn btn-soft-success btn-sm"
+                                            onClick={handleExportExcel}
+                                            disabled={exporting}
+                                        >
+                                            <i className="ri-file-excel-2-line me-1"></i>
+                                            {exporting ? "Exporting..." : "Export"}
+                                        </button>
+                                    )}
                                 </div>
+
+                                {exporting && (
+                                    <div className="px-3 pt-2 pb-1 bg-white border-bottom">
+                                        <div className="d-flex justify-content-between mb-1">
+                                            <small className="text-muted fw-semibold">
+                                                Exporting, please wait...
+                                            </small>
+
+                                            <small className="text-muted fw-bold">
+                                                {progress}%
+                                            </small>
+                                        </div>
+
+                                        <div className="progress" style={{ height: "8px", borderRadius: "20px" }}>
+                                            <div
+                                                className="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                                role="progressbar"
+                                                style={{
+                                                    width: `${progress}%`,
+                                                    borderRadius: "20px",
+                                                    transition: "width 0.4s ease"
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+
 
                                 <div className="card-body">
                                     <div className="row mb-4 g-3 align-items-center">
@@ -225,16 +315,12 @@ const FollowupReport = () => {
                                                                 <td>{row.business_salesman_followup_type}</td>
                                                                 <td>{DateFormater(row.business_salesman_followup_date)}</td>
                                                                 <td>
-                                                                    <span
-                                                                        className="text-ellipsis" title={row?.business_salesman_business_response}
-                                                                    >
+                                                                    <span className="text-ellipsis" title={row?.business_salesman_business_response}>
                                                                         {row?.business_salesman_business_response}
                                                                     </span>
                                                                 </td>
                                                                 <td>
-                                                                    <span
-                                                                        className="text-ellipsis" title={row.business_salesman_followup_remark}
-                                                                    >
+                                                                    <span className="text-ellipsis" title={row.business_salesman_followup_remark}>
                                                                         {row.business_salesman_followup_remark}
                                                                     </span>
                                                                 </td>
