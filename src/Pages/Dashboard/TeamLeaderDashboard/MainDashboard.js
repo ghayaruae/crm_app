@@ -96,7 +96,7 @@ const MainDashboard = () => {
             color: "text-secondary",
             bg: "bg-secondary-subtle",
             icon: "ri-alert-line",
-            link: "/Reports/AllBusinessesReport?status=inactive",
+            link: "/Reports/AllBusinessesReport/0",
             link_text: "View Businesses"
         },
         {

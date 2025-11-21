@@ -58,6 +58,7 @@ const routes = [
   { path: "/Reports/FollowupReport", element: <FollowupReport />, routeName: "/Reports/FollowupReport" },
   { path: "/Reports/FullOrdersReport", element: <FullOrdersReport />, routeName: "/Reports/FullOrdersReport" },
   { path: "/Reports/AllBusinessesReport", element: <AllBusinessesReport />, routeName: "/Reports/AllBusinessesReport" },
+  { path: "/Reports/AllBusinessesReport/:status", element: <AllBusinessesReport />, routeName: "/Reports/AllBusinessesReport" },
   { path: "/Reports/AllSalesmanReport", element: <AllSalesmanReport />, routeName: "/Reports/AllSalesmanReport" },
   { path: "/Reports/OrderByStatusReport", element: <OrderByStatusReport />, routeName: "/Reports/OrderByStatusReport" },
   { path: "/Reports/OrderByStatusReport/:status?", element: <OrderByStatusReport />, routeName: "/Reports/OrderByStatusReport" },

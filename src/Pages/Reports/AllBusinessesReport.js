@@ -3,13 +3,15 @@ import PageTitle from '../../Components/PageTitle'
 import { ConfigContext } from '../../Context/ConfigContext'
 import axios from 'axios'
 import { TableRows, NoRecords } from '../../Components/Shimmer'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { GlobalLimitChanger } from '../../Components/InputElements'
 
 const AllBusinessesReport = () => {
 
     const { primaryColor, apiHeaderJson, apiURL } = useContext(ConfigContext)
-    const headers = apiHeaderJson
+    const headers = apiHeaderJson;
+
+    const { status } = useParams();
 
     const [data, setData] = useState([])
     const [next, setNext] = useState(false)
@@ -31,6 +33,7 @@ const AllBusinessesReport = () => {
                     keyword,
                     page,
                     limit,
+                    status
                 }
             })
             const { success, data, page: currentPage, next, prev, total_pages, total_records } = response.data
