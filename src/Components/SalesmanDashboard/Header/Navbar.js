@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Navbar = () => {
 
-    const { apiURL, apiHeaderJson } = useContext(ConfigContext);
+    const { apiURL, apiHeaderJson, permissions } = useContext(ConfigContext);
     const headers = apiHeaderJson
 
     const [loading, setLoading] = useState(true);
@@ -76,14 +76,21 @@ const Navbar = () => {
                             }
                         </div>
                     </div>
-
-                    <div className="col-auto ms-auto">
-                        <Link to={"/Masters/ManageFollowup"}>
-                            <button className='btn btn-danger btn-label'>
-                                <i className='ri-phone-line label-icon align-middle'></i> Followup
-                            </button>
-                        </Link>
-                    </div>
+                    {
+                        permissions?.map(item => {
+                            if (item.description === "/Masters/ManageFollowup") {
+                                return (
+                                    <div className="col-auto ms-auto">
+                                        <Link to={"/Masters/ManageFollowup"}>
+                                            <button className='btn btn-danger btn-label'>
+                                                <i className='ri-phone-line label-icon align-middle'></i> Followup
+                                            </button>
+                                        </Link>
+                                    </div>
+                                )
+                            }
+                        })
+                    }
 
                 </div>
             </div>
