@@ -232,7 +232,7 @@ const UserPermissions = () => {
         <div className='main-content'>
             <div className='page-content'>
                 <div className='container-fluid'>
-                    <PageTitle title={"User Permissions"} primary={"Dashboard"} />
+                    <PageTitle title={"Salesman Permissions"} primary={"Dashboard/Salesman"} />
 
                     {/* User Profile Card - Enhanced */}
                     {user && (

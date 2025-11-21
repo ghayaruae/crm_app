@@ -174,16 +174,16 @@ const Header = () => {
       ],
     },
     {
-      id: "Setting",
-      icon: "mdi mdi-spin mdi-cog-outline fs-22",
-      label: "Settings",
+      id: "Salesman",
+      icon: "ri-user-3-line fs-22",
+      label: "Salesman",
       isDropdown: true,
-      dropdownId: "sidebarSettings",
+      dropdownId: "sidebarSalesman",
       items: [
         {
-          id: "ManageUsers",
+          id: "ManageSalesman",
           path: "/Masters/ManageUsers",
-          label: "Manage Users",
+          label: "Manage Salesman",
           isDropdown: false,
         },
       ],

@@ -215,13 +215,13 @@ const ManageUsers = () => {
             <div className="main-content">
                 <div className="page-content">
                     <div className="container-fluid">
-                        <PageTitle title="Manage Users" primary="Users" />
+                        <PageTitle title="Manage Salesman" primary="Salesman" />
                         <div className="row">
                             {/* Left Form */}
                             <div className="col-md-4">
                                 <div className="card">
                                     <div className="card-header align-items-center d-flex" style={{ backgroundColor: primaryColor }}>
-                                        <h4 className="mb-0 flex-grow-1 text-white">{userId ? "Edit" : "New"} User</h4>
+                                        <h4 className="mb-0 flex-grow-1 text-white">{userId ? "Edit" : "New"} Salesman</h4>
                                     </div>
                                     <div className="card-body">
                                         <div className="row g-3">
@@ -351,7 +351,7 @@ const ManageUsers = () => {
                                     <div className="card-header" style={{ backgroundColor: primaryColor }}>
                                         <div className="row d-flex align-items-center">
                                             <div className="col-md-7">
-                                                <h4 className="text-white mb-0">Users List</h4>
+                                                <h4 className="text-white mb-0">Salesman List</h4>
                                             </div>
                                             <div className="col-md-5 mt-3 mt-md-0">
                                                 <div className="position-relative">
