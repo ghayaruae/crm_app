@@ -2,24 +2,11 @@ import React, { useContext } from "react";
 import { ConfigContext } from "../../Context/ConfigContext";
 import { Link, useNavigate } from "react-router-dom";
 import { DateFormater } from "../../Components/GlobalFunctions";
+import { NoRecords } from "../../Components/Shimmer";
 
 const NoRecentOrders = ({ list }) => {
 
     const { primaryColor } = useContext(ConfigContext);
-    const navigate = useNavigate();
-
-    if (!list || list.length === 0) {
-        return (
-            <div className="card shadow-sm border-0">
-                <div className="card-body">
-                    <h5 className="text-primary mb-3">
-                        Businesses with No Recent Orders
-                    </h5>
-                    <p className="text-muted mb-0">No data available</p>
-                </div>
-            </div>
-        );
-    }
 
     return (
         <div className="card shadow-sm border-0">
@@ -44,28 +31,39 @@ const NoRecentOrders = ({ list }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {list.map((item, index) => (
-                                <tr key={index}>
-                                    <td className="text-start fw-semibold">
-                                        {item.business_id}
-                                    </td>
-                                    <td className="text-start fw-semibold">
-                                        {item.business_name}
-                                    </td>
-                                    <td>{item.business_contact_number ?? "N/A"}</td>
-                                    <td>{item.business_email ?? "N/A"}</td>
-                                    <td className="text-dark fw-bold">
-                                        {DateFormater(item.last_order_date) ?? "No Orders Yet"}
-                                    </td>
-                                    <td>
-                                        <Link to={`/Masters/ManageFollowup/0/${item.business_id}`}>
-                                            <button className="btn btn-dark btn-sm">
-                                                Follow up
-                                            </button>
-                                        </Link>
-                                    </td>
-                                </tr>
-                            ))}
+                            {
+                                list?.length > 0 ?
+                                    list.map((item, index) => (
+                                        <tr key={index}>
+                                            <td className="text-start fw-semibold">
+                                                {item.business_id}
+                                            </td>
+                                            <td className="text-start fw-semibold">
+                                                {item.business_name}
+                                            </td>
+                                            <td>{item.business_contact_number ?? "N/A"}</td>
+                                            <td>{item.business_email ?? "N/A"}</td>
+                                            <td className="text-dark fw-bold">
+                                                {DateFormater(item.last_order_date) ?? "No Orders Yet"}
+                                            </td>
+                                            <td>
+                                                <Link to={`/Masters/ManageFollowup/0/${item.business_id}`}>
+                                                    <button className="btn btn-dark btn-sm">
+                                                        Follow up
+                                                    </button>
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))
+                                    :
+                                    <tr>
+                                        <td colSpan={6} className="text-center py-4">
+                                            <div className="d-flex justify-content-center align-items-center">
+                                                <NoRecords />
+                                            </div>
+                                        </td>
+                                    </tr>
+                            }
                         </tbody>
                     </table>
                 </div>

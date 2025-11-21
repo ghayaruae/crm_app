@@ -36,6 +36,7 @@ const routes = [
 
   ////////////////////// Business Routing ///////////////////////////
   { path: "/Salesman/AllBusinesses", element: <AllBusinesses />, routeName: "/Salesman/AllBusinesses" },
+  { path: "/Salesman/AllBusinesses/:status", element: <AllBusinesses />, routeName: "/Salesman/AllBusinesses" },
   { path: "/BusinessDetails/:business_id?", element: <BusinessDetails />, routeName: "/BusinessDetails" },
 
   ////////////////////// Orders Routing ///////////////////////////

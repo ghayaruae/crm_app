@@ -27,7 +27,7 @@ const DashboardTab = ({ data, salesman_data }) => {
             arrowColor: "text-danger",
             iconColor: "text-danger",
             value: data?.total_inactive_business,
-            link: "/business/inactive"
+            link: "/Salesman/AllBusinesses/0"
         },
         {
             title: "Total Assign Business",
