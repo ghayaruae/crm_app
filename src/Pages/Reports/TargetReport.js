@@ -7,6 +7,7 @@ import { TableRows, NoRecords } from '../../Components/Shimmer'
 import { GlobalLimitChanger } from '../../Components/InputElements'
 import { DateFormater } from '../../Components/GlobalFunctions'
 import Select from 'react-select';
+import * as XLSX from 'xlsx';
 
 const TargetReport = () => {
     const { primaryColor, apiHeaderJson, apiURL, selectTheme, selectStyle } = useContext(ConfigContext)
@@ -25,6 +26,8 @@ const TargetReport = () => {
     const [from_date, setFrom_date] = useState("")
     const [to_date, setTo_date] = useState("")
     const [filtersApplied, setFiltersApplied] = useState(false)
+    const [exporting, setExporting] = useState(false)
+    const [progress, setProgress] = useState(0)
 
     const getData = async () => {
         try {
@@ -94,9 +97,8 @@ const TargetReport = () => {
     }
 
     const handleFilter = () => {
-
         if ((from_date && to_date) || selectedSalesman) {
-            setFiltersApplied(prev => !prev)
+            setFiltersApplied(true)
             setPage(1)
             getData()
         }
@@ -107,7 +109,7 @@ const TargetReport = () => {
             setSelectedSalesman(null)
             setFrom_date("")
             setTo_date("")
-            setFiltersApplied(prev => !prev)
+            setFiltersApplied(false)
             setData([])
             setPage(1)
             setLimit(10)
@@ -121,6 +123,48 @@ const TargetReport = () => {
         setPage(1)
         if (filtersApplied) {
             getData()
+        }
+    }
+
+    const handleExportExcel = () => {
+        if (!data.length) return
+
+        try {
+            setExporting(true)
+            setProgress(20)
+
+            const exportData = data.map((row) => ({
+                ID: row.business_salesman_target_id,
+                Salesman: row.business_salesmen_name,
+                Contact: row.business_salesmen_contact_number,
+                Email: row.business_salesman_email,
+                Amount: row.business_salesman_target,
+                From: DateFormater(row.business_salesman_target_from),
+                To: DateFormater(row.business_salesman_target_to),
+            }))
+
+            setProgress(60)
+
+            const worksheet = XLSX.utils.json_to_sheet(exportData)
+            const workbook = XLSX.utils.book_new()
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Target Report")
+
+            setProgress(90)
+
+            XLSX.writeFile(
+                workbook,
+                `Target_Report_${new Date().toISOString().slice(0, 10)}.xlsx`
+            )
+
+            setProgress(100)
+
+        } catch (error) {
+            console.error("Export error:", error)
+        } finally {
+            setTimeout(() => {
+                setExporting(false)
+                setProgress(0)
+            }, 500)
         }
     }
 
@@ -142,7 +186,41 @@ const TargetReport = () => {
                                     style={{ backgroundColor: primaryColor }}
                                 >
                                     <h5 className="mb-0 text-white">Target List</h5>
+
+                                    {filtersApplied && data.length > 0 && (
+                                        <button
+                                            className="btn btn-soft-success btn-sm"
+                                            onClick={handleExportExcel}
+                                        >
+                                            <i className="ri-file-excel-2-line me-1"></i> Export
+                                        </button>
+                                    )}
                                 </div>
+                                {exporting && (
+                                    <div className="px-3 pt-2 pb-1 bg-white border-bottom">
+                                        <div className="d-flex justify-content-between mb-1">
+                                            <small className="text-muted fw-semibold">
+                                                Exporting Target Report...
+                                            </small>
+
+                                            <small className="text-muted fw-bold">
+                                                {progress}%
+                                            </small>
+                                        </div>
+
+                                        <div className="progress" style={{ height: "8px", borderRadius: "20px" }}>
+                                            <div
+                                                className="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                                role="progressbar"
+                                                style={{
+                                                    width: `${progress}%`,
+                                                    borderRadius: "20px",
+                                                    transition: "width 0.4s ease"
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
 
                                 <div className="card-body">
                                     <div className="row mb-4 g-3 align-items-center">
@@ -215,7 +293,7 @@ const TargetReport = () => {
                                             <tbody>
                                                 {filtersApplied ? (
                                                     loading ? (
-                                                        <tr><td colSpan="8"><TableRows /></td></tr>
+                                                        <tr><td colSpan="7"><TableRows /></td></tr>
                                                     ) : data.length > 0 ? (
                                                         data.map((row) => (
                                                             <tr key={row.business_salesman_target_id} className="text-center">
@@ -229,63 +307,67 @@ const TargetReport = () => {
                                                             </tr>
                                                         ))
                                                     ) : (
-                                                        <tr><td colSpan="8"><NoRecords /></td></tr>
+                                                        <tr><td colSpan="7"><NoRecords /></td></tr>
                                                     )
                                                 ) : (
-                                                    <tr><td colSpan="8" className='text-center text-muted'>Apply filter to view records</td></tr>
+                                                    <tr>
+                                                        <td colSpan="7" className='text-center text-muted'>
+                                                            Apply filter to view records
+                                                        </td>
+                                                    </tr>
                                                 )}
                                             </tbody>
 
                                             {filtersApplied && data.length > 0 && (
                                                 <tfoot className='table-light'>
                                                     <tr>
-                                                        <th colSpan={8}>
+                                                        <th colSpan={7}>
                                                             <div className="d-flex justify-content-between">
+
                                                                 <button
                                                                     disabled={!prev || loading}
                                                                     type="button"
                                                                     onClick={handlePrev}
-                                                                    className="btn btn-warning btn-label waves-effect waves-light"
+                                                                    className="btn btn-warning btn-label"
                                                                 >
-                                                                    <i className="ri-arrow-left-line label-icon align-middle fs-16 me-2" /> Previous
+                                                                    <i className="ri-arrow-left-line me-2" /> Previous
                                                                 </button>
 
-                                                                <div className='col-md-4' style={{ display: 'flex', alignItems: 'center' }}>
-                                                                    <small>Total Records: {totalRecords} | Total Pages: {totalPages} | Current Page: {page}</small>
-                                                                </div>
+                                                                <small>
+                                                                    Total Records: {totalRecords} |
+                                                                    Total Pages: {totalPages} |
+                                                                    Current Page: {page}
+                                                                </small>
 
-                                                                <div className='col-md-2'>
-                                                                    <select
-                                                                        className="form-select"
-                                                                        value={page}
-                                                                        onChange={handleChange}
-                                                                        disabled={loading}
-                                                                    >
-                                                                        {Array.from({ length: totalPages }, (_, i) => (
-                                                                            <option key={i + 1} value={i + 1}>{i + 1}</option>
-                                                                        ))}
-                                                                    </select>
-                                                                </div>
+                                                                <select
+                                                                    className="form-select w-auto"
+                                                                    value={page}
+                                                                    onChange={handleChange}
+                                                                    disabled={loading}
+                                                                >
+                                                                    {Array.from({ length: totalPages }, (_, i) => (
+                                                                        <option key={i + 1} value={i + 1}>{i + 1}</option>
+                                                                    ))}
+                                                                </select>
 
-                                                                <div className='col-md-2'>
-                                                                    <GlobalLimitChanger
-                                                                        placeholder="Set limit:"
-                                                                        name="globalLimit"
-                                                                        value={limit}
-                                                                        onChange={handleLimitChange}
-                                                                        showAllValue={totalRecords}
-                                                                        disabled={loading}
-                                                                    />
-                                                                </div>
+                                                                <GlobalLimitChanger
+                                                                    placeholder="Set limit:"
+                                                                    name="globalLimit"
+                                                                    value={limit}
+                                                                    onChange={handleLimitChange}
+                                                                    showAllValue={totalRecords}
+                                                                    disabled={loading}
+                                                                />
 
                                                                 <button
                                                                     disabled={!next || loading}
                                                                     type="button"
                                                                     onClick={handleNext}
-                                                                    className="btn btn-primary btn-label waves-effect right waves-light"
+                                                                    className="btn btn-primary btn-label"
                                                                 >
-                                                                    <i className="ri-arrow-right-line label-icon align-middle fs-16 ms-2" /> Next
+                                                                    Next <i className="ri-arrow-right-line ms-2" />
                                                                 </button>
+
                                                             </div>
                                                         </th>
                                                     </tr>
