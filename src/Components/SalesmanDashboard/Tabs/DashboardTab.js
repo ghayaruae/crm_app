@@ -18,7 +18,7 @@ const DashboardTab = ({ data, salesman_data }) => {
             arrowColor: "text-warning",
             iconColor: "text-warning",
             value: data?.total_pending_orders,
-            link: "/Reports/SalesmanOrders/0" 
+            link: "/Reports/SalesmanOrders/0"
         },
         {
             title: "Inactive Businesses",
@@ -54,25 +54,6 @@ const DashboardTab = ({ data, salesman_data }) => {
             to: salesman_data?.business_salesman_target_to,
         });
     }
-
-    const { apiHeaderJson, apiURL } = useContext(ConfigContext);
-    const headers = apiHeaderJson;
-    const [noRecentOrders, setNoRecentOrders] = useState([]);
-
-    const GetBusinessesNoRecentOrders = async () => {
-        try {
-            const response = await axios.get(`${apiURL}Dashboard/GetBusinessesNoRecentOrders`, { headers });
-            if (response.data.success) {
-                setNoRecentOrders(response.data.data);
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    };
-
-    useEffect(() => {
-        GetBusinessesNoRecentOrders()
-    }, [])
 
     return (
         <>
@@ -132,7 +113,7 @@ const DashboardTab = ({ data, salesman_data }) => {
 
                     <div className="row mt-4">
                         <div className="col-12">
-                            <NoRecentOrders list={noRecentOrders} />
+                            <NoRecentOrders />
                         </div>
                     </div>
                 </div>

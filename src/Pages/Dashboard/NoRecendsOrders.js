@@ -1,20 +1,49 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ConfigContext } from "../../Context/ConfigContext";
 import { Link, useNavigate } from "react-router-dom";
 import { DateFormater } from "../../Components/GlobalFunctions";
 import { NoRecords } from "../../Components/Shimmer";
+import axios from "axios";
 
-const NoRecentOrders = ({ list }) => {
+const NoRecentOrders = () => {
 
     const { primaryColor } = useContext(ConfigContext);
+
+    const { apiHeaderJson, apiURL } = useContext(ConfigContext);
+    const headers = apiHeaderJson;
+    const [noRecentOrders, setNoRecentOrders] = useState([]);
+
+
+    const GetBusinessesNoRecentOrders = async () => {
+        try {
+            const response = await axios.get(`${apiURL}Dashboard/GetBusinessesNoRecentOrders`, { params: { limit: 5, page: 1 }, headers });
+            if (response.data.success) {
+                setNoRecentOrders(response.data.data);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    useEffect(() => {
+        GetBusinessesNoRecentOrders()
+    }, [])
 
     return (
         <div className="card shadow-sm border-0">
             <div className="card-header" style={{ background: primaryColor }}>
-                <h5 className="mb-0 card-title text-white">
-                    <i className="ri-store-2-line me-2"></i>
-                    Businesses with No Recent Orders in 2 days
-                </h5>
+                <div className="d-flex justify-content-between align-items-center">
+
+                    <h5 className="mb-0 card-title text-white">
+                        <i className="ri-store-2-line me-2"></i>
+                        No Recent Orders By Business
+                    </h5>
+                    <Link to={"/Reports/NoRecendsOrderReport"}>
+                        <button className="btn btn-light btn-sm">
+                            View More
+                        </button>
+                    </Link>
+                </div>
             </div>
             <div className="card-body">
 
@@ -26,14 +55,15 @@ const NoRecentOrders = ({ list }) => {
                                 <th className="text-start">Business Name</th>
                                 <th>Contact</th>
                                 <th>Email</th>
+                                <th>Days</th>
                                 <th>Last Order Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
-                                list?.length > 0 ?
-                                    list.map((item, index) => (
+                                noRecentOrders?.length > 0 ?
+                                    noRecentOrders?.map((item, index) => (
                                         <tr key={index}>
                                             <td className="text-start fw-semibold">
                                                 {item.business_id}
@@ -43,6 +73,7 @@ const NoRecentOrders = ({ list }) => {
                                             </td>
                                             <td>{item.business_contact_number ?? "N/A"}</td>
                                             <td>{item.business_email ?? "N/A"}</td>
+                                            <td className="text-danger fw-bold">{item.no_order_since_days ?? "N/A"} Days</td>
                                             <td className="text-dark fw-bold">
                                                 {DateFormater(item.last_order_date) ?? "No Orders Yet"}
                                             </td>

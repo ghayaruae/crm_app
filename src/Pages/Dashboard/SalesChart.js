@@ -1,180 +1,128 @@
-import React, { useContext, useEffect, useState } from 'react'
-import ReactECharts from 'echarts-for-react'
-import { ConfigContext } from '../../Context/ConfigContext'
-import axios from 'axios'
+import React, { useContext, useEffect, useState } from 'react';
+import ReactECharts from 'echarts-for-react';
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/themes/material_blue.css';
+import { ConfigContext } from '../../Context/ConfigContext';
+import axios from 'axios';
+import { DateFormater } from '../../Components/GlobalFunctions';
 
 const SalesChart = () => {
-    const [chartData, setChartData] = useState({ labels: [], sales: [], orders: [] })
-    const [loading, setLoading] = useState(true)
-    const { primaryColor, apiHeaderJson, apiURL } = useContext(ConfigContext)
+    const [chartData, setChartData] = useState({ labels: [], sales: [], orders: [] });
+    const [loading, setLoading] = useState(true);
+    const { primaryColor, apiHeaderJson, apiURL } = useContext(ConfigContext);
 
-    const getCurrentDates = () => {
-        const today = new Date()
-        const year = today.getFullYear()
-        const month = today.getMonth() + 1
-        return { year, month }
-    }
+    // Default: Current Month Range
+    const getDefaultDateRange = () => {
+        const now = new Date();
+        const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+        const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+        return [firstDay, lastDay];
+    };
+
+    const [dateRange, setDateRange] = useState(getDefaultDateRange());
 
     const getData = async () => {
         try {
-            const { year, month } = getCurrentDates()
-            const headers = apiHeaderJson
-            setLoading(true)
+            const [from, to] = dateRange;
+
+            const from_date = from.toISOString().split("T")[0];
+            const to_date = to.toISOString().split("T")[0];
+
+            setLoading(true);
 
             const response = await axios.get(`${apiURL}Dashboard/GetMonthlySalesBySalesman`, {
-                headers,
-                params: { year, month }
-            })
+                headers: apiHeaderJson,
+                params: { from_date, to_date }
+            });
 
-            const { success, labels, sales, orders } = response.data
+            const { success, labels, sales, orders } = response.data;
 
             if (success) {
-                setChartData({ labels, sales, orders })
+                setChartData({
+                    labels: labels.map(d => DateFormater(d)),
+                    sales: sales.map(s => parseFloat(s).toFixed(2)),
+                    orders: orders.map(o => parseInt(o))  // orders without decimals
+                });
             }
+
         } catch (error) {
-            console.error('Error fetching chart data:', error)
+            console.error('Error fetching chart data:', error);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
 
     useEffect(() => {
-        getData()
-    }, [])
+        getData();
+    }, [dateRange]);
 
     const option = {
         tooltip: {
-            trigger: 'axis',
-            backgroundColor: '#fff',
-            borderColor: '#ddd',
-            borderWidth: 1,
-            textStyle: { color: '#333' },
-            formatter: (params) => {
-                let tooltip = `<strong>${params[0].axisValue}</strong><br/>`
-                params.forEach(item => {
-                    const value = item.value ? item.value.toLocaleString() : 0
-                    const label =
-                        item.seriesName === 'Sales'
-                            ? `AED ${value}`
-                            : value
-                    tooltip += `
-                    <span style="display:inline-block;margin-right:5px;border-radius:50%;width:8px;height:8px;background:${item.color};"></span>
-                    ${item.seriesName}: ${label}<br/>
-                `
-                })
-                return tooltip
-            }
+            trigger: 'axis'
         },
         legend: {
-            data: ['Sales', 'Orders'],
-            textStyle: { color: '#555' },
-            top: 10
-        },
-        grid: {
-            left: '5%',
-            right: '5%',
-            bottom: '5%',
-            containLabel: true
+            data: ['Sales']
         },
         xAxis: {
             type: 'category',
             data: chartData.labels || [],
-            axisLine: { lineStyle: { color: '#ccc' } },
             axisLabel: {
-                color: '#666',
-                rotate: chartData.labels?.length > 4 ? 20 : 0,
-                fontSize: 12
+                rotate: 45,
+                fontSize: 11
             }
         },
-        yAxis: [
-            {
-                type: 'value',
-                name: 'Sales',
-                position: 'left',
-                axisLine: { show: false },
-                splitLine: { lineStyle: { color: '#eee' } },
-                axisLabel: {
-                    color: '#666',
-                    formatter: (value) => `AED ${value.toLocaleString()}`
-                }
-            },
-            {
-                type: 'value',
-                name: 'Orders',
-                position: 'right',
-                axisLine: { show: false },
-                splitLine: { show: false },
-                axisLabel: {
-                    color: '#666',
-                    formatter: (value) => value.toLocaleString()
-                }
-            }
-        ],
+        yAxis: {
+            type: 'value',
+            name: 'Sales'
+        },
         series: [
             {
                 name: 'Sales',
-                data: chartData.sales || [],
+                data: chartData.sales,
                 type: 'line',
                 smooth: true,
-                yAxisIndex: 0, // Use left yAxis
-                lineStyle: {
-                    color: primaryColor || '#132530',
-                    width: 3
-                },
-                itemStyle: { color: primaryColor || '#132530' },
-                areaStyle: { color: 'rgba(19, 37, 48, 0.1)' }
-            },
-            {
-                name: 'Orders',
-                data: chartData.orders || [],
-                type: 'line',
-                smooth: true,
-                yAxisIndex: 1, // Use right yAxis
-                lineStyle: {
-                    color: '#3b82f6',
-                    width: 3,
-                    type: 'dashed'
-                },
-                itemStyle: { color: '#3b82f6' },
-                areaStyle: { color: 'rgba(59, 130, 246, 0.1)' }
+                lineStyle: { color: primaryColor },
+                itemStyle: { color: primaryColor },
+                areaStyle: { opacity: 0.1, color: primaryColor }
             }
         ]
-    }
+    };
 
-    const getChartHeight = () => {
-        if (window.innerWidth < 576) return '250px'
-        if (window.innerWidth < 992) return '300px'
-        return '350px'
-    }
 
     return (
         <div className="col-12 col-md-7">
             <div className="card shadow border-0 rounded mb-0">
                 <div className="card-body">
                     <h5 className="card-title mb-3 text-dark fw-semibold">
-                        Monthly Sales & Orders Overview
+                        Sales & Orders Overview
                     </h5>
+
+                    {/* 🔵 DATE RANGE PICKER */}
+                    <div className="mb-3">
+                        <Flatpickr
+                            value={dateRange}
+                            options={{
+                                mode: "range",
+                                dateFormat: "Y-m-d"
+                            }}
+                            onChange={(dates) => {
+                                if (dates.length === 2) setDateRange(dates);
+                            }}
+                            className="form-control"
+                        />
+                    </div>
 
                     {loading ? (
                         <div className="text-center py-5">
-                            <div className="spinner-border" style={{ color: primaryColor }} role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </div>
+                            <div className="spinner-border" style={{ color: primaryColor }} />
                         </div>
                     ) : (
-                        <ReactECharts
-                            option={option}
-                            style={{
-                                height: getChartHeight(),
-                                width: '100%',
-                            }}
-                            opts={{ renderer: 'svg' }}
-                        />
+                        <ReactECharts option={option} style={{ height: "350px", width: "100%" }} />
                     )}
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default SalesChart
+export default SalesChart;
