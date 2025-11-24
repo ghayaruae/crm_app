@@ -27,6 +27,7 @@ import OrderByStatusReport from "../Pages/Reports/OrderByStatusReport";
 import TargetReport from "../Pages/Reports/TargetReport";
 import CreateRequest from "../Pages/RequestInquiry/CreateRequest";
 import RequestPartList from "../Pages/RequestInquiry/RequestPartList";
+import SalesmanRequestPartList from "../Pages/RequestInquiry/SalesmanRequestPartList";
 import OEPartDetails from "../Pages/Search/OEPartDetails";
 import SearchOEParts from "../Pages/Search/SearchOEParts";
 
@@ -76,6 +77,7 @@ const routes = [
   ////////////////////// Request Routing ///////////////////////////
   { path: "/Request/RequestPartInquiry/:inventory_part_request_id?", element: <CreateRequest />, routeName: "/Request/RequestPartInquiry" },
   { path: "/Request/RequestPartInquiryList", element: <RequestPartList />, routeName: "/Request/RequestPartInquiryList" },
+  { path: "/Request/SalesmanRequestPartList", element: <SalesmanRequestPartList />, routeName: "/Request/SalesmanRequestPartList" },
 
   ////////////////////// Search Routing ///////////////////////////
   { path: "/Search/SearchOEParts", element: <SearchOEParts />, routeName: "/Search/SearchOEParts" },

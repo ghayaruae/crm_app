@@ -145,9 +145,15 @@ const Header = () => {
           isDropdown: false,
         },
         {
-          id: "RequestPartInquiryList",
+          id: "RequestPartInquiry",
+          path: "/Request/SalesmanRequestPartList",
+          label: "Request Part Inquiry",
+          isDropdown: false,
+        },
+        {
+          id: "AllRequestPartInquiryList",
           path: "/Request/RequestPartInquiryList",
-          label: "Request Part Inquiry List",
+          label: "ALL Request Part Inquiry List",
           isDropdown: false,
         },
       ],

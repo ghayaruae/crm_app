@@ -4,9 +4,9 @@ import { NoRecords, TableRows } from '../../Components/Shimmer'
 import { GlobalLimitChanger } from '../../Components/InputElements'
 import { ConfigContext } from '../../Context/ConfigContext'
 import PageTitle from '../../Components/PageTitle'
-import Swal from 'sweetalert2'
-import { DateFormater } from '../../Components/GlobalFunctions'
 import { Link } from 'react-router-dom'
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 const RequestPartList = () => {
 
@@ -74,13 +74,42 @@ const RequestPartList = () => {
     }, [keyword, page, limit]);
 
 
+    const handleDownload = () => {
+        try {
+            const orderWorkSheet = XLSX.utils.json_to_sheet(
+                data?.map((item) => ({
+                    "Salesman Name": item?.business_salesmen_name,
+                    "Part Name": item?.request_part_name,
+                    "Brand Name": item?.request_brand_name,
+                    "Part Number": item?.request_part_number,
+                    "Qty": item?.request_part_qty,
+                    "Market Price": item?.request_part_market_price,
+                }))
+            );
+
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, orderWorkSheet, "business");
+
+            const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+            // Avoid shadowing variable name "data"
+            const blob = new Blob([excelBuffer], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            });
+
+            saveAs(blob, 'partInquery.xlsx');
+        } catch (error) {
+            console.error("Excel download error:", error);
+        }
+    };
+
     return (
         <>
             <div className="main-content">
                 <div className="page-content">
                     <div className="container-fluid">
 
-                        <PageTitle title="Part Request Inquiry List" primary="Requests" />
+                        <PageTitle title="All Part Inquiry Requests Report" primary="Requests" />
 
                         <div className="row">
                             <div className="col-md-12">
@@ -90,7 +119,7 @@ const RequestPartList = () => {
                                         className="card-header align-items-center d-flex"
                                         style={{ backgroundColor: primaryColor }}
                                     >
-                                        <h4 className="text-white flex-grow-1 mb-0">Part Inquiry Requests</h4>
+                                        <h4 className="text-white flex-grow-1 mb-0">All Part Inquiry Requests Report</h4>
 
                                         <Link to={"/Request/RequestPartInquiry"}>
                                             <button
@@ -105,13 +134,24 @@ const RequestPartList = () => {
 
                                     <div className="card-body">
 
-                                        <div className="row align-items-center justify-content-end mb-4">
+                                        <div className="row w-100 mb-4">
+                                            <div className="col-md-8">
+                                                <ul className="nav nav-tabs nav-tabs-custom nav-success">
+                                                    <button
+                                                        className='btn btn-sm btn-success me-2 waves-light waves-effect'
+                                                        onClick={handleDownload}
+                                                    >
+                                                        Excel
+                                                    </button>
+                                                </ul>
+                                            </div>
+
                                             <div className="col-md-4">
                                                 <div className="position-relative">
                                                     <input
                                                         type="text"
                                                         className="form-control pe-5"
-                                                        placeholder="Search by Part name"
+                                                        placeholder="Search by Part name OR part number"
                                                         value={keyword}
                                                         onChange={(e) => setKeyword(e.target.value)}
                                                     />
@@ -120,6 +160,7 @@ const RequestPartList = () => {
                                                     </span>
                                                 </div>
                                             </div>
+
                                         </div>
 
                                         <div className="table-responsive table-card">
@@ -146,7 +187,7 @@ const RequestPartList = () => {
                                                                 data.map((row) => (
                                                                     <tr key={row.inventory_part_request_id} className="text-center">
 
-                                                                        <td>{row.business_salesmen_name}</td>
+                                                                        <td className='text-dark fw-bold'>{row.business_salesmen_name}</td>
                                                                         <td>{row.request_part_name}</td>
                                                                         <td>{row.request_brand_name}</td>
                                                                         <td>{row.request_part_number}</td>

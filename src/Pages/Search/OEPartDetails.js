@@ -6,6 +6,8 @@ import Select from 'react-select'
 import ImageGallery from 'react-image-gallery'
 import 'react-image-gallery/styles/css/image-gallery.css'
 import { useNavigate } from 'react-router-dom'
+import CompatibilityCars from './CompatibilityCars'
+import OESection from './OESection'
 
 const OEPartDetails = () => {
     const {
@@ -333,115 +335,123 @@ const OEPartDetails = () => {
                         )}
 
                         {current && !loading && (
-                            <div className="card mt-3">
-                                <div className="card-body">
-                                    <div className="row">
+                            <>
+                                <div className="card mt-3">
+                                    <div className="card-body">
+                                        <div className="row">
 
-                                        <div className="col-md-12">
-                                            <div className="d-flex justify-content-between">
-                                                <h3 className="mb-4">
-                                                    {current.ART_SUP_BRAND} {current.ART_ARTICLE_NR} {current.ART_PRODUCT_NAME}
-                                                </h3>
+                                            <div className="col-md-12">
+                                                <div className="d-flex justify-content-between">
+                                                    <h3 className="mb-4">
+                                                        {current.ART_SUP_BRAND} {current.ART_ARTICLE_NR} {current.ART_PRODUCT_NAME}
+                                                    </h3>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div className="col-md-4 sticky-image mb-3">
-                                            <div className="border rounded p-2">
-                                                {renderImageGallery()}
+                                            <div className="col-md-4 sticky-image mb-3">
+                                                <div className="border rounded p-2">
+                                                    {renderImageGallery()}
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        {/* ---------- RIGHT SIDE DETAILS ---------- */}
-                                        <div className="col-md-8">
-                                            <div className="row gx-3">
+                                            {/* ---------- RIGHT SIDE DETAILS ---------- */}
+                                            <div className="col-md-8">
+                                                <div className="row gx-3">
 
-                                                <div className="col-md-6 mb-2">
-                                                    <div className="text-muted small">Manufacturer</div>
-                                                    <div className="fw-semibold">{current.MFA_BRAND || '-'}</div>
-                                                </div>
-
-                                                <div className="col-md-6 mb-2">
-                                                    <div className="text-muted small">Article Number</div>
-                                                    <div className="fw-semibold">{current.ART_ARTICLE_NR || '-'}</div>
-                                                </div>
-
-                                                <div className="col-md-6 mb-2">
-                                                    <div className="text-muted small">Car Model</div>
-                                                    <div className="fw-semibold">{current.MS_NAME || '-'}</div>
-                                                </div>
-
-                                                <div className="col-md-6 mb-2">
-                                                    <div className="text-muted small">Engine / Capacity</div>
-                                                    <div className="fw-semibold">
-                                                        {current.PC_ENG_CODES || '-'} | {current.PC_CAPACITY_LT || '-'}L
+                                                    <div className="col-md-6 mb-2">
+                                                        <div className="text-muted small">Manufacturer</div>
+                                                        <div className="fw-semibold">{current.MFA_BRAND || '-'}</div>
                                                     </div>
-                                                </div>
 
-                                                <div className="col-md-6 mb-2">
-                                                    <div className="text-muted small">Fuel Type</div>
-                                                    <div className="fw-semibold">{current.FUEL_TYPE || '-'}</div>
-                                                </div>
-
-                                                <div className="col-md-6 mb-2">
-                                                    <div className="text-muted small">Stock Last Update</div>
-                                                    <div className="fw-semibold">
-                                                        {formatDate(current.stock_status_last_update_date)}
+                                                    <div className="col-md-6 mb-2">
+                                                        <div className="text-muted small">Article Number</div>
+                                                        <div className="fw-semibold">{current.ART_ARTICLE_NR || '-'}</div>
                                                     </div>
-                                                </div>
 
-                                                {/* Pricing Boxes */}
-                                                <div className="col-12 mt-3">
-                                                    <div className="d-flex gap-3 flex-wrap">
-                                                        <div className="border rounded p-3 flex-grow-1">
-                                                            <div className="small text-muted">Purchase Price</div>
-                                                            <div className="h5 mb-0">{current.stock_purchase_price || '0'}</div>
-                                                        </div>
+                                                    <div className="col-md-6 mb-2">
+                                                        <div className="text-muted small">Car Model</div>
+                                                        <div className="fw-semibold">{current.MS_NAME || '-'}</div>
+                                                    </div>
 
-                                                        <div className="border rounded p-3 flex-grow-1">
-                                                            <div className="small text-muted">Retail (MRP)</div>
-                                                            <div className="h5 mb-0">{current.stock_price_mrp || '0'}</div>
-                                                        </div>
-
-                                                        <div className="border rounded p-3" style={{ minWidth: 130 }}>
-                                                            <div className="small text-muted">Available Qty</div>
-                                                            <div className="h5 mb-0">{current.stock_available_qty || '0'}</div>
+                                                    <div className="col-md-6 mb-2">
+                                                        <div className="text-muted small">Engine / Capacity</div>
+                                                        <div className="fw-semibold">
+                                                            {current.PC_ENG_CODES || '-'} | {current.PC_CAPACITY_LT || '-'}L
                                                         </div>
                                                     </div>
-                                                </div>
 
-                                                {/* Article Criteria */}
-                                                <div className="col-12 mt-4">
-                                                    <h6>Article Criteria</h6>
-                                                    {criteria.length > 0 ? (
-                                                        <div className="table-responsive">
-                                                            <table className="table table-sm">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>Criteria</th>
-                                                                        <th>Value</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    {criteria.map(c => (
-                                                                        <tr key={c.criteria_id}>
-                                                                            <td>{c.criteria_en || c.criteria_id}</td>
-                                                                            <td>{c.value_en || c.value}</td>
+                                                    <div className="col-md-6 mb-2">
+                                                        <div className="text-muted small">Fuel Type</div>
+                                                        <div className="fw-semibold">{current.FUEL_TYPE || '-'}</div>
+                                                    </div>
+
+                                                    <div className="col-md-6 mb-2">
+                                                        <div className="text-muted small">Stock Last Update</div>
+                                                        <div className="fw-semibold">
+                                                            {formatDate(current.stock_status_last_update_date)}
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Pricing Boxes */}
+                                                    <div className="col-12 mt-3">
+                                                        <div className="d-flex gap-3 flex-wrap">
+                                                            <div className="border rounded p-3 flex-grow-1">
+                                                                <div className="small text-muted">Purchase Price</div>
+                                                                <div className="h5 mb-0">AED {current.stock_purchase_price || '0'}</div>
+                                                            </div>
+
+                                                            <div className="border rounded p-3 flex-grow-1">
+                                                                <div className="small text-muted">Retail (MRP)</div>
+                                                                <div className="h5 mb-0">AED {current.stock_price_mrp || '0'}</div>
+                                                            </div>
+
+                                                            <div className="border rounded p-3" style={{ minWidth: 130 }}>
+                                                                <div className="small text-muted">Available Qty</div>
+                                                                <div className="h5 mb-0">{current.stock_available_qty || '0'}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Article Criteria */}
+                                                    <div className="col-12 mt-4">
+                                                        <h6>Article Criteria</h6>
+                                                        {criteria.length > 0 ? (
+                                                            <div className="table-responsive">
+                                                                <table className="table table-sm">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Criteria</th>
+                                                                            <th>Value</th>
                                                                         </tr>
-                                                                    ))}
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    ) : (
-                                                        <div className="text-muted small">No criteria available.</div>
-                                                    )}
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        {criteria.map(c => (
+                                                                            <tr key={c.criteria_id}>
+                                                                                <td>{c.criteria_en || c.criteria_id}</td>
+                                                                                <td>{c.value_en || c.value}</td>
+                                                                            </tr>
+                                                                        ))}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="text-muted small">No criteria available.</div>
+                                                        )}
+                                                    </div>
+
                                                 </div>
-
                                             </div>
-                                        </div>
 
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+
+                                <CompatibilityCars art_id={artId} />
+                                <OESection art_id={artId} />
+
+                            </>
+
+
                         )}
 
                         {filtersApplied && !current && !loading && (

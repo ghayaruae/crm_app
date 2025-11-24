@@ -372,8 +372,8 @@ const ManageTarget = () => {
                                                             {data.length > 0 ? (
                                                                 data.map((row) => (
                                                                     <tr key={row.business_salesman_target_id} className="text-center">
-                                                                        <td>{row.business_salesman_target_id}</td>
-                                                                        <td>{row.business_salesmen_name}</td>
+                                                                        <td className='text-dark fw-bold'>{row.business_salesman_target_id}</td>
+                                                                        <td className='text-dark fw-bold'>{row.business_salesmen_name}</td>
                                                                         <td>{row.business_salesman_target}</td>
                                                                         <td>{DateFormater(row.business_salesman_target_from)}</td>
                                                                         <td>{DateFormater(row.business_salesman_target_to)}</td>
@@ -384,12 +384,12 @@ const ManageTarget = () => {
                                                                             >
                                                                                 <i className='ri-pencil-line'></i>
                                                                             </button>
-                                                                            <button
+                                                                            {/* <button
                                                                                 className='btn btn-sm btn-soft-danger'
                                                                                 onClick={() => handleDelete(row.business_salesman_target_id)}
                                                                             >
                                                                                 <i className='ri-delete-bin-line'></i>
-                                                                            </button>
+                                                                            </button> */}
                                                                         </td>
                                                                     </tr>
                                                                 ))
