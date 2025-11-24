@@ -45,7 +45,7 @@ const CompatibilityCars = ({ art_id }) => {
     return (
         <div className="card mt-3">
             <div className="card-header">
-                <h4 className="card-title mb-0">Compatible Cars</h4>
+                <h4 className="card-title mb-0">Compatibility with passenger cars</h4>
             </div>
 
             <div className="card-body">
