@@ -61,36 +61,6 @@ const RequestPartList = () => {
         }
     };
 
-
-    const handleDelete = async (inventory_part_request_id) => {
-        try {
-            const result = await Swal.fire({
-                title: "Are you sure?",
-                text: "This action will permanently delete the request.",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes!",
-                cancelButtonText: "Cancel"
-            });
-
-            if (result.isConfirmed) {
-                const body = { inventory_part_request_id }
-                const response = await axios.post(`${apiURL}Masters/DeleteRequestPartInquery`, body, { headers });
-
-                const { success, message } = response.data;
-
-                if (success) {
-                    Swal.fire("Deleted!", message, "success");
-                    getData();
-                }
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
     const handlePrev = () => prev && setPage((prevPage) => prevPage - 1);
     const handleNext = () => next && setPage((prevPage) => prevPage + 1);
     const handleChange = (e) => setPage(parseInt(e.target.value, 10));
@@ -188,13 +158,6 @@ const RequestPartList = () => {
                                                                                     <i className="ri-pencil-line"></i>
                                                                                 </button>
                                                                             </Link>
-
-                                                                            <button
-                                                                                className="btn btn-sm btn-soft-danger"
-                                                                                onClick={() => handleDelete(row.inventory_part_request_id)}
-                                                                            >
-                                                                                <i className="ri-delete-bin-line"></i>
-                                                                            </button>
                                                                         </td>
 
                                                                     </tr>
