@@ -147,13 +147,13 @@ const Header = () => {
         {
           id: "RequestPartInquiry",
           path: "/Request/SalesmanRequestPartList",
-          label: "Request Part Inquiry",
+          label: "Part Inquiries List",
           isDropdown: false,
         },
         {
           id: "AllRequestPartInquiryList",
           path: "/Request/RequestPartInquiryList",
-          label: "ALL Request Part Inquiry List",
+          label: "Part Inquiries Report",
           isDropdown: false,
         },
       ],
