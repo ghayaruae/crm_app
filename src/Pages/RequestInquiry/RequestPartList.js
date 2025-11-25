@@ -109,7 +109,7 @@ const RequestPartList = () => {
                 <div className="page-content">
                     <div className="container-fluid">
 
-                        <PageTitle title="All Part Inquiry Requests Report" primary="Requests" />
+                        <PageTitle title="Part Inquiry Report" primary="Requests" />
 
                         <div className="row">
                             <div className="col-md-12">
@@ -119,7 +119,7 @@ const RequestPartList = () => {
                                         className="card-header align-items-center d-flex"
                                         style={{ backgroundColor: primaryColor }}
                                     >
-                                        <h4 className="text-white flex-grow-1 mb-0">All Part Inquiry Requests Report</h4>
+                                        <h4 className="text-white flex-grow-1 mb-0">Part Inquiry Report</h4>
 
                                         <Link to={"/Request/RequestPartInquiry"}>
                                             <button
@@ -178,7 +178,6 @@ const RequestPartList = () => {
                                                                 <th>Part Number</th>
                                                                 <th>Qty</th>
                                                                 <th>Market Price</th>
-                                                                <th>Action</th>
                                                             </tr>
                                                         </thead>
 
@@ -193,14 +192,7 @@ const RequestPartList = () => {
                                                                         <td>{row.request_part_number}</td>
                                                                         <td>{row.request_part_qty}</td>
                                                                         <td>{row.request_part_market_price}</td>
-                                                                        <td className="d-flex align-items-center justify-content-center gap-2">
-                                                                            <Link to={`/Request/RequestPartInquiry/${row.inventory_part_request_id}`}>
-                                                                                <button className="btn btn-sm btn-soft-primary">
-                                                                                    <i className="ri-pencil-line"></i>
-                                                                                </button>
-                                                                            </Link>
-                                                                        </td>
-
+                                                                        
                                                                     </tr>
                                                                 ))
                                                             ) : (

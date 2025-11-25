@@ -108,7 +108,7 @@ const SalesmanRequestPartList = () => {
                 <div className="page-content">
                     <div className="container-fluid">
 
-                        <PageTitle title="Part Request Inquiry List" primary="Requests" />
+                        <PageTitle title="Part Inquiries List" primary="Requests" />
 
                         <div className="row">
                             <div className="col-md-12">
@@ -118,7 +118,7 @@ const SalesmanRequestPartList = () => {
                                         className="card-header align-items-center d-flex"
                                         style={{ backgroundColor: primaryColor }}
                                     >
-                                        <h4 className="text-white flex-grow-1 mb-0">Part Inquiry Requests</h4>
+                                        <h4 className="text-white flex-grow-1 mb-0">Part Inquiries List</h4>
 
                                         <Link to={"/Request/RequestPartInquiry"}>
                                             <button
