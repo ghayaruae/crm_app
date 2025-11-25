@@ -1,4 +1,3 @@
-import React from 'react'
 const Page404 = () => {
     return (
         <div className="auth-page-wrapper py-5 d-flex justify-content-center align-items-center min-vh-100">

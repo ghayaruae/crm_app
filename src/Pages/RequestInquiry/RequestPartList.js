@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { NoRecords, TableRows } from '../../Components/Shimmer'
 import { GlobalLimitChanger } from '../../Components/InputElements'
 import { ConfigContext } from '../../Context/ConfigContext'

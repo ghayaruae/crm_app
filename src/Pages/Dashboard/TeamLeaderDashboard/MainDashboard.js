@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ConfigContext } from "../../../Context/ConfigContext";
 import axios from "axios";
 import CountUp from "react-countup";

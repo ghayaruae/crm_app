@@ -7,7 +7,7 @@ import { Link, useParams } from "react-router-dom";
 import { DateFormater } from "../../Components/GlobalFunctions";
 
 const BusinessDetails = () => {
-    const { primaryColor, apiHeaderJson, apiURL } = useContext(ConfigContext);
+    const { apiHeaderJson, apiURL } = useContext(ConfigContext);
     const headers = apiHeaderJson;
     const { business_id } = useParams();
 

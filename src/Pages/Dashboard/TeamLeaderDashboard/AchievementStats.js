@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 const AchievementStats = ({ aboveTargetData = [], belowTargetData = [] }) => {
     const [activeTab, setActiveTab] = useState('above')

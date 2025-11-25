@@ -1,7 +1,7 @@
 import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { NoRecords, TableRows } from '../../../Components/Shimmer'
-import { GlobalLimitChanger, SubmitBtn } from '../../../Components/InputElements'
+import { GlobalLimitChanger } from '../../../Components/InputElements'
 import { ConfigContext } from '../../../Context/ConfigContext'
 import PageTitle from '../../../Components/PageTitle'
 import Swal from 'sweetalert2'
@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 
 const FollowupList = () => {
 
-    const { primaryColor, apiHeaderJson, apiURL, selectTheme, selectStyle } = useContext(ConfigContext)
+    const { primaryColor, apiHeaderJson, apiURL } = useContext(ConfigContext)
     const headers = apiHeaderJson;
 
     const [data, setData] = useState([])

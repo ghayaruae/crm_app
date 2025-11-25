@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { ConfigContext } from "../Context/ConfigContext";
 
@@ -259,25 +259,25 @@ const Header = () => {
               <div className="navbar-brand-box horizontal-logo">
                 <NavLink to="/" className="logo logo-dark">
                   <span className="logo-sm">
-                    <img alt="" height={72} />
+                    <img alt="logo_image" height={72} />
                   </span>
                   <span className="logo-lg">
                     <img
                       src="https://admin.stoneskill.com/assets/logo/2.png"
-                      alt=""
+                      alt="logo_image"
                       height={80}
                     />
-                    <img alt="" height={100} />
+                    <img alt="logo_image" height={100} />
                   </span>
                 </NavLink>
                 <NavLink to="/" className="logo logo-light">
                   <span className="logo-sm">
-                    <img alt="" height={22} />
+                    <img alt="logo_image" height={22} />
                   </span>
                   <span className="logo-lg">
                     <img
                       src="https://admin.stoneskill.com/assets/logo/2.png"
-                      alt=""
+                      alt="logo_image"
                       height={17}
                     />
                   </span>

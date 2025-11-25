@@ -1,5 +1,3 @@
-import React from 'react'
-
 const SalesmanInfo = ({ salesmanData }) => {
 
     const phoneNumber = salesmanData?.business_salesmen_contact_number;

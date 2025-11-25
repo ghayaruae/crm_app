@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_blue.css';
@@ -11,7 +11,6 @@ const SalesChart = () => {
     const [loading, setLoading] = useState(true);
     const { primaryColor, apiHeaderJson, apiURL } = useContext(ConfigContext);
 
-    // Default: Current Month Range
     const getDefaultDateRange = () => {
         const now = new Date();
         const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);

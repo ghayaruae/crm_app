@@ -111,7 +111,7 @@
       (document.querySelector(".navbar-menu") &&
         (document.querySelector(".navbar-menu").innerHTML = d),
         ((n = document.createElement("ul")).innerHTML =
-          '<a href="#" class="logo"><img src="/assets/images/logo-sm.png" alt="" height="34"></a>'),
+          '<a href="/" class="logo"><img src="/assets/images/logo-sm.png" alt="" height="34"></a>'),
         Array.from(
           document.getElementById("navbar-nav").querySelectorAll(".menu-link")
         ).forEach(function (e) {

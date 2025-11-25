@@ -1,14 +1,12 @@
-import React, { useContext, useEffect, useState, useRef } from 'react'
+import { useContext, useEffect, useState, useRef } from 'react'
 import PageTitle from '../../../Components/PageTitle'
 import { ConfigContext } from '../../../Context/ConfigContext'
 import Select from 'react-select'
 import axios from 'axios'
-import Swal from 'sweetalert2'
 import Flatpicker from "react-flatpickr";
 import { TableRows, NoRecords } from '../../../Components/Shimmer'
 import { Link } from 'react-router-dom'
 import { DateFormater } from '../../../Components/GlobalFunctions'
-import { ActionBtns } from '../../../Components/ActionBtns'
 import { GlobalLimitChanger } from '../../../Components/InputElements'
 import { GetStatusBadge } from '../../../Utils/GetStatusBadge'
 

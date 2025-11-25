@@ -1,19 +1,17 @@
 import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
-import Select from 'react-select'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { NoRecords, TableRows } from '../../../Components/Shimmer'
 import { GlobalLimitChanger, SubmitBtn } from '../../../Components/InputElements'
 import { ConfigContext } from '../../../Context/ConfigContext'
 import PageTitle from '../../../Components/PageTitle'
 import Swal from 'sweetalert2'
-import Flatpickr from "react-flatpickr";
-import { DateFormater } from '../../../Components/GlobalFunctions'
 import { Link } from 'react-router-dom'
 
 const ManageUsers = () => {
 
-    const { primaryColor, apiHeaderFile, apiURL, selectTheme, selectStyle } = useContext(ConfigContext)
+    const { primaryColor, apiHeaderFile, apiURL } = useContext(ConfigContext)
     const headers = apiHeaderFile;
+    const imageInputRef = useRef(null);
 
     const [formData, setFormData] = useState({
         business_salesmen_name: "",
@@ -66,6 +64,9 @@ const ManageUsers = () => {
         setUserId("")
         setImagePreview("")
         setErrors({})
+        if (imageInputRef.current) {
+            imageInputRef.current.value = ""
+        }
     }
 
     const handleInputChange = (e) => {
@@ -161,7 +162,11 @@ const ManageUsers = () => {
                     business_salesman_image: null
                 })
                 setUserId(fields.business_salesman_id)
-                setImagePreview(fields.business_salesman_image ? `${apiURL}${fields.business_salesman_image}` : "")
+                setImagePreview(
+                    fields.business_salesman_image
+                        ? `${apiURL}public/salesmans/${fields.business_salesman_image}`
+                        : ""
+                )
             }
         } catch (error) {
             console.error(error)
@@ -298,9 +303,10 @@ const ManageUsers = () => {
                                                     accept="image/*"
                                                     onChange={handleImageChange}
                                                     className="form-control"
+                                                    ref={imageInputRef}
                                                 />
                                                 {imagePreview && (
-                                                    <div className="mt-2">
+                                                    <div className="mt-2 d-flex gap-2 align-items-center">
                                                         <img
                                                             src={imagePreview}
                                                             alt="Preview"
