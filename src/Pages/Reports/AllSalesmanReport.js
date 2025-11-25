@@ -3,7 +3,6 @@ import PageTitle from '../../Components/PageTitle'
 import { ConfigContext } from '../../Context/ConfigContext'
 import axios from 'axios'
 import { TableRows, NoRecords } from '../../Components/Shimmer'
-import { Link } from 'react-router-dom'
 import { GlobalLimitChanger } from '../../Components/InputElements'
 
 const AllSalesmanReport = () => {

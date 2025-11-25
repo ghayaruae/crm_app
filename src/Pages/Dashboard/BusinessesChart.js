@@ -96,7 +96,7 @@
 // export default BusinessesChart
 
 
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import ReactECharts from 'echarts-for-react'
 import axios from 'axios';
 import { ConfigContext } from '../../Context/ConfigContext';
@@ -176,7 +176,7 @@ const BusinessesChart = () => {
     return (
         <div className="col-12 col-md-5">
             <div className="card shadow border-0 rounded h-100">
-                <div className="card-body d-flex flex-column justify-content-between">
+                <div className="card-body d-flex flex-column justify-content-evenly">
                     <h5 className="card-title mb-3 text-dark fw-semibold text-center text-md-start">
                         Achievement Target Overview
                     </h5>
@@ -215,7 +215,7 @@ const BusinessesChart = () => {
                     {!loading && !noData && (
                         <ReactECharts
                             option={option}
-                            style={{ width: "100%", height: "300px" }}
+                            style={{ width: "100%", height: "350px" }}
                             opts={{ renderer: 'svg' }}
                         />
                     )}

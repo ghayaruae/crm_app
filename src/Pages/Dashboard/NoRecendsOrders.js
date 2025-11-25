@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ConfigContext } from "../../Context/ConfigContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { DateFormater } from "../../Components/GlobalFunctions";
 import { NoRecords } from "../../Components/Shimmer";
 import axios from "axios";

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Select from 'react-select'
 import { SubmitBtn } from '../../../Components/InputElements'
 import { ConfigContext } from '../../../Context/ConfigContext'
@@ -16,7 +16,6 @@ const ManageFollowup = () => {
     const navigate = useNavigate()
     const headers = apiHeaderJson;
 
-    // Convert params to usable numbers
     const followupId = Number(business_salesman_followup_id) || 0;
     const autoBusinessId = Number(business_id) || 0;
 

@@ -1,9 +1,9 @@
-import { useContext, useRef, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import PageTitle from '../../../Components/PageTitle';
 import axios from 'axios';
 import { ConfigContext } from '../../../Context/ConfigContext';
 import { Link, useParams } from 'react-router-dom';
-import { ContentLoader, Spinner } from '../../../Components/Shimmer';
+import { ContentLoader } from '../../../Components/Shimmer';
 import OrderTracking from '../../../Components/OrderTracking';
 import OrderList from '../../../Components/OrderList';
 import Customers from '../../../Components/Customers';

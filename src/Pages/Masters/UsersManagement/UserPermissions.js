@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import PageTitle from '../../../Components/PageTitle'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ConfigContext } from '../../../Context/ConfigContext';
@@ -37,14 +37,12 @@ const UserPermissions = () => {
                 const data = response?.data?.data;
                 setRoutes(data);
 
-                // Enhanced grouping logic based on route patterns
                 const grouped = {};
                 data.forEach(route => {
                     let category = 'General';
                     const description = route.salesman_description?.toLowerCase() || '';
                     const privilegeName = route.salesman_privilege_name?.toLowerCase() || '';
 
-                    // Find matching category
                     for (const [cat, keywords] of Object.entries(categoryConfig)) {
                         if (keywords.some(keyword =>
                             description.includes(keyword) || privilegeName.includes(keyword)
@@ -62,7 +60,6 @@ const UserPermissions = () => {
 
                 setGroupedRoutes(grouped);
 
-                // Expand all categories by default
                 const expanded = {};
                 Object.keys(grouped).forEach(cat => {
                     expanded[cat] = true;
@@ -145,7 +142,7 @@ const UserPermissions = () => {
         });
     };
 
-    const toggleCategory = (category, permissions) => {
+    const toggleCategory = (permissions) => {
         const allSelected = permissions.every(p =>
             selectedPermissions.includes(p.salesman_privilage_id)
         );
@@ -234,7 +231,6 @@ const UserPermissions = () => {
                 <div className='container-fluid'>
                     <PageTitle title={"Salesman Permissions"} primary={"Dashboard/Salesman"} />
 
-                    {/* User Profile Card - Enhanced */}
                     {user && (
                         <div className="card mb-4 border-0 shadow-sm">
                             <div className="card-body p-4">
@@ -243,7 +239,7 @@ const UserPermissions = () => {
                                         <div className="d-flex align-items-center">
                                             <div className="flex-shrink-0">
                                                 <div
-                                                    className="rounded-circle d-flex align-items-center justify-content-center text-white shadow"
+                                                    className="rounded-circle d-flex align-items-center justify-content-center text-white shadow overflow-hidden"
                                                     style={{
                                                         backgroundColor: primaryColor,
                                                         width: "80px",
@@ -252,12 +248,24 @@ const UserPermissions = () => {
                                                         fontWeight: "600"
                                                     }}
                                                 >
-                                                    {user?.business_salesmen_name?.charAt(0).toUpperCase() || 'U'}
+                                                    {user?.business_salesman_image ? (
+                                                        <img
+                                                            src={`${apiURL}public/salesmans/${user.business_salesman_image}`}
+                                                            alt="Profile"
+                                                            style={{
+                                                                width: "100%",
+                                                                height: "100%",
+                                                                objectFit: "cover"
+                                                            }}
+                                                        />
+                                                    ) : (
+                                                        user?.business_salesmen_name?.charAt(0).toUpperCase() || "U"
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="flex-grow-1 ms-3">
                                                 <h4 className="mb-1">{user?.business_salesmen_name || 'No Name'}</h4>
-                                                <p className="text-muted mb-2">{user?.business_salesmen_email || 'No Email'}</p>
+                                                <p className="text-muted mb-2">{user?.business_salesman_email || 'No Email'}</p>
                                                 <div className="d-flex align-items-center">
                                                     <div className="me-4">
                                                         <small className="text-muted">Total Permissions</small>
@@ -314,7 +322,7 @@ const UserPermissions = () => {
                     {/* Permissions Management Card */}
                     <div className="card border-0 shadow-sm">
                         <div className="card-header bg-transparent border-0 py-3">
-                            <div className="row align-items-center">
+                            <div className="row align-items-center g-2">
                                 <div className="col-md-8">
                                     <h4 className="mb-0">
                                         <i className="bx bx-shield-alt me-2"></i>
@@ -424,14 +432,14 @@ const UserPermissions = () => {
                                 </div>
                                 <div className="d-flex gap-2">
                                     <button
-                                        className="btn btn-secondary"
+                                        className="btn btn-secondary btn-label"
                                         onClick={() => navigate(-1)}
                                     >
-                                        <i className="bx bx-arrow-back me-1"></i>
+                                        <i className="bx bx-arrow-back label-icon"></i>
                                         Back
                                     </button>
                                     <button
-                                        className="btn btn-primary"
+                                        className="btn btn-primary btn-label"
                                         onClick={savePermissions}
                                         disabled={saveLoading}
                                     >
@@ -442,7 +450,7 @@ const UserPermissions = () => {
                                             </>
                                         ) : (
                                             <>
-                                                <i className="bx bx-save me-1"></i>
+                                                <i className="bx bx-save label-icon"></i>
                                                 Save Permissions
                                             </>
                                         )}

@@ -1,13 +1,10 @@
 import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
-import Select from 'react-select'
+import { useContext, useEffect, useState } from 'react'
 import { SubmitBtn } from '../../Components/InputElements'
 import { ConfigContext } from '../../Context/ConfigContext'
 import PageTitle from '../../Components/PageTitle'
 import Swal from 'sweetalert2'
-import Flatpickr from "react-flatpickr";
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { getCurrentDate } from '../../Components/GlobalFunctions'
 
 const CreateRequest = () => {
 
@@ -100,7 +97,7 @@ const CreateRequest = () => {
 
     const getInfo = async () => {
         try {
-            if (inventory_part_request_id == 0) return;
+            if (inventory_part_request_id === 0) return;
 
             const response = await axios.get(`${apiURL}Masters/GetRequestPartInquiryInfo`, {
                 headers,
@@ -125,7 +122,7 @@ const CreateRequest = () => {
     }
 
     useEffect(() => {
-        inventory_part_request_id != 0 && getInfo()
+        inventory_part_request_id !== 0 && getInfo()
     }, [inventory_part_request_id])
 
 

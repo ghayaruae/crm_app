@@ -1,4 +1,3 @@
-import React from 'react'
 import { DateFormater } from '../../Components/GlobalFunctions';
 
 const DashboardCards = ({ data, salesman_data }) => {

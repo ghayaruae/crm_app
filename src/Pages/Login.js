@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { ConfigContext } from '../Context/ConfigContext';
 import * as Yup from 'yup';
-import Swal from 'sweetalert2';
 import axios from 'axios';
 
 const Login = () => {

@@ -7,7 +7,6 @@ import { TableRows, NoRecords } from '../../Components/Shimmer'
 import { GlobalLimitChanger } from '../../Components/InputElements'
 import { DateFormater } from '../../Components/GlobalFunctions'
 import Select from 'react-select';
-import { Link } from 'react-router-dom';
 import * as XLSX from 'xlsx';
 
 const FollowupReport = () => {
@@ -27,8 +26,6 @@ const FollowupReport = () => {
     const [from_date, setFrom_date] = useState("")
     const [to_date, setTo_date] = useState("")
     const [filtersApplied, setFiltersApplied] = useState(false)
-
-    /* NEW STATES FOR EXPORT */
     const [exporting, setExporting] = useState(false)
     const [progress, setProgress] = useState(0)
 
