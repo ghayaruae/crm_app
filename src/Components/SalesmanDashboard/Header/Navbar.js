@@ -41,11 +41,26 @@ const Navbar = () => {
                 <div className="row g-4">
 
                     <div className="col-auto">
-                        <div className="avatar-lg">
+                        <div
+                            className="avatar-lg rounded-circle overflow-hidden"
+                            style={{
+                                width: "100px",
+                                height: "100px",
+                                minWidth: "100px",
+                            }}
+                        >
                             <img
-                                src="https://cirrusindia.co.in/wp-content/uploads/2016/10/dummy-profile-pic-male1.jpg"
+                                src={
+                                    data?.business_salesman_image
+                                        ? `${apiURL}public/salesmans/${data?.business_salesman_image}`
+                                        : "https://cirrusindia.co.in/wp-content/uploads/2016/10/dummy-profile-pic-male1.jpg"
+                                }
                                 alt="user-img"
-                                className="img-thumbnail rounded-circle"
+                                style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    objectFit: "cover"
+                                }}
                             />
                         </div>
                     </div>

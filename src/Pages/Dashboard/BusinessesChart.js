@@ -176,10 +176,10 @@ const BusinessesChart = () => {
     return (
         <div className="col-12 col-md-5">
             <div className="card shadow border-0 rounded h-100">
-                <div className="card-body d-flex flex-column justify-content-evenly">
-                    <h5 className="card-title mb-3 text-dark fw-semibold text-center text-md-start">
-                        Achievement Target Overview
-                    </h5>
+                <h5 className="card-header text-center text-md-start">
+                    Achievement Target Overview
+                </h5>
+                <div className="card-body d-flex flex-column justify-content-evenly p-0">
 
                     {/* Loader */}
                     {loading && (

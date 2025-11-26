@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { DateFormater } from '../../../Components/GlobalFunctions'
 
 const AchievementStats = ({ aboveTargetData = [], belowTargetData = [] }) => {
     const [activeTab, setActiveTab] = useState('above')
@@ -32,8 +33,8 @@ const AchievementStats = ({ aboveTargetData = [], belowTargetData = [] }) => {
                                     </td>
                                     <td>{item?.business_salesman_email || '-'}</td>
                                     <td>{item?.business_salesman_contact_number || '-'}</td>
-                                    <td className='text-dark fw-bold'>{item?.business_salesman_target_from || '-'}</td>
-                                    <td className='text-dark fw-bold'>{item?.business_salesman_target_to || '-'}</td>
+                                    <td className='text-dark fw-bold'>{DateFormater(item?.business_salesman_target_from) || '-'}</td>
+                                    <td className='text-dark fw-bold'>{DateFormater(item?.business_salesman_target_to) || '-'}</td>
 
 
                                     <td className='text-success fw-bold text-end'>{item?.total_target?.toLocaleString()}</td>
