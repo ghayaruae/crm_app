@@ -143,22 +143,26 @@ const AllSalesmanReport = () => {
                                         </div>
                                         <div className="table-card table-responsive">
                                             <table className="table table-bordered table-striped table-hover table-nowrap mb-0">
+                                                <thead className="table-light text-center">
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Salesman Name</th>
+                                                        <th>Contact</th>
+                                                        <th>Email</th>
+                                                    </tr>
+                                                </thead>
+
                                                 {loading ? (
-                                                    <TableRows rows="10" colspan="10" />
+                                                    <TableRows rows="10" colspan="4" />
                                                 ) : (
                                                     <>
-                                                        <thead className="table-light text-center">
-                                                            <tr>
-                                                                <th>ID</th>
-                                                                <th>Salesman Name</th>
-                                                                <th>Contact</th>
-                                                                <th>Email</th>
-                                                            </tr>
-                                                        </thead>
                                                         <tbody>
                                                             {data.length > 0 ? (
                                                                 data.map((row) => (
-                                                                    <tr key={row.business_salesman_id} className="text-center">
+                                                                    <tr
+                                                                        key={row.business_salesman_id}
+                                                                        className="text-center"
+                                                                    >
                                                                         <td>{row.business_salesman_id}</td>
                                                                         <td>{row.business_salesmen_name}</td>
                                                                         <td>{row.business_salesmen_contact_number}</td>
@@ -167,24 +171,43 @@ const AllSalesmanReport = () => {
                                                                 ))
                                                             ) : (
                                                                 <tr>
-                                                                    <td colSpan={10}>
+                                                                    <td colSpan={4}>
                                                                         <NoRecords />
                                                                     </td>
                                                                 </tr>
                                                             )}
                                                         </tbody>
-                                                        <tfoot className='table-light'>
+
+                                                        <tfoot className="table-light">
                                                             <tr>
-                                                                <th colSpan={10}>
+                                                                <th colSpan={4}>
                                                                     <div className="d-flex justify-content-between">
-                                                                        <button disabled={!prev && !loading} type="button" onClick={handlePrev} className={`btn btn-warning btn-label waves-effect waves-light`}>
-                                                                            <i className="ri-arrow-left-line label-icon align-middle fs-16 me-2" /> Previous
+                                                                        <button
+                                                                            disabled={!prev || loading}
+                                                                            type="button"
+                                                                            onClick={handlePrev}
+                                                                            className="btn btn-warning btn-label waves-effect waves-light"
+                                                                        >
+                                                                            <i className="ri-arrow-left-line label-icon align-middle fs-16 me-2" />
+                                                                            Previous
                                                                         </button>
-                                                                        <div className='col-md-4' style={{ display: 'flex', alignItems: 'center' }}>
-                                                                            <small>Total Records: {totalRecords} | Total Pages: {totalPages} | Current Page: {page}</small>
+
+                                                                        <div
+                                                                            className="col-md-4"
+                                                                            style={{ display: "flex", alignItems: "center" }}
+                                                                        >
+                                                                            <small>
+                                                                                Total Records: {totalRecords} | Total Pages:{" "}
+                                                                                {totalPages} | Current Page: {page}
+                                                                            </small>
                                                                         </div>
-                                                                        <div className='col-md-2'>
-                                                                            <select className="form-select" value={page} onChange={handleChange}>
+
+                                                                        <div className="col-md-2">
+                                                                            <select
+                                                                                className="form-select"
+                                                                                value={page}
+                                                                                onChange={handleChange}
+                                                                            >
                                                                                 {Array.from({ length: totalPages }, (_, i) => (
                                                                                     <option key={i + 1} value={i + 1}>
                                                                                         {i + 1}
@@ -192,7 +215,8 @@ const AllSalesmanReport = () => {
                                                                                 ))}
                                                                             </select>
                                                                         </div>
-                                                                        <div className='col-md-2'>
+
+                                                                        <div className="col-md-2">
                                                                             <GlobalLimitChanger
                                                                                 placeholder="Set limit:"
                                                                                 name="globalLimit"
@@ -201,8 +225,15 @@ const AllSalesmanReport = () => {
                                                                                 showAllValue={totalRecords}
                                                                             />
                                                                         </div>
-                                                                        <button disabled={!next && !loading} type="button" onClick={handleNext} className={`btn btn-primary btn-label waves-effect right waves-light`}>
-                                                                            <i className="ri-arrow-right-line label-icon align-middle fs-16 ms-2" /> Next
+
+                                                                        <button
+                                                                            disabled={!next || loading}
+                                                                            type="button"
+                                                                            onClick={handleNext}
+                                                                            className="btn btn-primary btn-label waves-effect right waves-light"
+                                                                        >
+                                                                            Next
+                                                                            <i className="ri-arrow-right-line label-icon align-middle fs-16 ms-2" />
                                                                         </button>
                                                                     </div>
                                                                 </th>

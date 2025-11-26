@@ -183,7 +183,7 @@ const AllOrders = () => {
                                                 </thead>
                                                 <tbody>
                                                     {loading ? (
-                                                        <TableRows colspan={9} rows={10} />
+                                                        <TableRows colspan={11} rows={10} />
                                                     ) : data.length > 0 ? (
                                                         data.map((row) => (
                                                             <tr key={row.business_order_id} className="text-center">
@@ -220,7 +220,7 @@ const AllOrders = () => {
                                                         ))
                                                     ) : (
                                                         <tr>
-                                                            <td colSpan={8}>
+                                                            <td colSpan={11}>
                                                                 <NoRecords />
                                                             </td>
                                                         </tr>
@@ -229,7 +229,7 @@ const AllOrders = () => {
                                                 {data.length > 0 && (
                                                     <tfoot className='table-light'>
                                                         <tr>
-                                                            <th colSpan={8}>
+                                                            <th colSpan={11}>
                                                                 <div className="d-flex justify-content-between">
                                                                     <button disabled={!prev && !loading} type="button" onClick={handlePrev} className={`btn btn-warning btn-label waves-effect waves-light`}>
                                                                         <i className="ri-arrow-left-line label-icon align-middle fs-16 me-2" /> Previous

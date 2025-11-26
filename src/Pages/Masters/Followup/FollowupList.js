@@ -132,38 +132,44 @@ const FollowupList = () => {
 
                                         <div className="table-responsive table-card">
                                             <table className="table table-bordered table-striped table-hover mb-0 table-nowrap">
+                                                <thead className="table-light text-center">
+                                                    <tr>
+                                                        <th>Salesman</th>
+                                                        <th>Business</th>
+                                                        <th>Type</th>
+                                                        <th>Date</th>
+                                                        <th>Response</th>
+                                                        <th>Remark</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+
                                                 {loading ? (
-                                                    <TableRows rows="10" colspan="6" />
+                                                    <TableRows rows="10" colspan="7" />
                                                 ) : (
                                                     <>
-                                                        <thead className="table-light text-center">
-                                                            <tr>
-                                                                <th>Salesman</th>
-                                                                <th>Business</th>
-                                                                <th>Type</th>
-                                                                <th>Date</th>
-                                                                <th>Response</th>
-                                                                <th>Remark</th>
-                                                                <th>Action</th>
-                                                            </tr>
-                                                        </thead>
                                                         <tbody>
                                                             {data.length > 0 ? (
                                                                 data.map((row) => (
                                                                     <tr key={row.business_salesman_followup_id} className="text-center">
                                                                         <td>{row.business_salesmen_name}</td>
+
                                                                         <td>
-                                                                            <Link style={{ color: primaryColor, fontWeight: "bolder" }} to={`/CustomerDashboard/${row.business_id}`}>
+                                                                            <Link
+                                                                                style={{ color: primaryColor, fontWeight: "bolder" }}
+                                                                                to={`/CustomerDashboard/${row.business_id}`}
+                                                                            >
                                                                                 {row.business_name}
                                                                             </Link>
                                                                         </td>
+
                                                                         <td>{row.business_salesman_followup_type}</td>
                                                                         <td>{DateFormater(row.business_salesman_followup_date)}</td>
 
-
                                                                         <td>
                                                                             <span
-                                                                                className="text-ellipsis" title={row?.business_salesman_business_response}
+                                                                                className="text-ellipsis"
+                                                                                title={row?.business_salesman_business_response}
                                                                             >
                                                                                 {row?.business_salesman_business_response}
                                                                             </span>
@@ -171,54 +177,84 @@ const FollowupList = () => {
 
                                                                         <td>
                                                                             <span
-                                                                                className="text-ellipsis" title={row.business_salesman_followup_remark}
+                                                                                className="text-ellipsis"
+                                                                                title={row.business_salesman_followup_remark}
                                                                             >
                                                                                 {row.business_salesman_followup_remark}
                                                                             </span>
                                                                         </td>
 
-                                                                        <td className='d-flex align-items-center justify-content-center gap-2'>
-                                                                            <Link to={`/Masters/ManageFollowup/${row.business_salesman_followup_id}`}>
-                                                                                <button
-                                                                                    className='btn btn-sm btn-soft-primary'
-                                                                                >
-                                                                                    <i className='ri-pencil-line'></i>
+                                                                        <td className="d-flex align-items-center justify-content-center gap-2">
+                                                                            <Link
+                                                                                to={`/Masters/ManageFollowup/${row.business_salesman_followup_id}`}
+                                                                            >
+                                                                                <button className="btn btn-sm btn-soft-primary">
+                                                                                    <i className="ri-pencil-line"></i>
                                                                                 </button>
                                                                             </Link>
+
                                                                             <button
-                                                                                className='btn btn-sm btn-soft-danger'
-                                                                                onClick={() => handleDelete(row.business_salesman_followup_id)}
+                                                                                className="btn btn-sm btn-soft-danger"
+                                                                                onClick={() =>
+                                                                                    handleDelete(row.business_salesman_followup_id)
+                                                                                }
                                                                             >
-                                                                                <i className='ri-delete-bin-line'></i>
+                                                                                <i className="ri-delete-bin-line"></i>
                                                                             </button>
                                                                         </td>
                                                                     </tr>
                                                                 ))
                                                             ) : (
                                                                 <tr>
-                                                                    <td colSpan={9}><NoRecords /></td>
+                                                                    <td colSpan="7">
+                                                                        <NoRecords />
+                                                                    </td>
                                                                 </tr>
                                                             )}
                                                         </tbody>
 
-                                                        <tfoot className='table-light'>
+                                                        <tfoot className="table-light">
                                                             <tr>
-                                                                <th colSpan={8}>
+                                                                <th colSpan={7}>
                                                                     <div className="d-flex align-items-center justify-content-between flex-nowrap gap-2">
-                                                                        <button disabled={!prev || loading} type="button" onClick={handlePrev} className="btn btn-warning btn-label waves-effect waves-light">
-                                                                            <i className="ri-arrow-left-line label-icon align-middle fs-16 me-2" /> Previous
+                                                                        <button
+                                                                            disabled={!prev || loading}
+                                                                            type="button"
+                                                                            onClick={handlePrev}
+                                                                            className="btn btn-warning btn-label waves-effect waves-light"
+                                                                        >
+                                                                            <i className="ri-arrow-left-line label-icon align-middle fs-16 me-2" />
+                                                                            Previous
                                                                         </button>
-                                                                        <div className='col-md-4' style={{ display: 'flex', alignItems: 'center' }}>
-                                                                            <small>Total Records: {totalRecords} | Total Pages: {totalPages} | Current Page: {page}</small>
+
+                                                                        <div
+                                                                            className="col-md-4"
+                                                                            style={{ display: "flex", alignItems: "center" }}
+                                                                        >
+                                                                            <small>
+                                                                                Total Records: {totalRecords} | Total Pages:{" "}
+                                                                                {totalPages} | Current Page: {page}
+                                                                            </small>
                                                                         </div>
-                                                                        <div className='col-md-2'>
-                                                                            <select className="form-select" value={page} onChange={handleChange}>
-                                                                                {Array.from({ length: totalPages }, (_, i) => (
-                                                                                    <option key={i + 1} value={i + 1}>{i + 1}</option>
-                                                                                ))}
+
+                                                                        <div className="col-md-2">
+                                                                            <select
+                                                                                className="form-select"
+                                                                                value={page}
+                                                                                onChange={handleChange}
+                                                                            >
+                                                                                {Array.from(
+                                                                                    { length: totalPages },
+                                                                                    (_, i) => (
+                                                                                        <option key={i + 1} value={i + 1}>
+                                                                                            {i + 1}
+                                                                                        </option>
+                                                                                    )
+                                                                                )}
                                                                             </select>
                                                                         </div>
-                                                                        <div className='col-md-2'>
+
+                                                                        <div className="col-md-2">
                                                                             <GlobalLimitChanger
                                                                                 placeholder="Set limit:"
                                                                                 name="globalLimit"
@@ -227,8 +263,15 @@ const FollowupList = () => {
                                                                                 showAllValue={totalRecords}
                                                                             />
                                                                         </div>
-                                                                        <button disabled={!next || loading} type="button" onClick={handleNext} className="btn btn-primary btn-label waves-effect right waves-light">
-                                                                            <i className="ri-arrow-right-line label-icon align-middle fs-16 ms-2" /> Next
+
+                                                                        <button
+                                                                            disabled={!next || loading}
+                                                                            type="button"
+                                                                            onClick={handleNext}
+                                                                            className="btn btn-primary btn-label waves-effect right waves-light"
+                                                                        >
+                                                                            Next
+                                                                            <i className="ri-arrow-right-line label-icon align-middle fs-16 ms-2" />
                                                                         </button>
                                                                     </div>
                                                                 </th>

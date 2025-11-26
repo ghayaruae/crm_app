@@ -76,7 +76,7 @@ const AchievementStats = ({ aboveTargetData = [], belowTargetData = [] }) => {
                                 role="tab"
                             >
                                 <i className="ri-arrow-up-line me-1 text-success"></i>
-                                Achievement Target
+                                Above Target
                                 <span className="badge bg-success-subtle text-success rounded-pill ms-2">
                                     {aboveTargetData.length}
                                 </span>

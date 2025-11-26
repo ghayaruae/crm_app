@@ -20,18 +20,17 @@ const TargetReport = () => {
     const [limit, setLimit] = useState(10)
     const [totalRecords, setTotalRecords] = useState(0)
     const [totalPages, setTotalPages] = useState(0)
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [selectedSalesman, setSelectedSalesman] = useState(null)
     const [salesmanOptions, setSalesmanOptions] = useState([])
     const [from_date, setFrom_date] = useState("")
     const [to_date, setTo_date] = useState("")
-    const [filtersApplied, setFiltersApplied] = useState(false)
     const [exporting, setExporting] = useState(false)
     const [progress, setProgress] = useState(0)
+    const [applyFilter, setApplyFilter] = useState(0);
 
     const getData = async () => {
         try {
-            setLoading(true)
             const response = await axios.get(`${apiURL}Reports/GetAllTargetReports`, {
                 headers,
                 params: {
@@ -42,10 +41,11 @@ const TargetReport = () => {
                     to_date: to_date || ""
                 }
             })
-            const { success, data, page: currentPage, next, prev, total_pages, total_records } = response.data
+
+            const { success, data, next, prev, total_pages, total_records } = response.data
+
             if (success) {
                 setData(data)
-                setPage(currentPage)
                 setNext(next)
                 setPrev(prev)
                 setTotalPages(total_pages)
@@ -53,6 +53,7 @@ const TargetReport = () => {
             } else {
                 setData([])
             }
+
         } catch (error) {
             console.error('Error getting data:', error)
         } finally {
@@ -64,6 +65,7 @@ const TargetReport = () => {
         try {
             const response = await axios.get(`${apiURL}Masters/GetSalesmanList`, { headers })
             const { success, data } = response.data
+
             if (success) {
                 const options = data.map((item) => ({
                     value: item.business_salesman_id,
@@ -79,51 +81,31 @@ const TargetReport = () => {
     const handlePrev = () => {
         if (prev) {
             setPage(p => p - 1)
-            getData()
         }
     }
 
     const handleNext = () => {
         if (next) {
             setPage(p => p + 1)
-            getData()
         }
     }
 
     const handleChange = (e) => {
-        const newPage = parseInt(e.target.value, 10)
-        setPage(newPage)
-        getData()
+        setPage(parseInt(e.target.value, 10))
     }
 
     const handleFilter = () => {
-        if ((from_date && to_date) || selectedSalesman) {
-            setFiltersApplied(true)
-            setPage(1)
-            getData()
-        }
+        setPage(1)
+        setApplyFilter(prev => prev + 1)
     }
 
     const handleReset = () => {
-        if ((from_date && to_date) || selectedSalesman) {
-            setSelectedSalesman(null)
-            setFrom_date("")
-            setTo_date("")
-            setFiltersApplied(false)
-            setData([])
-            setPage(1)
-            setLimit(10)
-            setTotalRecords(0)
-            setTotalPages(0)
-        }
-    }
-
-    const handleLimitChange = (newLimit) => {
-        setLimit(newLimit)
+        setSelectedSalesman(null)
+        setFrom_date("")
+        setTo_date("")
         setPage(1)
-        if (filtersApplied) {
-            getData()
-        }
+        setLimit(10)
+        setApplyFilter(prev => prev + 1)
     }
 
     const handleExportExcel = () => {
@@ -172,6 +154,10 @@ const TargetReport = () => {
         getSalesmanList()
     }, [])
 
+    useEffect(() => {
+        getData()
+    }, [page, limit, applyFilter])
+
     return (
         <div className="main-content">
             <div className="page-content">
@@ -187,15 +173,17 @@ const TargetReport = () => {
                                 >
                                     <h5 className="mb-0 text-white">Target List</h5>
 
-                                    {filtersApplied && data.length > 0 && (
+                                    {data.length > 0 && (
                                         <button
-                                            className="btn btn-soft-success btn-sm"
+                                            className="btn btn-success btn-sm btn-label"
                                             onClick={handleExportExcel}
                                         >
-                                            <i className="ri-file-excel-2-line me-1"></i> Export
+                                            <i className="ri-file-excel-2-line me-1 label-icon"></i>
+                                            Export
                                         </button>
                                     )}
                                 </div>
+
                                 {exporting && (
                                     <div className="px-3 pt-2 pb-1 bg-white border-bottom">
                                         <div className="d-flex justify-content-between mb-1">
@@ -242,7 +230,6 @@ const TargetReport = () => {
                                                 onChange={(_, dateStr) => setFrom_date(dateStr)}
                                                 value={from_date}
                                                 placeholder="From Date"
-                                                name='from_date'
                                             />
                                         </div>
 
@@ -252,7 +239,6 @@ const TargetReport = () => {
                                                 onChange={(_, dateStr) => setTo_date(dateStr)}
                                                 value={to_date}
                                                 placeholder="To Date"
-                                                name='to_date'
                                             />
                                         </div>
 
@@ -290,91 +276,92 @@ const TargetReport = () => {
                                                 </tr>
                                             </thead>
 
-                                            <tbody>
-                                                {filtersApplied ? (
-                                                    loading ? (
-                                                        <tr><td colSpan="7"><TableRows /></td></tr>
-                                                    ) : data.length > 0 ? (
-                                                        data.map((row) => (
-                                                            <tr key={row.business_salesman_target_id} className="text-center">
-                                                                <td>{row.business_salesman_target_id}</td>
-                                                                <td>{row.business_salesmen_name}</td>
-                                                                <td>{row.business_salesmen_contact_number}</td>
-                                                                <td>{row.business_salesman_email}</td>
-                                                                <td>{row.business_salesman_target}</td>
-                                                                <td>{DateFormater(row.business_salesman_target_from)}</td>
-                                                                <td>{DateFormater(row.business_salesman_target_to)}</td>
+                                            {loading ? (
+                                                <TableRows rows="10" colspan="7" />
+                                            ) : (
+                                                <>
+                                                    <tbody>
+                                                        {data.length > 0 ? (
+                                                            data.map((row) => (
+                                                                <tr key={row.business_salesman_target_id} className="text-center">
+                                                                    <td>{row.business_salesman_target_id}</td>
+                                                                    <td>{row.business_salesmen_name}</td>
+                                                                    <td>{row.business_salesmen_contact_number}</td>
+                                                                    <td>{row.business_salesman_email}</td>
+                                                                    <td>{row.business_salesman_target}</td>
+                                                                    <td>{DateFormater(row.business_salesman_target_from)}</td>
+                                                                    <td>{DateFormater(row.business_salesman_target_to)}</td>
+                                                                </tr>
+                                                            ))
+                                                        ) : (
+                                                            <tr>
+                                                                <td colSpan="7">
+                                                                    <NoRecords />
+                                                                </td>
                                                             </tr>
-                                                        ))
-                                                    ) : (
-                                                        <tr><td colSpan="7"><NoRecords /></td></tr>
-                                                    )
-                                                ) : (
-                                                    <tr>
-                                                        <td colSpan="7" className='text-center text-muted'>
-                                                            Apply filter to view records
-                                                        </td>
-                                                    </tr>
-                                                )}
-                                            </tbody>
+                                                        )}
+                                                    </tbody>
 
-                                            {filtersApplied && data.length > 0 && (
-                                                <tfoot className='table-light'>
-                                                    <tr>
-                                                        <th colSpan={7}>
-                                                            <div className="d-flex justify-content-between">
+                                                    {data.length > 0 && (
+                                                        <tfoot className="table-light">
+                                                            <tr>
+                                                                <th colSpan={8}>
+                                                                    <div className="d-flex align-items-center justify-content-between flex-nowrap gap-2">
+                                                                        <button
+                                                                            disabled={!prev || loading}
+                                                                            type="button"
+                                                                            onClick={handlePrev}
+                                                                            className="btn btn-warning btn-label waves-effect waves-light"
+                                                                        >
+                                                                            <i className="ri-arrow-left-line label-icon align-middle fs-16 me-2" />
+                                                                            Previous
+                                                                        </button>
 
-                                                                <button
-                                                                    disabled={!prev || loading}
-                                                                    type="button"
-                                                                    onClick={handlePrev}
-                                                                    className="btn btn-warning btn-label"
-                                                                >
-                                                                    <i className="ri-arrow-left-line me-2" /> Previous
-                                                                </button>
+                                                                        <div className="col-md-4 d-flex align-items-center">
+                                                                            <small>
+                                                                                Total Records: {totalRecords} | Total Pages: {totalPages} | Current Page: {page}
+                                                                            </small>
+                                                                        </div>
 
-                                                                <small>
-                                                                    Total Records: {totalRecords} |
-                                                                    Total Pages: {totalPages} |
-                                                                    Current Page: {page}
-                                                                </small>
+                                                                        <div className="col-md-2">
+                                                                            <select className="form-select" value={page} onChange={handleChange}>
+                                                                                {Array.from({ length: totalPages }, (_, i) => (
+                                                                                    <option key={i + 1} value={i + 1}>
+                                                                                        {i + 1}
+                                                                                    </option>
+                                                                                ))}
+                                                                            </select>
+                                                                        </div>
 
-                                                                <select
-                                                                    className="form-select w-auto"
-                                                                    value={page}
-                                                                    onChange={handleChange}
-                                                                    disabled={loading}
-                                                                >
-                                                                    {Array.from({ length: totalPages }, (_, i) => (
-                                                                        <option key={i + 1} value={i + 1}>{i + 1}</option>
-                                                                    ))}
-                                                                </select>
+                                                                        <div className="col-md-2">
+                                                                            <GlobalLimitChanger
+                                                                                placeholder="Set limit:"
+                                                                                name="globalLimit"
+                                                                                value={limit}
+                                                                                onChange={setLimit}
+                                                                                showAllValue={totalRecords}
+                                                                            />
+                                                                        </div>
 
-                                                                <GlobalLimitChanger
-                                                                    placeholder="Set limit:"
-                                                                    name="globalLimit"
-                                                                    value={limit}
-                                                                    onChange={handleLimitChange}
-                                                                    showAllValue={totalRecords}
-                                                                    disabled={loading}
-                                                                />
-
-                                                                <button
-                                                                    disabled={!next || loading}
-                                                                    type="button"
-                                                                    onClick={handleNext}
-                                                                    className="btn btn-primary btn-label"
-                                                                >
-                                                                    Next <i className="ri-arrow-right-line ms-2" />
-                                                                </button>
-
-                                                            </div>
-                                                        </th>
-                                                    </tr>
-                                                </tfoot>
+                                                                        <button
+                                                                            disabled={!next || loading}
+                                                                            type="button"
+                                                                            onClick={handleNext}
+                                                                            className="btn btn-primary btn-label waves-effect right waves-light"
+                                                                        >
+                                                                            Next
+                                                                            <i className="ri-arrow-right-line label-icon align-middle fs-16 ms-2" />
+                                                                        </button>
+                                                                    </div>
+                                                                </th>
+                                                            </tr>
+                                                        </tfoot>
+                                                    )}
+                                                </>
                                             )}
                                         </table>
                                     </div>
+
                                 </div>
                             </div>
                         </div>

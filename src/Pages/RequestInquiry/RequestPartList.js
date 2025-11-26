@@ -121,37 +121,26 @@ const RequestPartList = () => {
                                     >
                                         <h4 className="text-white flex-grow-1 mb-0">Part Inquiry Report</h4>
 
-                                        <Link to={"/Request/RequestPartInquiry"}>
+                                        {data.length > 0 && (
                                             <button
-                                                type="button"
-                                                className="btn btn-light btn-sm rounded-circle"
-                                                title="Add New Request"
+                                                className="btn btn-success btn-sm btn-label"
+                                                onClick={handleDownload}
                                             >
-                                                <i className="ri-add-line"></i>
+                                                <i className="ri-file-excel-2-line me-1 label-icon"></i>
+                                                Export
                                             </button>
-                                        </Link>
+                                        )}
                                     </div>
 
                                     <div className="card-body">
 
-                                        <div className="row w-100 mb-4">
-                                            <div className="col-md-8">
-                                                <ul className="nav nav-tabs nav-tabs-custom nav-success">
-                                                    <button
-                                                        className='btn btn-sm btn-success me-2 waves-light waves-effect'
-                                                        onClick={handleDownload}
-                                                    >
-                                                        Excel
-                                                    </button>
-                                                </ul>
-                                            </div>
-
+                                        <div className="row mb-4 ">
                                             <div className="col-md-4">
                                                 <div className="position-relative">
                                                     <input
                                                         type="text"
                                                         className="form-control pe-5"
-                                                        placeholder="Search by Part name OR part number"
+                                                        placeholder="Search by Part name"
                                                         value={keyword}
                                                         onChange={(e) => setKeyword(e.target.value)}
                                                     />
@@ -166,38 +155,38 @@ const RequestPartList = () => {
                                         <div className="table-responsive table-card">
                                             <table className="table table-bordered table-hover mb-0 table-nowrap">
 
+                                                <thead className="table-light text-center">
+                                                    <tr>
+                                                        <th>Salesman Name</th>
+                                                        <th>Part Name</th>
+                                                        <th>Brand</th>
+                                                        <th>Part Number</th>
+                                                        <th>Qty</th>
+                                                        <th>Market Price</th>
+                                                    </tr>
+                                                </thead>
+
                                                 {loading ? (
-                                                    <TableRows rows="10" colspan="10" />
+                                                    <TableRows rows="10" colspan="6" />
                                                 ) : (
                                                     <>
-                                                        <thead className="table-light text-center">
-                                                            <tr>
-                                                                <th>Salesman Name</th>
-                                                                <th>Part Name</th>
-                                                                <th>Brand</th>
-                                                                <th>Part Number</th>
-                                                                <th>Qty</th>
-                                                                <th>Market Price</th>
-                                                            </tr>
-                                                        </thead>
-
                                                         <tbody>
                                                             {data.length > 0 ? (
                                                                 data.map((row) => (
                                                                     <tr key={row.inventory_part_request_id} className="text-center">
-
-                                                                        <td className='text-dark fw-bold'>{row.business_salesmen_name}</td>
+                                                                        <td className="text-dark fw-bold">
+                                                                            {row.business_salesmen_name}
+                                                                        </td>
                                                                         <td>{row.request_part_name}</td>
                                                                         <td>{row.request_brand_name}</td>
                                                                         <td>{row.request_part_number}</td>
                                                                         <td>{row.request_part_qty}</td>
                                                                         <td>{row.request_part_market_price}</td>
-                                                                        
                                                                     </tr>
                                                                 ))
                                                             ) : (
                                                                 <tr>
-                                                                    <td colSpan="10">
+                                                                    <td colSpan="6">
                                                                         <NoRecords />
                                                                     </td>
                                                                 </tr>
@@ -206,9 +195,8 @@ const RequestPartList = () => {
 
                                                         <tfoot className="table-light">
                                                             <tr>
-                                                                <th colSpan={10}>
+                                                                <th colSpan={6}>
                                                                     <div className="d-flex align-items-center justify-content-between gap-2 flex-nowrap">
-
                                                                         <button
                                                                             disabled={!prev || loading}
                                                                             type="button"
@@ -221,9 +209,8 @@ const RequestPartList = () => {
 
                                                                         <div className="col-md-4 text-center">
                                                                             <small>
-                                                                                Total Records: {totalRecords} |
-                                                                                Total Pages: {totalPages} |
-                                                                                Current Page: {page}
+                                                                                Total Records: {totalRecords} | Total Pages:{" "}
+                                                                                {totalPages} | Current Page: {page}
                                                                             </small>
                                                                         </div>
 
@@ -260,15 +247,12 @@ const RequestPartList = () => {
                                                                             Next
                                                                             <i className="ri-arrow-right-line label-icon ms-2" />
                                                                         </button>
-
                                                                     </div>
                                                                 </th>
                                                             </tr>
                                                         </tfoot>
-
                                                     </>
                                                 )}
-
                                             </table>
                                         </div>
 

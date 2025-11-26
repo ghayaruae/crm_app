@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { DateFormater } from '../../../Components/GlobalFunctions'
 
 const LastPartInquiries = ({ inquiryData }) => {
@@ -5,8 +6,13 @@ const LastPartInquiries = ({ inquiryData }) => {
         <>
             <div className='col-md-12'>
                 <div className="card shadow-sm">
-                    <div className="card-header text-white">
-                        <h5 className="mb-0">Last Part Inquiries</h5>
+
+                    <div className="card-header text-white d-flex justify-content-between align-items-center">
+                        <h5 className="mb-0">Last 5 Part Inquiries</h5>
+
+                        <Link to="/Request/RequestPartInquiryList" className="btn btn-dark btn-sm btn-label right">
+                            View More <i className='ri-arrow-right-line label-icon' />
+                        </Link>
                     </div>
 
                     <div className="card-body">
