@@ -95,12 +95,14 @@ const ManageFollowup = () => {
         setSubmitLoading(true)
         try {
             const body = {
-                business_id: selectedBusiness,
+                business_id: selectedBusiness?.value,
                 business_salesman_followup_type: selectedType,
                 business_salesman_followup_date: formData.date,
                 business_salesman_business_response: formData.response,
                 business_salesman_followup_remark: formData.remark
             }
+            console.log(body)
+            return;
 
             if (isEdit) {
                 body.business_salesman_followup_id = followupId;
@@ -147,26 +149,27 @@ const ManageFollowup = () => {
         }
     }
 
-    /** Load Business List Initially */
     useEffect(() => {
         getBusinessList()
     }, [])
 
-    /** Load Edit Info */
     useEffect(() => {
         if (isEdit) {
             getInfo();
         }
     }, [followupId])
 
-    /** Auto-select Business if Create Mode AND business_id exists */
     useEffect(() => {
         if (!isEdit && autoBusinessId > 0 && businessOptions.length > 0) {
-            setSelectedBusiness(autoBusinessId);
+            const selectedOption = businessOptions.find(
+                opt => opt.value === autoBusinessId
+            );
+
+            setSelectedBusiness(selectedOption || null);
+
             setErrors(prev => ({ ...prev, selectedBusiness: "" }));
         }
-    }, [autoBusinessId, businessOptions]);
-
+    }, [autoBusinessId, businessOptions, isEdit]);
 
     return (
         <>
@@ -204,9 +207,10 @@ const ManageFollowup = () => {
                                                     styles={selectStyle}
                                                     options={businessOptions}
                                                     placeholder="Select Business"
-                                                    value={businessOptions.find(opt => opt.value === selectedBusiness) || null}
+                                                    // value={businessOptions.find(opt => opt.value === selectedBusiness) || null}
+                                                    value={selectedBusiness}
                                                     onChange={(selected) => {
-                                                        setSelectedBusiness(selected ? selected.value : null);
+                                                        setSelectedBusiness(selected);
                                                         if (errors.selectedBusiness) {
                                                             setErrors(prev => ({ ...prev, selectedBusiness: '' }));
                                                         }
