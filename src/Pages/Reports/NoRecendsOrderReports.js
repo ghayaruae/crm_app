@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { ConfigContext } from '../../Context/ConfigContext';
 import axios from 'axios';
 import PageTitle from '../../Components/PageTitle';
-import { NoRecords } from '../../Components/Shimmer';
+import { NoRecords, TableRows } from '../../Components/Shimmer';
 import { Link } from 'react-router-dom';
 import { DateFormater } from '../../Components/GlobalFunctions';
 import TableFooter from '../../Components/Table/TableFooter';
@@ -63,7 +63,7 @@ const NoRecendsOrderReports = () => {
                         </div>
                         <div className="card-body">
 
-                            <div className="table-responsive">
+                            <div className="table-responsive table-card">
                                 <table className="table align-middle mb-0">
                                     <thead className="table-light">
                                         <tr>
@@ -76,57 +76,64 @@ const NoRecendsOrderReports = () => {
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        {
-                                            noRecentOrders?.length > 0 ?
-                                                noRecentOrders?.map((item, index) => (
-                                                    <tr key={index}>
-                                                        <td className="text-start fw-semibold">
-                                                            {item.business_id}
-                                                        </td>
-                                                        <td className='text-dark fw-bold'>
-                                                            <span
-                                                                className="text-ellipsis" title={item?.business_name}
-                                                            >
-                                                                {item?.business_name}
-                                                            </span>
-                                                        </td>
-                                                        <td>{item.business_contact_number ?? "N/A"}</td>
-                                                        <td>{item.business_email ?? "N/A"}</td>
-                                                        <td className="text-danger fw-bold">{item.no_order_since_days ?? "N/A"} Days</td>
-                                                        <td className="text-dark fw-bold">
-                                                            {DateFormater(item.last_order_date) ?? "No Orders Yet"}
-                                                        </td>
-                                                        <td>
-                                                            <Link to={`/Masters/ManageFollowup/0/${item.business_id}`}>
-                                                                <button className="btn btn-dark btn-sm">
-                                                                    Follow up
-                                                                </button>
-                                                            </Link>
-                                                        </td>
-                                                    </tr>
-                                                ))
-                                                :
-                                                <tr>
-                                                    <td colSpan={6} className="text-center py-4">
-                                                        <div className="d-flex justify-content-center align-items-center">
-                                                            <NoRecords />
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                        }
-                                    </tbody>
-                                    <TableFooter
-                                        page={page}
-                                        setPage={setPage}
-                                        prev={prev}
-                                        next={next}
-                                        loading={loading}
-                                        limit={limit}
-                                        setLimit={setLimit}
-                                        totalRecords={totalRecords}
-                                        totalPages={totalPages}
-                                    />
+                                    {
+                                        loading ? (
+                                            <TableRows rows="10" colspan="7" />
+                                        ) : (
+                                            <>
+                                                <tbody>
+                                                    {
+                                                        noRecentOrders?.length > 0 ?
+                                                            noRecentOrders?.map((item, index) => (
+                                                                <tr key={index}>
+                                                                    <td className="text-start fw-semibold">
+                                                                        {item.business_id}
+                                                                    </td>
+                                                                    <td className='text-dark fw-bold'>
+                                                                        <span
+                                                                            className="text-ellipsis" title={item?.business_name}
+                                                                        >
+                                                                            {item?.business_name}
+                                                                        </span>
+                                                                    </td>
+                                                                    <td>{item.business_contact_number ?? "N/A"}</td>
+                                                                    <td>{item.business_email ?? "N/A"}</td>
+                                                                    <td className="text-danger fw-bold">{item.no_order_since_days ?? "N/A"} Days</td>
+                                                                    <td className="text-dark fw-bold">
+                                                                        {DateFormater(item.last_order_date) ?? "No Orders Yet"}
+                                                                    </td>
+                                                                    <td>
+                                                                        <Link to={`/Masters/ManageFollowup/0/${item.business_id}`}>
+                                                                            <button className="btn btn-dark btn-sm">
+                                                                                Follow up
+                                                                            </button>
+                                                                        </Link>
+                                                                    </td>
+                                                                </tr>
+                                                            ))
+                                                            :
+                                                            <tr>
+                                                                <td colSpan={6} className="text-center py-4">
+                                                                    <div className="d-flex justify-content-center align-items-center">
+                                                                        <NoRecords />
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                    }
+                                                </tbody>
+                                                <TableFooter
+                                                    page={page}
+                                                    setPage={setPage}
+                                                    prev={prev}
+                                                    next={next}
+                                                    loading={loading}
+                                                    limit={limit}
+                                                    setLimit={setLimit}
+                                                    totalRecords={totalRecords}
+                                                    totalPages={totalPages}
+                                                />
+                                            </>
+                                        )}
                                 </table>
                             </div>
 

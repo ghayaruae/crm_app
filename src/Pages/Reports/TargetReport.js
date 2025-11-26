@@ -301,7 +301,6 @@ const TargetReport = () => {
                                                             </tr>
                                                         )}
                                                     </tbody>
-
                                                     {data.length > 0 && (
                                                         <tfoot className="table-light">
                                                             <tr>
