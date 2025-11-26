@@ -319,7 +319,6 @@ const UserPermissions = () => {
                         </div>
                     )}
 
-                    {/* Permissions Management Card */}
                     <div className="card border-0 shadow-sm">
                         <div className="card-header bg-transparent border-0 py-3">
                             <div className="row align-items-center g-2">

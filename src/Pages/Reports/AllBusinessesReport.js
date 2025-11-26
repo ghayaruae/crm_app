@@ -153,46 +153,62 @@ const AllBusinessesReport = () => {
                                         </div>
                                         <div className="table-card table-responsive">
                                             <table className="table table-bordered table-striped table-hover table-nowrap mb-0">
+                                                <thead className="table-light text-center">
+                                                    <tr>
+                                                        <th>Business ID</th>
+                                                        <th>Salesman Name</th>
+                                                        <th>Business Name</th>
+                                                        <th>Owner Name</th>
+                                                        <th>Contact No</th>
+                                                        <th>TRN No</th>
+                                                        <th>Email</th>
+                                                        <th>Credit Limit</th>
+                                                    </tr>
+                                                </thead>
+
                                                 {loading ? (
-                                                    <TableRows rows="10" colspan="10" />
+                                                    <TableRows rows="10" colspan="8" />
                                                 ) : (
                                                     <>
-                                                        <thead className="table-light text-center">
-                                                            <tr>
-                                                                <th>Business ID</th>
-                                                                <th>Salesman Name</th>
-                                                                <th>Business Name</th>
-                                                                <th>Owner Name</th>
-                                                                <th>Contact No</th>
-                                                                <th>TRN No</th>
-                                                                <th>Email</th>
-                                                                <th>Credit Limit</th>
-                                                            </tr>
-                                                        </thead>
                                                         <tbody>
                                                             {data.length > 0 ? (
                                                                 data.map((row) => (
                                                                     <tr key={row.business_id} className="text-center">
-                                                                        <td style={{ color: primaryColor, fontWeight: "bolder" }}>
+                                                                        <td
+                                                                            style={{
+                                                                                color: primaryColor,
+                                                                                fontWeight: "bolder"
+                                                                            }}
+                                                                        >
                                                                             <Link to={`/CustomerDashboard/${row?.business_id}`}>
                                                                                 {row?.business_id}
                                                                             </Link>
                                                                         </td>
 
-                                                                        <td className='text-success fw-bold'>{row?.business_salesmen_name}</td>
+                                                                        <td className="text-success fw-bold">
+                                                                            {row?.business_salesmen_name}
+                                                                        </td>
 
-                                                                        <td style={{ color: primaryColor, fontWeight: "bolder" }}>
+                                                                        <td
+                                                                            style={{
+                                                                                color: primaryColor,
+                                                                                fontWeight: "bolder"
+                                                                            }}
+                                                                        >
                                                                             <span
-                                                                                className="text-ellipsis" title={row?.business_name}
+                                                                                className="text-ellipsis"
+                                                                                title={row?.business_name}
                                                                             >
                                                                                 {row?.business_name}
                                                                             </span>
                                                                         </td>
 
-
-                                                                        <td className='text-info fw-bold'>
+                                                                        <td className="text-info fw-bold">
                                                                             <span
-                                                                                className="text-ellipsis" title={row?.business_contact_person}
+                                                                                className="text-ellipsis"
+                                                                                title={
+                                                                                    row?.business_contact_person
+                                                                                }
                                                                             >
                                                                                 {row?.business_contact_person}
                                                                             </span>
@@ -201,37 +217,65 @@ const AllBusinessesReport = () => {
                                                                         <td>{row?.business_contact_number}</td>
                                                                         <td>{row?.busienss_trn}</td>
                                                                         <td>{row?.business_email}</td>
-                                                                        <td className='text-danger fw-bold'>AED {row?.business_credit_limit}</td>
+                                                                        <td className="text-danger fw-bold">
+                                                                            AED {row?.business_credit_limit}
+                                                                        </td>
                                                                     </tr>
                                                                 ))
                                                             ) : (
                                                                 <tr>
-                                                                    <td colSpan={10}>
+                                                                    <td colSpan={8}>
                                                                         <NoRecords />
                                                                     </td>
                                                                 </tr>
                                                             )}
                                                         </tbody>
-                                                        <tfoot className='table-light'>
+
+                                                        <tfoot className="table-light">
                                                             <tr>
-                                                                <th colSpan={10}>
+                                                                <th colSpan={8}>
                                                                     <div className="d-flex justify-content-between">
-                                                                        <button disabled={!prev && !loading} type="button" onClick={handlePrev} className={`btn btn-warning btn-label waves-effect waves-light`}>
-                                                                            <i className="ri-arrow-left-line label-icon align-middle fs-16 me-2" /> Previous
+                                                                        <button
+                                                                            disabled={!prev || loading}
+                                                                            type="button"
+                                                                            onClick={handlePrev}
+                                                                            className="btn btn-warning btn-label waves-effect waves-light"
+                                                                        >
+                                                                            <i className="ri-arrow-left-line label-icon align-middle fs-16 me-2" />
+                                                                            Previous
                                                                         </button>
-                                                                        <div className='col-md-4' style={{ display: 'flex', alignItems: 'center' }}>
-                                                                            <small>Total Records: {totalRecords} | Total Pages: {totalPages} | Current Page: {page}</small>
+
+                                                                        <div
+                                                                            className="col-md-4"
+                                                                            style={{ display: "flex", alignItems: "center" }}
+                                                                        >
+                                                                            <small>
+                                                                                Total Records: {totalRecords} | Total Pages:{" "}
+                                                                                {totalPages} | Current Page: {page}
+                                                                            </small>
                                                                         </div>
-                                                                        <div className='col-md-2'>
-                                                                            <select className="form-select" value={page} onChange={handleChange}>
-                                                                                {Array.from({ length: totalPages }, (_, i) => (
-                                                                                    <option key={i + 1} value={i + 1}>
-                                                                                        {i + 1}
-                                                                                    </option>
-                                                                                ))}
+
+                                                                        <div className="col-md-2">
+                                                                            <select
+                                                                                className="form-select"
+                                                                                value={page}
+                                                                                onChange={handleChange}
+                                                                            >
+                                                                                {Array.from(
+                                                                                    { length: totalPages },
+                                                                                    (_, i) => (
+                                                                                        <option
+                                                                                            key={i + 1}
+                                                                                            value={i + 1}
+                                                                                        >
+                                                                                            {i + 1}
+                                                                                        </option>
+                                                                                    )
+                                                                                )}
                                                                             </select>
                                                                         </div>
-                                                                        <div className='col-md-2'>
+
+                                                                        <div className="col-md-2">
                                                                             <GlobalLimitChanger
                                                                                 placeholder="Set limit:"
                                                                                 name="globalLimit"
@@ -240,8 +284,15 @@ const AllBusinessesReport = () => {
                                                                                 showAllValue={totalRecords}
                                                                             />
                                                                         </div>
-                                                                        <button disabled={!next && !loading} type="button" onClick={handleNext} className={`btn btn-primary btn-label waves-effect right waves-light`}>
-                                                                            <i className="ri-arrow-right-line label-icon align-middle fs-16 ms-2" /> Next
+
+                                                                        <button
+                                                                            disabled={!next || loading}
+                                                                            type="button"
+                                                                            onClick={handleNext}
+                                                                            className="btn btn-primary btn-label waves-effect right waves-light"
+                                                                        >
+                                                                            Next
+                                                                            <i className="ri-arrow-right-line label-icon align-middle fs-16 ms-2" />
                                                                         </button>
                                                                     </div>
                                                                 </th>

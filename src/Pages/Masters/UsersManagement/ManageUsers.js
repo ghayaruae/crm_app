@@ -222,7 +222,6 @@ const ManageUsers = () => {
                     <div className="container-fluid">
                         <PageTitle title="Manage Salesman" primary="Salesman" />
                         <div className="row">
-                            {/* Left Form */}
                             <div className="col-md-4">
                                 <div className="card">
                                     <div className="card-header align-items-center d-flex" style={{ backgroundColor: primaryColor }}>
@@ -351,7 +350,6 @@ const ManageUsers = () => {
                                 </div>
                             </div>
 
-                            {/* Right Table */}
                             <div className="col-md-8">
                                 <div className="card">
                                     <div className="card-header" style={{ backgroundColor: primaryColor }}>
@@ -380,26 +378,30 @@ const ManageUsers = () => {
                                     <div className="card-body">
                                         <div className="table-responsive table-card">
                                             <table className="table table-bordered table-striped table-hover mb-0 table-nowrap">
+                                                <thead className="table-light text-center">
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Name</th>
+                                                        <th>Contact</th>
+                                                        <th>Login ID</th>
+                                                        <th>Password</th>
+                                                        <th>Email</th>
+                                                        <th>Image</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+
                                                 {loading ? (
-                                                    <TableRows rows="10" colspan="7" />
+                                                    <TableRows rows="10" colspan="8" />
                                                 ) : (
                                                     <>
-                                                        <thead className="table-light text-center">
-                                                            <tr>
-                                                                <th>ID</th>
-                                                                <th>Name</th>
-                                                                <th>Contact</th>
-                                                                <th>Login ID</th>
-                                                                <th>Password</th>
-                                                                <th>Email</th>
-                                                                <th>Image</th>
-                                                                <th>Action</th>
-                                                            </tr>
-                                                        </thead>
                                                         <tbody>
                                                             {data.length > 0 ? (
                                                                 data.map((row) => (
-                                                                    <tr key={row.business_salesman_id} className="text-center">
+                                                                    <tr
+                                                                        key={row.business_salesman_id}
+                                                                        className="text-center"
+                                                                    >
                                                                         <td>{row.business_salesman_id}</td>
                                                                         <td>{row.business_salesmen_name}</td>
                                                                         <td>{row.business_salesmen_contact_number}</td>
@@ -412,60 +414,90 @@ const ManageUsers = () => {
                                                                                     src={row.business_salesman_image_url}
                                                                                     alt="Profile"
                                                                                     className="img-fluid"
-                                                                                    style={{ width: '50px', height: '50px', objectFit: 'contain' }}
+                                                                                    style={{
+                                                                                        width: '50px',
+                                                                                        height: '50px',
+                                                                                        objectFit: 'contain'
+                                                                                    }}
                                                                                 />
                                                                             ) : (
                                                                                 'No Image'
                                                                             )}
                                                                         </td>
-                                                                        <td className='d-flex align-items-center justify-content-center gap-2'>
+                                                                        <td className="d-flex align-items-center justify-content-center gap-2">
                                                                             <button
-                                                                                className='btn btn-sm btn-soft-primary'
-                                                                                onClick={() => getInfo(row.business_salesman_id)}
+                                                                                className="btn btn-sm btn-soft-primary"
+                                                                                onClick={() =>
+                                                                                    getInfo(row.business_salesman_id)
+                                                                                }
                                                                             >
-                                                                                <i className='ri-pencil-line'></i>
+                                                                                <i className="ri-pencil-line"></i>
                                                                             </button>
+
                                                                             <Link to={`/UserPermissions/${row.business_salesman_id}`}>
-                                                                                <button
-                                                                                    className='btn btn-sm btn-soft-success'
-                                                                                >
-                                                                                    <i className='ri-flag-line'></i>
+                                                                                <button className="btn btn-sm btn-soft-success">
+                                                                                    <i className="ri-flag-line"></i>
                                                                                 </button>
                                                                             </Link>
+
                                                                             <button
-                                                                                className='btn btn-sm btn-soft-danger'
-                                                                                onClick={() => handleDelete(row.business_salesman_id)}
+                                                                                className="btn btn-sm btn-soft-danger"
+                                                                                onClick={() =>
+                                                                                    handleDelete(row.business_salesman_id)
+                                                                                }
                                                                             >
-                                                                                <i className='ri-delete-bin-line'></i>
+                                                                                <i className="ri-delete-bin-line"></i>
                                                                             </button>
                                                                         </td>
                                                                     </tr>
                                                                 ))
                                                             ) : (
                                                                 <tr>
-                                                                    <td colSpan={7}><NoRecords /></td>
+                                                                    <td colSpan={8}>
+                                                                        <NoRecords />
+                                                                    </td>
                                                                 </tr>
                                                             )}
                                                         </tbody>
 
-                                                        <tfoot className='table-light'>
+                                                        <tfoot className="table-light">
                                                             <tr>
                                                                 <th colSpan={8}>
                                                                     <div className="d-flex align-items-center justify-content-between flex-nowrap gap-2">
-                                                                        <button disabled={!prev || loading} type="button" onClick={handlePrev} className="btn btn-warning btn-label waves-effect waves-light">
-                                                                            <i className="ri-arrow-left-line label-icon align-middle fs-16 me-2" /> Previous
+                                                                        <button
+                                                                            disabled={!prev || loading}
+                                                                            type="button"
+                                                                            onClick={handlePrev}
+                                                                            className="btn btn-warning btn-label waves-effect waves-light"
+                                                                        >
+                                                                            <i className="ri-arrow-left-line label-icon align-middle fs-16 me-2" />
+                                                                            Previous
                                                                         </button>
-                                                                        <div className='col-md-4' style={{ display: 'flex', alignItems: 'center' }}>
-                                                                            <small>Total Records: {totalRecords} | Total Pages: {totalPages} | Current Page: {page}</small>
+
+                                                                        <div
+                                                                            className="col-md-4"
+                                                                            style={{ display: "flex", alignItems: "center" }}
+                                                                        >
+                                                                            <small>
+                                                                                Total Records: {totalRecords} | Total Pages: {totalPages} | Current Page: {page}
+                                                                            </small>
                                                                         </div>
-                                                                        <div className='col-md-2'>
-                                                                            <select className="form-select" value={page} onChange={handleChange}>
+
+                                                                        <div className="col-md-2">
+                                                                            <select
+                                                                                className="form-select"
+                                                                                value={page}
+                                                                                onChange={handleChange}
+                                                                            >
                                                                                 {Array.from({ length: totalPages }, (_, i) => (
-                                                                                    <option key={i + 1} value={i + 1}>{i + 1}</option>
+                                                                                    <option key={i + 1} value={i + 1}>
+                                                                                        {i + 1}
+                                                                                    </option>
                                                                                 ))}
                                                                             </select>
                                                                         </div>
-                                                                        <div className='col-md-2'>
+
+                                                                        <div className="col-md-2">
                                                                             <GlobalLimitChanger
                                                                                 placeholder="Set limit:"
                                                                                 name="globalLimit"
@@ -474,8 +506,15 @@ const ManageUsers = () => {
                                                                                 showAllValue={totalRecords}
                                                                             />
                                                                         </div>
-                                                                        <button disabled={!next || loading} type="button" onClick={handleNext} className="btn btn-primary btn-label waves-effect right waves-light">
-                                                                            <i className="ri-arrow-right-line label-icon align-middle fs-16 ms-2" /> Next
+
+                                                                        <button
+                                                                            disabled={!next || loading}
+                                                                            type="button"
+                                                                            onClick={handleNext}
+                                                                            className="btn btn-primary btn-label waves-effect right waves-light"
+                                                                        >
+                                                                            Next
+                                                                            <i className="ri-arrow-right-line label-icon align-middle fs-16 ms-2" />
                                                                         </button>
                                                                     </div>
                                                                 </th>
