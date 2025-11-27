@@ -33,7 +33,8 @@ const SearchOEParts = () => {
                     page,
                     limit,
                     part_number,
-                    SUP_ID: selectedBrand ?? null
+                    SUP_ID: selectedBrand ?? null,
+                    cross_type: "OENumber"
                 }
             })
             const { success, data, page: currentPage, next, prev, total_pages, total_records } = response.data
@@ -92,7 +93,7 @@ const SearchOEParts = () => {
 
     const handleFilter = () => {
         if (part_number || selectedBrand) {
-            setFiltersApplied(prev => !prev)
+            setFiltersApplied(true)
             setPage(1)
             getData()
         }
@@ -102,7 +103,7 @@ const SearchOEParts = () => {
         if (part_number || selectedBrand) {
             setSelectedBrand(null)
             setPart_number("")
-            setFiltersApplied(prev => !prev)
+            setFiltersApplied(false)
             setData([])
             setPage(1)
             setLimit(10)
@@ -192,8 +193,6 @@ const SearchOEParts = () => {
                                                 <thead className="table-light text-center">
                                                     <tr>
                                                         <th>Part Number</th>
-                                                        <th>ART Number</th>
-                                                        <th>SUP ID</th>
                                                         <th>Brand Name</th>
                                                         <th>OE Type</th>
                                                     </tr>
@@ -207,8 +206,6 @@ const SearchOEParts = () => {
                                                             data.map((row) => (
                                                                 <tr key={row.inventory_stock_oe_link_id} className="text-center">
                                                                     <td>{row.cross_part_number}</td>
-                                                                    <td>{row.cross_part_art_number}</td>
-                                                                    <td>{row.cross_part_sup_id}</td>
                                                                     <td>{row.cross_brand_name}</td>
                                                                     <td>{row.cross_type}</td>
                                                                 </tr>
