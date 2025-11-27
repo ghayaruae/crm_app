@@ -101,9 +101,7 @@ const ManageFollowup = () => {
                 business_salesman_business_response: formData.response,
                 business_salesman_followup_remark: formData.remark
             }
-            console.log(body)
-            return;
-
+            
             if (isEdit) {
                 body.business_salesman_followup_id = followupId;
             }
@@ -207,7 +205,6 @@ const ManageFollowup = () => {
                                                     styles={selectStyle}
                                                     options={businessOptions}
                                                     placeholder="Select Business"
-                                                    // value={businessOptions.find(opt => opt.value === selectedBusiness) || null}
                                                     value={selectedBusiness}
                                                     onChange={(selected) => {
                                                         setSelectedBusiness(selected);

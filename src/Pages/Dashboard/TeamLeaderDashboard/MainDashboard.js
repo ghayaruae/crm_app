@@ -5,6 +5,7 @@ import CountUp from "react-countup";
 import { Link } from "react-router-dom";
 import AchievementStats from "./AchievementStats";
 import LastPartInquiries from "./LastPartInquiries";
+import FollowupPieChart from "./FollowupPieChart";
 
 const MainDashboard = () => {
     const { apiHeaderJson, apiURL } = useContext(ConfigContext);
@@ -134,55 +135,60 @@ const MainDashboard = () => {
                     </div>
 
                     <div className="row">
-                        {cardItems.map((item, index) => {
-                            return (
-                                <div className="col-xl-4 col-md-6" key={index}>
-                                    <div className="card card-animate">
-                                        <div className="card-body">
-                                            <div className="d-flex align-items-center justify-content-between">
-                                                <div>
-                                                    <p className="text-uppercase fw-medium text-muted mb-2">
-                                                        {item.title}
-                                                    </p>
-                                                    <h4 className={`mb-0 fw-semibold ${item.color}`}>
-                                                        {item.key === "total_salesman_targets" && "AED "}
-                                                        <CountUp
-                                                            end={info?.[item.key] ?? 0}
-                                                            duration={1.5}
-                                                            separator=","
-                                                        />
-                                                    </h4>
-                                                </div>
-                                                <div
-                                                    className={`avatar-sm flex-shrink-0 ${item.bg} rounded-circle d-flex align-items-center justify-content-center`}
-                                                >
-                                                    <i className={`${item.icon} fs-3 ${item.color}`}></i>
-                                                </div>
-                                            </div>
+                        <div className="col-md-8">
+                            <div className="row">
+                                {cardItems.map((item, index) => {
+                                    return (
+                                        <div className="col-xl-6 col-md-6" key={index}>
+                                            <div className="card card-animate">
+                                                <div className="card-body">
+                                                    <div className="d-flex align-items-center justify-content-between">
+                                                        <div>
+                                                            <p className="text-uppercase fw-medium text-muted mb-2">
+                                                                {item.title}
+                                                            </p>
+                                                            <h4 className={`mb-0 fw-semibold ${item.color}`}>
+                                                                {item.key === "total_salesman_targets" && "AED "}
+                                                                <CountUp
+                                                                    end={info?.[item.key] ?? 0}
+                                                                    duration={1.5}
+                                                                    separator=","
+                                                                />
+                                                            </h4>
+                                                        </div>
+                                                        <div
+                                                            className={`avatar-sm flex-shrink-0 ${item.bg} rounded-circle d-flex align-items-center justify-content-center`}
+                                                        >
+                                                            <i className={`${item.icon} fs-3 ${item.color}`}></i>
+                                                        </div>
+                                                    </div>
 
-                                            <div className="mt-3 d-flex justify-content-between align-items-center">
-                                                <Link
-                                                    to={item.link}
-                                                    className="text-decoration-underline text-muted small fw-semibold"
-                                                >
-                                                    {item.link_text}
-                                                </Link>
-                                                {
-                                                    item.title === "Business In-Active" ?
-                                                        <span className="badge bg-danger-subtle text-danger border">
-                                                            Action Required
-                                                        </span>
-                                                        :
-                                                        <span className="badge bg-light text-muted border">
-                                                            Updated just now
-                                                        </span>
-                                                }
+                                                    <div className="mt-3 d-flex justify-content-between align-items-center">
+                                                        <Link
+                                                            to={item.link}
+                                                            className="text-decoration-underline text-muted small fw-semibold"
+                                                        >
+                                                            {item.link_text}
+                                                        </Link>
+                                                        {
+                                                            item.title === "Business In-Active" ?
+                                                                <span className="badge bg-danger-subtle text-danger border">
+                                                                    Action Required
+                                                                </span>
+                                                                :
+                                                                <span className="badge bg-light text-muted border">
+                                                                    Updated just now
+                                                                </span>
+                                                        }
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            );
-                        })}
+                                    );
+                                })}
+                            </div>
+                        </div>
+                        <FollowupPieChart />
                     </div>
 
                     <div className="row">
