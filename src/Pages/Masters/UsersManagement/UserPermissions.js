@@ -142,7 +142,7 @@ const UserPermissions = () => {
         });
     };
 
-    const toggleCategory = (permissions) => {
+    const toggleCategory = (category, permissions) => {
         const allSelected = permissions.every(p =>
             selectedPermissions.includes(p.salesman_privilage_id)
         );
