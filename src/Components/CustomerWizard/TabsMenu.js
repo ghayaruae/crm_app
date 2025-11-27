@@ -36,6 +36,7 @@ const TabsMenu = ({ business_id }) => {
         if (location.pathname.includes("CustomerRequestCreditLimit")) return "requestcreditlimit";
         if (location.pathname.includes("CustomerRequestDueDays")) return "requested-duedays";
         if (location.pathname.includes("CustomerRewardsPoints")) return "rewardsPoints";
+        if (location.pathname.includes("CustomerFollowups")) return "requestfolowups";
         return "";
     };
 
@@ -109,6 +110,14 @@ const TabsMenu = ({ business_id }) => {
                         to={`/CustomerRequestDueDays/${business_id}`}>
                         <i className="ri-calendar-check-line d-inline-block d-md-none" />
                         <span className="d-none d-md-inline-block">Due Days</span>
+                    </Link>
+                </li>
+                <li className="nav-item">
+                    <Link
+                        className={`nav-link fs-14 ${currentTab === "requestfolowups" ? "active" : ""}`}
+                        to={`/CustomerFollowups/${business_id}`}>
+                        <i className="ri-calendar-check-line d-inline-block d-md-none" />
+                        <span className="d-none d-md-inline-block">Followups</span>
                     </Link>
                 </li>
 

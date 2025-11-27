@@ -1,6 +1,7 @@
 import CustomerDashboardStates from "../Components/CustomerWizard/Tabs/CustomerDashboardStates";
 import CustomerDetails from "../Components/CustomerWizard/Tabs/CustomerDetails";
 import CustomerDocument from "../Components/CustomerWizard/Tabs/CustomerDocument";
+import CustomerFollowups from "../Components/CustomerWizard/Tabs/CustomerFollowups";
 import CustomerOrders from "../Components/CustomerWizard/Tabs/CustomerOrders";
 import CustomerRequestedCreditLimit from "../Components/CustomerWizard/Tabs/CustomerRequestedCreditLimit";
 import CustomerRequestedDueDays from "../Components/CustomerWizard/Tabs/CustomerRequestedDueDays";
@@ -54,6 +55,7 @@ const routes = [
   { path: "/CustomerOrders/:business_id?", element: <CustomerOrders />, routeName: "/CustomerOrders" },
   { path: "/CustomerRequestCreditLimit/:business_id?", element: <CustomerRequestedCreditLimit />, routeName: "/CustomerRequestCreditLimit" },
   { path: "/CustomerRequestDueDays/:business_id?", element: <CustomerRequestedDueDays />, routeName: "/CustomerRequestDueDays" },
+  { path: "/CustomerFollowups/:business_id?", element: <CustomerFollowups />, routeName: "/CustomerFollowups" },
 
   ////////////////////// Reports Routing ///////////////////////////
   { path: "/Reports/SalesmanOrders/:status?", element: <AllOrders />, routeName: "/Reports/SalesmanOrders" },

@@ -55,8 +55,8 @@ const CardShimmer = ({ count }) => {
 const ContentLoader = (props) => {
   return (
 
-    <div className="d-flex justify-content-center align-items-center" style={{ height: "70vh" }}>
-      <div className="spinner-border" style={{color:"#2a3266"}} role="status">
+    <div className="d-flex justify-content-center align-items-center" style={{ height: props.height ? props.height : "70vh" }}>
+      <div className="spinner-border" style={{ color: "#2a3266" }} role="status">
         <span className="visually-hidden">Loading...</span>
       </div>
     </div>

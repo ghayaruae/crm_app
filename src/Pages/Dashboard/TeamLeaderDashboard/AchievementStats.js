@@ -61,13 +61,12 @@ const AchievementStats = ({ aboveTargetData = [], belowTargetData = [] }) => {
     return (
         <div className="col-12">
             <div className="card">
+                <div className='card-header'>
+                    <h5 className="mb-0" style={{ color: "#132530" }}>
+                        <i className="ri-bar-chart-2-line me-2"></i>Salesman Achievement Report
+                    </h5>
+                </div>
                 <div className="card-body">
-                    <div className="d-flex align-items-center justify-content-between mb-4">
-                        <h4 className="card-title fw-bold mb-0" style={{ color: "#132530" }}>
-                            <i className="ri-bar-chart-2-line me-2"></i>Salesman Achievement Report
-                        </h4>
-                    </div>
-
                     {/* Tabs */}
                     <ul className="nav nav-tabs nav-tabs-custom nav-dark mb-3" role="tablist">
                         <li className="nav-item">
