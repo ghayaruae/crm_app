@@ -61,7 +61,7 @@ const DashboardTab = ({ data, salesman_data }) => {
                 <div className="container-fluid px-2 px-md-3">
                     <div className="row g-3 g-md-4">
                         {dashboardCards.map((card, index) => (
-                            <div className="col-12 col-sm-6 col-md-4 col-lg-3" key={index}>
+                            <div className="col-12 col-sm-6 col-md-6 col-lg-3" key={index}>
                                 <div className="card border-0 shadow-sm">
                                     <div className="card-body">
                                         <h6 className="text-muted text-uppercase fs-13 mb-3 d-flex justify-content-between align-items-center">
@@ -106,7 +106,7 @@ const DashboardTab = ({ data, salesman_data }) => {
                         ))}
                     </div>
 
-                    <div className="row">
+                    <div className="row g-4">
                         <SalesChart />
                         <BusinessesChart />
                     </div>

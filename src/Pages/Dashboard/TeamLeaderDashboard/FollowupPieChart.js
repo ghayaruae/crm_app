@@ -47,8 +47,15 @@ const FollowupPieChart = () => {
             trigger: 'item'
         },
         legend: {
-            orient: 'horizontal',
-            bottom: '0%'
+            bottom: 0,
+            left: 'center',
+            icon: 'circle',
+            itemWidth: 12,
+            itemHeight: 12,
+            itemGap: 8,
+            textStyle: {
+                fontSize: 12,
+            }
         },
         series: [
             {
@@ -64,7 +71,7 @@ const FollowupPieChart = () => {
                 label: {
                     show: true,
                     position: 'outside',
-                    formatter: '{b} : {c}'
+                    formatter: '{c}'
                 },
                 emphasis: {
                     label: {
@@ -79,7 +86,7 @@ const FollowupPieChart = () => {
     }
 
     return (
-        <div className="col-md-4">
+        <div className="col-lg-4 col-md-12">
             <div className="card">
                 <div className="card-header d-flex align-items-center justify-content-between">
                     <h5 className="mb-0">Followup Types</h5>

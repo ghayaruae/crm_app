@@ -89,7 +89,7 @@ const SalesChart = () => {
 
 
     return (
-        <div className="col-12 col-md-7">
+        <div className="col-lg-7 col-md-12">
             <div className="card shadow border-0 rounded mb-0">
                     <h5 className="card-header">
                         Sales Overview

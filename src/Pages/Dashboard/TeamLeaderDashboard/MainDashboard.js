@@ -74,7 +74,7 @@ const MainDashboard = () => {
             link_text: "View Salesmen"
         },
         {
-            title: "Total Salesman Targets Amount",
+            title: "Total Targets Amount",
             key: "total_salesman_targets",
             color: "text-info",
             bg: "bg-info-subtle",
@@ -83,7 +83,7 @@ const MainDashboard = () => {
             link_text: "View Targets"
         },
         {
-            title: "Total business Assigned by salesman",
+            title: "Total Assigned by salesman",
             key: "total_assigned_business",
             color: "text-warning",
             bg: "bg-warning-subtle",
@@ -135,7 +135,7 @@ const MainDashboard = () => {
                     </div>
 
                     <div className="row">
-                        <div className="col-md-8">
+                        <div className="col-lg-8 col-md-12 mb-3">
                             <div className="row">
                                 {cardItems.map((item, index) => {
                                     return (

@@ -47,7 +47,7 @@ const NoRecentOrders = () => {
             </div>
             <div className="card-body p-0">
                 <div className="table-responsive tabel-card">
-                    <table className="table align-middle mb-0">
+                    <table className="table align-middle table-nowrap mb-0">
                         <thead className="table-light">
                             <tr>
                                 <th className="text-start">Business Id</th>

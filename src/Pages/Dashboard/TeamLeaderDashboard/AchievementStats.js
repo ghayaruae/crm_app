@@ -10,7 +10,7 @@ const AchievementStats = ({ aboveTargetData = [], belowTargetData = [] }) => {
         return (
             <div className="table-responsive mt-3">
                 {data.length > 0 ? (
-                    <table className="table align-middle table-striped table-hover mb-0">
+                    <table className="table align-middle table-striped table-hover table-nowrap mb-0">
                         <thead className="table-light">
                             <tr>
                                 <th>Salesman</th>
