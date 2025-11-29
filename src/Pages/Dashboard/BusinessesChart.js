@@ -174,7 +174,7 @@ const BusinessesChart = () => {
     };
 
     return (
-        <div className="col-12 col-md-5">
+        <div className="col-lg-5 col-md-12">
             <div className="card shadow border-0 rounded h-100">
                 <h5 className="card-header text-center text-md-start">
                     Achievement Target Overview

@@ -115,7 +115,9 @@ const AllOrders = () => {
 
                                     <div className="card-body">
                                         <div className="row mb-4 g-3 align-items-center">
-                                            <div className="col-md-3">
+
+                                            {/* Search Input */}
+                                            <div className="col-lg-3 col-md-6 col-12">
                                                 <div className="position-relative w-100">
                                                     <input
                                                         type="text"
@@ -130,21 +132,24 @@ const AllOrders = () => {
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div className="col-md-3">
+
+                                            {/* Date Range */}
+                                            <div className="col-lg-3 col-md-6 col-12">
                                                 <Flatpicker
                                                     ref={datePickerRef}
                                                     className="form-control"
                                                     options={{
                                                         dateFormat: "Y-m-d",
                                                         mode: "range",
-                                                        placeholder: "Select Date Range"
                                                     }}
                                                     onChange={(selectedDates) => setDateRange(selectedDates)}
                                                     value={dateRange}
                                                     placeholder="Date Range"
                                                 />
                                             </div>
-                                            <div className="col-md-3 d-flex gap-3">
+
+                                            {/* Buttons */}
+                                            <div className="col-lg-3 col-md-6 col-12 d-flex gap-3 flex-lg-nowrap flex-wrap">
                                                 <button
                                                     type="button"
                                                     className="btn btn-danger btn-label right"
@@ -164,6 +169,7 @@ const AllOrders = () => {
                                                     Reset
                                                 </button>
                                             </div>
+
                                         </div>
                                         <div className="table-card table-responsive">
                                             <table className="table table-bordered table-striped table-hover table-nowrap mb-0">

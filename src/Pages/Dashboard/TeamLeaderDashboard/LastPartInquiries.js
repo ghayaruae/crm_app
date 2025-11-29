@@ -17,7 +17,7 @@ const LastPartInquiries = ({ inquiryData }) => {
 
                     <div className="card-body">
                         <div className="table-responsive">
-                            <table className="table table-borderless table-striped mb-0">
+                            <table className="table table-borderless table-striped table-nowrap mb-0">
                                 <thead className="table-light">
                                     <tr>
                                         <th>Salesman Name</th>

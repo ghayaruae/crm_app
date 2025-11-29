@@ -7,6 +7,7 @@ import PageTitle from '../../Components/PageTitle'
 import { Link } from 'react-router-dom'
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { DateFormater } from '../../Components/GlobalFunctions'
 
 const RequestPartList = () => {
 
@@ -84,6 +85,8 @@ const RequestPartList = () => {
                     "Part Number": item?.request_part_number,
                     "Qty": item?.request_part_qty,
                     "Market Price": item?.request_part_market_price,
+                    "Request Date": DateFormater(item?.request_date)
+
                 }))
             );
 
@@ -163,11 +166,12 @@ const RequestPartList = () => {
                                                         <th>Part Number</th>
                                                         <th>Qty</th>
                                                         <th>Market Price</th>
+                                                        <th>Request Date</th>
                                                     </tr>
                                                 </thead>
 
                                                 {loading ? (
-                                                    <TableRows rows="10" colspan="6" />
+                                                    <TableRows rows="10" colspan="8" />
                                                 ) : (
                                                     <>
                                                         <tbody>
@@ -182,11 +186,12 @@ const RequestPartList = () => {
                                                                         <td>{row.request_part_number}</td>
                                                                         <td>{row.request_part_qty}</td>
                                                                         <td>{row.request_part_market_price}</td>
+                                                                        <td>{DateFormater(row?.request_date)}</td>
                                                                     </tr>
                                                                 ))
                                                             ) : (
                                                                 <tr>
-                                                                    <td colSpan="6">
+                                                                    <td colSpan="8">
                                                                         <NoRecords />
                                                                     </td>
                                                                 </tr>
@@ -195,7 +200,7 @@ const RequestPartList = () => {
 
                                                         <tfoot className="table-light">
                                                             <tr>
-                                                                <th colSpan={6}>
+                                                                <th colSpan={8}>
                                                                     <div className="d-flex align-items-center justify-content-between gap-2 flex-nowrap">
                                                                         <button
                                                                             disabled={!prev || loading}

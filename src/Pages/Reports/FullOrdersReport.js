@@ -117,7 +117,9 @@ const FullOrdersReport = () => {
 
                                     <div className="card-body">
                                         <div className="row mb-4 g-3 align-items-center">
-                                            <div className="col-md-3">
+
+                                            {/* Search Input */}
+                                            <div className="col-lg-3 col-md-6 col-12">
                                                 <div className="position-relative w-100">
                                                     <input
                                                         type="text"
@@ -132,7 +134,9 @@ const FullOrdersReport = () => {
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div className="col-md-3">
+
+                                            {/* Date Range */}
+                                            <div className="col-lg-3 col-md-6 col-12">
                                                 <Flatpicker
                                                     ref={datePickerRef}
                                                     className="form-control"
@@ -146,7 +150,9 @@ const FullOrdersReport = () => {
                                                     placeholder="Date Range"
                                                 />
                                             </div>
-                                            <div className="col-md-3">
+
+                                            {/* Status Select */}
+                                            <div className="col-lg-3 col-md-6 col-12">
                                                 <Select
                                                     placeholder="Select Status"
                                                     theme={selectTheme}
@@ -156,7 +162,9 @@ const FullOrdersReport = () => {
                                                     onChange={(selected) => setSelectedStatus(selected.value)}
                                                 />
                                             </div>
-                                            <div className="col-md-3 d-flex gap-3">
+
+                                            {/* Buttons */}
+                                            <div className="col-lg-3 col-md-6 col-12 d-flex gap-3 flex-lg-nowrap flex-wrap">
                                                 <button
                                                     type="button"
                                                     className="btn btn-danger btn-label right"
@@ -176,7 +184,9 @@ const FullOrdersReport = () => {
                                                     Reset
                                                 </button>
                                             </div>
+
                                         </div>
+
                                         <div className="table-card table-responsive">
                                             <table className="table table-bordered table-striped table-hover table-nowrap mb-0">
 
