@@ -44,7 +44,7 @@ const NoRecendsOrderReports = () => {
 
     useEffect(() => {
         GetBusinessesNoRecentOrders()
-    }, [])
+    }, [page, limit])
 
     return (
         <div className='main-content'>
