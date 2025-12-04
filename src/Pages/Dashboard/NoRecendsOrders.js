@@ -54,7 +54,8 @@ const NoRecentOrders = () => {
                                 <th className="text-start">Business Name</th>
                                 <th>Contact</th>
                                 <th>Email</th>
-                                <th>Days</th>
+                                <th>Total Orders</th>
+                                <th>Last Order Gap</th>
                                 <th>Last Order Date</th>
                                 <th>Action</th>
                             </tr>
@@ -64,16 +65,17 @@ const NoRecentOrders = () => {
                                 noRecentOrders?.length > 0 ?
                                     noRecentOrders?.map((item, index) => (
                                         <tr key={index}>
-                                            <td className="text-start fw-semibold">
+                                            <td className="text-start fw-bold">
                                                 {item.business_id}
                                             </td>
-                                            <td className="text-start fw-semibold">
+                                            <td className="text-start fw-bold">
                                                 {item.business_name}
                                             </td>
                                             <td>{item.business_contact_number ?? "N/A"}</td>
                                             <td>{item.business_email ?? "N/A"}</td>
+                                            <td>{item.total_orders || "N/A"}</td>
                                             <td className="text-danger fw-bold">{item.no_order_since_days ?? "N/A"} Days</td>
-                                            <td className="text-dark fw-bold">
+                                            <td className={item.last_order_date ? "fw-bold" : "text-muted"}>
                                                 {DateFormater(item.last_order_date) ?? "No Orders Yet"}
                                             </td>
                                             <td>
@@ -87,7 +89,7 @@ const NoRecentOrders = () => {
                                     ))
                                     :
                                     <tr>
-                                        <td colSpan={6} className="text-center py-4">
+                                        <td colSpan={8} className="text-center py-4">
                                             <div className="d-flex justify-content-center align-items-center">
                                                 <NoRecords />
                                             </div>
