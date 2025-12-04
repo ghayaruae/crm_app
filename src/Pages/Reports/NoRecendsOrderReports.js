@@ -71,14 +71,15 @@ const NoRecendsOrderReports = () => {
                                             <th className="text-start">Business Name</th>
                                             <th>Contact</th>
                                             <th>Email</th>
-                                            <th>Days</th>
+                                            <th>Total Orders</th>
+                                            <th>Last Order Gap</th>
                                             <th>Last Order Date</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     {
                                         loading ? (
-                                            <TableRows rows="10" colspan="7" />
+                                            <TableRows rows="10" colspan="8" />
                                         ) : (
                                             <>
                                                 <tbody>
@@ -98,8 +99,9 @@ const NoRecendsOrderReports = () => {
                                                                     </td>
                                                                     <td>{item.business_contact_number ?? "N/A"}</td>
                                                                     <td>{item.business_email ?? "N/A"}</td>
+                                                                    <td>{item.total_orders || "N/A"}</td>
                                                                     <td className="text-danger fw-bold">{item.no_order_since_days ?? "N/A"} Days</td>
-                                                                    <td className="text-dark fw-bold">
+                                                                    <td className={item.last_order_date ? "fw-bold" : "text-muted"}>
                                                                         {DateFormater(item.last_order_date) ?? "No Orders Yet"}
                                                                     </td>
                                                                     <td>
@@ -113,7 +115,7 @@ const NoRecendsOrderReports = () => {
                                                             ))
                                                             :
                                                             <tr>
-                                                                <td colSpan={6} className="text-center py-4">
+                                                                <td colSpan={8} className="text-center py-4">
                                                                     <div className="d-flex justify-content-center align-items-center">
                                                                         <NoRecords />
                                                                     </div>
