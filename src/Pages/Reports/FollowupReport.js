@@ -272,6 +272,7 @@ const FollowupReport = () => {
                                                 <tr>
                                                     <th>ID</th>
                                                     <th>Salesman</th>
+                                                    <th>Account</th>
                                                     <th>Contact</th>
                                                     <th>Email</th>
                                                     <th>Type</th>
@@ -282,7 +283,7 @@ const FollowupReport = () => {
                                             </thead>
 
                                             {loading ? (
-                                                <TableRows rows="10" colspan="8" />
+                                                <TableRows rows="10" colspan="10" />
                                             ) : (
                                                 <>
                                                     <tbody>
@@ -291,6 +292,7 @@ const FollowupReport = () => {
                                                                 <tr key={row.business_salesman_followup_id} className="text-center">
                                                                     <td>{row.business_salesman_followup_id}</td>
                                                                     <td>{row.business_salesmen_name}</td>
+                                                                    <td>{row.business_name}</td>
                                                                     <td>{row.business_salesmen_contact_number}</td>
                                                                     <td>{row.business_salesman_email}</td>
                                                                     <td>{row.business_salesman_followup_type}</td>
@@ -315,7 +317,7 @@ const FollowupReport = () => {
                                                             ))
                                                         ) : (
                                                             <tr>
-                                                                <td colSpan="8">
+                                                                <td colSpan="10">
                                                                     <NoRecords />
                                                                 </td>
                                                             </tr>
@@ -325,7 +327,7 @@ const FollowupReport = () => {
                                                     {data.length > 0 && (
                                                         <tfoot className="table-light">
                                                             <tr>
-                                                                <th colSpan={8}>
+                                                                <th colSpan={10}>
                                                                     <div className="d-flex align-items-center justify-content-between flex-nowrap gap-2">
                                                                         <button
                                                                             disabled={!prev || loading}

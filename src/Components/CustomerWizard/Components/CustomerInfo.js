@@ -73,7 +73,7 @@ const CustomerInfo = ({ business_id }) => {
                 <div className="card shadow-sm border-0">
                     <div className="card-body">
                         <div className="d-flex justify-content-between align-items-center mb-3">
-                            <h5 className="card-title">Business Info</h5>
+                            <h5 className="card-title">Account Info</h5>
                         </div>
 
                         {loading ? (
@@ -83,25 +83,25 @@ const CustomerInfo = ({ business_id }) => {
 
                                 <div className="col-md-6">
                                     <div className="p-2 border rounded">
-                                        <strong>Business Id : </strong> <span className="text-primary fw-bold">{businessInfo.business_id}</span>
+                                        <strong>Account Id : </strong> <span className="text-primary fw-bold">{businessInfo.business_id}</span>
                                     </div>
                                 </div>
 
                                 <div className="col-md-6">
                                     <div className="p-2 border rounded">
-                                        <strong>Business TRN : </strong> <span className="text-primary fw-bold">{businessInfo.busienss_trn}</span>
+                                        <strong>Account TRN : </strong> <span className="text-primary fw-bold">{businessInfo.busienss_trn}</span>
                                     </div>
                                 </div>
 
                                 <div className="col-md-6">
                                     <div className="p-2 border rounded">
-                                        <strong>Business Status : </strong> {getStatusBadge(businessInfo.is_active, "active")}
+                                        <strong>Account Status : </strong> {getStatusBadge(businessInfo.is_active, "active")}
                                     </div>
                                 </div>
 
                                 <div className="col-md-6">
                                     <div className="p-2 border rounded">
-                                        <strong>Business Verification : </strong> {Number(businessInfo?.business_registered_verification_status) === 1
+                                        <strong>Account Verification : </strong> {Number(businessInfo?.business_registered_verification_status) === 1
                                             ?
                                             <span className="badge bg-success">Verified</span>
                                             :
@@ -112,60 +112,60 @@ const CustomerInfo = ({ business_id }) => {
 
                                 <div className="col-md-6">
                                     <div className="p-2 border rounded">
-                                        <strong>Business COD Applicable : </strong> {getStatusBadge(businessInfo.business_cod_status, "cod")}
+                                        <strong>Account COD Applicable : </strong> {getStatusBadge(businessInfo.business_cod_status, "cod")}
                                     </div>
                                 </div>
 
                                 <div className="col-md-6">
                                     <div className="p-2 border rounded">
-                                        <strong>Business Level : </strong> <span className="badge bg-info">{businessInfo?.business_level_title}</span>
+                                        <strong>Account Level : </strong> <span className="badge bg-info">{businessInfo?.business_level_title}</span>
                                     </div>
                                 </div>
 
                                 <div className="col-md-6">
                                     <div className="p-2 border rounded">
-                                        <strong>Business Name : </strong> {businessInfo.business_name}
+                                        <strong>Account Name : </strong> {businessInfo.business_name}
                                     </div>
                                 </div>
 
                                 <div className="col-md-6">
                                     <div className="p-2 border rounded">
-                                        <strong>Business Contact Person : </strong> {businessInfo.business_contact_person}
+                                        <strong>Account Contact Person : </strong> {businessInfo.business_contact_person}
                                     </div>
                                 </div>
 
                                 <div className="col-md-6">
                                     <div className="p-2 border rounded">
-                                        <strong>Business Contact Number : </strong> {businessInfo.business_contact_number}
+                                        <strong>Account Contact Number : </strong> {businessInfo.business_contact_number}
                                     </div>
                                 </div>
 
                                 <div className="col-md-6">
                                     <div className="p-2 border rounded">
-                                        <strong>Business Email : </strong> {businessInfo.business_email}
+                                        <strong>Account Email : </strong> {businessInfo.business_email}
                                     </div>
                                 </div>
 
                                 <div className="col-md-6">
                                     <div className="p-2 border rounded">
-                                        <strong>Business Credit Limit : </strong> <span className="text-success fw-bold">AED {businessInfo.business_credit_limit}</span>
+                                        <strong>Account Credit Limit : </strong> <span className="text-success fw-bold">AED {businessInfo.business_credit_limit}</span>
                                     </div>
                                 </div>
 
                                 <div className="col-md-6">
                                     <div className="p-2 border rounded">
-                                        <strong>Business Credit Balance : </strong> <span className="text-danger fw-bold">AED {businessInfo.business_credit_balance}</span>
+                                        <strong>Account Credit Balance : </strong> <span className="text-danger fw-bold">AED {businessInfo.business_credit_balance}</span>
                                     </div>
                                 </div>
 
                                 <div className="col-md-6">
                                     <div className="p-2 border rounded">
-                                        <strong>Business Reward Points : </strong> <span className="text-success fw-bold">{businessInfo.business_reward_points_balance}</span>
+                                        <strong>Account Reward Points : </strong> <span className="text-success fw-bold">{businessInfo.business_reward_points_balance}</span>
                                     </div>
                                 </div>
                             </div>
                         ) : (
-                            <div className="text-center text-muted py-3">No business info added</div>
+                            <div className="text-center text-muted py-3">No Account info added</div>
                         )}
                     </div>
                 </div>

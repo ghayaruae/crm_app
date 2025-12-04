@@ -36,7 +36,7 @@ const NoRecentOrders = () => {
 
                     <h5 className="mb-0 card-title text-white">
                         <i className="ri-store-2-line me-2"></i>
-                        No Recent Orders By Business
+                        No Recent Orders By Account
                     </h5>
                     <Link to={"/Reports/NoRecendsOrderReport"}>
                         <button className="btn btn-light btn-sm">
@@ -50,13 +50,12 @@ const NoRecentOrders = () => {
                     <table className="table align-middle table-nowrap mb-0">
                         <thead className="table-light">
                             <tr>
-                                <th className="text-start">Business Id</th>
-                                <th className="text-start">Business Name</th>
-                                <th>Contact</th>
+                                <th className="text-start">Account ID</th>
+                                <th className="text-start">Account Name</th>
+                                <th>Primary Contact</th>
                                 <th>Email</th>
                                 <th>Total Orders</th>
-                                <th>Last Order Gap</th>
-                                <th>Last Order Date</th>
+                                <th>Inactive Days</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -75,9 +74,9 @@ const NoRecentOrders = () => {
                                             <td>{item.business_email ?? "N/A"}</td>
                                             <td>{item.total_orders || "N/A"}</td>
                                             <td className="text-danger fw-bold">{item.no_order_since_days ?? "N/A"} Days</td>
-                                            <td className={item.last_order_date ? "fw-bold" : "text-muted"}>
+                                            {/* <td className={item.last_order_date ? "fw-bold" : "text-muted"}>
                                                 {DateFormater(item.last_order_date) ?? "No Orders Yet"}
-                                            </td>
+                                            </td> */}
                                             <td>
                                                 <Link to={`/Masters/ManageFollowup/0/${item.business_id}`}>
                                                     <button className="btn btn-dark btn-sm">

@@ -193,19 +193,20 @@ const FullOrdersReport = () => {
                                                 <thead className="table-light text-center">
                                                     <tr>
                                                         <th width="5%">Order ID</th>
-                                                        <th width="5%">Business ID</th>
+                                                        <th width="5%">Account ID</th>
                                                         <th width="5%">Salesman Name</th>
-                                                        <th width="5%">Business Name</th>
+                                                        <th width="5%">Account Name</th>
                                                         <th width="10%">Order Date</th>
                                                         <th width="5%">Payment Method</th>
                                                         <th width="15%">Total Amount</th>
                                                         <th width="10%">Reward Points</th>
                                                         <th width="7%">Status</th>
+                                                        <th width="7%">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {loading ? (
-                                                        <TableRows colspan={9} rows={10} />
+                                                        <TableRows colspan={10} rows={10} />
                                                     ) : data.length > 0 ? (
                                                         data.map((row) => (
                                                             <tr key={row.business_order_id} className="text-center">
@@ -243,11 +244,20 @@ const FullOrdersReport = () => {
                                                                     </span>
                                                                 </td>
                                                                 <td>{GetStatusBadge(row.business_order_status)}</td>
+                                                                <td className='d-flex gap-2 justify-content-center'>
+                                                                    <Link to={`/OrderInfo/${row.business_order_id}/${row.secret_order_id}/${row.business_order_business_id}`}>
+                                                                        <button
+                                                                            className="btn btn-sm btn-soft-info"
+                                                                        >
+                                                                            <i className='ri-eye-line'></i>
+                                                                        </button>
+                                                                    </Link>
+                                                                </td>
                                                             </tr>
                                                         ))
                                                     ) : (
                                                         <tr>
-                                                            <td colSpan={8}>
+                                                            <td colSpan={10}>
                                                                 <NoRecords />
                                                             </td>
                                                         </tr>

@@ -83,7 +83,7 @@ const MainDashboard = () => {
             link_text: "View Targets"
         },
         {
-            title: "Total Assigned by salesman",
+            title: "Total Accounts by salesman",
             key: "total_assigned_business",
             color: "text-warning",
             bg: "bg-warning-subtle",
@@ -92,7 +92,7 @@ const MainDashboard = () => {
             link_text: "View Businesses"
         },
         {
-            title: "Business In-Active",
+            title: "Accounts In-Active",
             key: "business_in_active",
             color: "text-secondary",
             bg: "bg-secondary-subtle",
