@@ -21,7 +21,7 @@ const DashboardTab = ({ data, salesman_data }) => {
             link: "/Reports/SalesmanOrders/0"
         },
         {
-            title: "Inactive Businesses",
+            title: "Inactive Accounts",
             icon: "ri-building-line",
             arrowIcon: "ri-arrow-down-circle-line",
             arrowColor: "text-danger",
@@ -30,7 +30,7 @@ const DashboardTab = ({ data, salesman_data }) => {
             link: "/Salesman/AllBusinesses/0"
         },
         {
-            title: "Total Assign Business",
+            title: "Total Assign Accounts",
             icon: "ri-check-line",
             arrowIcon: "ri-arrow-up-circle-line",
             arrowColor: "text-success",

@@ -64,7 +64,7 @@ const TabsMenu = ({ business_id }) => {
                         className={`nav-link fs-14 ${currentTab === "info" ? "active" : ""}`}
                         to={`/CustomerInfo/${business_id}`}>
                         <i className="ri-building-4-line d-inline-block d-md-none" />
-                        <span className="d-none d-md-inline-block">Business Info</span>
+                        <span className="d-none d-md-inline-block">Account Info</span>
                     </Link>
                 </li>
 

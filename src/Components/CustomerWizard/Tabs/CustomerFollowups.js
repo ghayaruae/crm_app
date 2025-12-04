@@ -81,7 +81,7 @@ const CustomerFollowups = () => {
                                                                         <thead className="table-light text-center">
                                                                             <tr>
                                                                                 <th>Salesman</th>
-                                                                                <th>Business</th>
+                                                                                <th>Account</th>
                                                                                 <th>Type</th>
                                                                                 <th>Date</th>
                                                                                 <th>Response</th>

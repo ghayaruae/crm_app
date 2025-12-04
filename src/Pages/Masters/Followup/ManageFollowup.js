@@ -198,7 +198,7 @@ const ManageFollowup = () => {
 
                                             <div className="col-md-4">
                                                 <label className="form-label">
-                                                    Business <span className="text-danger">*</span>
+                                                    Account <span className="text-danger">*</span>
                                                 </label>
                                                 <Select
                                                     theme={selectTheme}

@@ -177,8 +177,8 @@ const AllOrders = () => {
                                                 <thead className="table-light text-center">
                                                     <tr>
                                                         <th width="5%">Order ID</th>
-                                                        <th width="5%">Business ID</th>
-                                                        <th width="5%">Business Name</th>
+                                                        <th width="5%">Account ID</th>
+                                                        <th width="5%">Account Name</th>
                                                         <th width="10%">Order Date</th>
                                                         <th width="5%">Payment Method</th>
                                                         <th width="15%">Total Amount</th>

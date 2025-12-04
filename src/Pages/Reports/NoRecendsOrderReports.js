@@ -57,7 +57,7 @@ const NoRecendsOrderReports = () => {
 
                                 <h5 className="mb-0 card-title text-white">
                                     <i className="ri-store-2-line me-2"></i>
-                                    No Recent Orders By Business
+                                    No Recent Orders By Account
                                 </h5>
                             </div>
                         </div>
@@ -67,8 +67,8 @@ const NoRecendsOrderReports = () => {
                                 <table className="table align-middle table-nowrap mb-0">
                                     <thead className="table-light">
                                         <tr>
-                                            <th className="text-start">Business Id</th>
-                                            <th className="text-start">Business Name</th>
+                                            <th className="text-start">Account Id</th>
+                                            <th className="text-start">Account Name</th>
                                             <th>Contact</th>
                                             <th>Email</th>
                                             <th>Total Orders</th>

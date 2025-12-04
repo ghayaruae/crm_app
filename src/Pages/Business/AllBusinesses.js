@@ -93,7 +93,7 @@ const AllBusinesses = () => {
             <div className="main-content">
                 <div className="page-content">
                     <div className="container-fluid">
-                        <PageTitle title="Bussinnesses" primary="Reports" />
+                        <PageTitle title="Accounts" primary="Reports" />
 
                         <div className="row">
                             <div className="col-md-12">
@@ -103,7 +103,7 @@ const AllBusinesses = () => {
                                         style={{ backgroundColor: primaryColor }}
                                     >
                                         <h5 className="mb-0 text-white">
-                                            Businesses List via Salesman
+                                            Accounts List via Salesman
                                         </h5>
                                     </div>
 
@@ -149,8 +149,8 @@ const AllBusinesses = () => {
                                             <table className="table table-bordered table-striped table-hover table-nowrap mb-0">
                                                 <thead className="table-light text-center">
                                                     <tr>
-                                                        <th>Business ID</th>
-                                                        <th>Business Name</th>
+                                                        <th>Account ID</th>
+                                                        <th>Account Name</th>
                                                         <th>Owner</th>
                                                         <th>Contact No.</th>
                                                         <th>TRN No.</th>
