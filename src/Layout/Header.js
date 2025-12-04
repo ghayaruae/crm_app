@@ -114,13 +114,13 @@ const Header = () => {
         {
           id: "SalesmanBusiness",
           path: "/Salesman/AllBusinesses",
-          label: "Salesman Businesses List",
+          label: "Salesman Accounts List",
           isDropdown: false,
         },
         {
           id: "AllBusinessesReport",
           path: "/Reports/AllBusinessesReport",
-          label: "All Businesses List",
+          label: "All Accounts List",
           isDropdown: false,
         },
         {
