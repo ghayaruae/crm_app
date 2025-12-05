@@ -120,7 +120,7 @@ const AllBusinessesReport = () => {
                                                     <input
                                                         type="text"
                                                         className="form-control"
-                                                        placeholder="Search by Business Name"
+                                                        placeholder="Search by Account Name"
                                                         name="keyword"
                                                         value={keyword}
                                                         onChange={(e) => setKeyword(e.target.value)}

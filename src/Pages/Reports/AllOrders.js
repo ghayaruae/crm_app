@@ -122,7 +122,7 @@ const AllOrders = () => {
                                                     <input
                                                         type="text"
                                                         className="form-control"
-                                                        placeholder="Search by Business ID"
+                                                        placeholder="Search by Account ID"
                                                         name="keyword"
                                                         value={keyword}
                                                         onChange={(e) => setKeyword(e.target.value)}
