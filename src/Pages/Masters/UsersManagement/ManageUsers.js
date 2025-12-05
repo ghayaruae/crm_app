@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 
 const ManageUsers = () => {
 
-    const { primaryColor, apiHeaderFile, apiURL } = useContext(ConfigContext)
+    const { primaryColor, apiHeaderFile, apiHeaderJson, apiURL } = useContext(ConfigContext)
     const headers = apiHeaderFile;
     const imageInputRef = useRef(null);
 
@@ -122,7 +122,7 @@ const ManageUsers = () => {
             setLoading(true)
             const response = await axios.get(`${apiURL}Users/GetUsers`,
                 {
-                    headers,
+                    headers: apiHeaderJson,
                     params: { page, limit, keyword }
                 })
             const { success, data, page: currentPage, next, prev, total_pages, total_records } = response.data
@@ -145,7 +145,7 @@ const ManageUsers = () => {
     const getInfo = async (business_salesman_id) => {
         try {
             const response = await axios.get(`${apiURL}Users/GetUserInfo`, {
-                headers,
+                headers: apiHeaderJson,
                 params: { business_salesman_id: business_salesman_id }
             })
             const { success, data } = response.data
@@ -187,10 +187,9 @@ const ManageUsers = () => {
             });
 
             if (result.isConfirmed) {
-                const body = new FormData();
-                body.append('business_salesman_id', business_salesman_id);
+                const body = { business_salesman_id }
 
-                const response = await axios.post(`${apiURL}Users/DeleteUser`, body, { headers });
+                const response = await axios.post(`${apiURL}Users/DeleteUser`, body, { headers: apiHeaderJson });
                 const { success, message } = response.data;
 
                 if (success) {
