@@ -38,7 +38,7 @@ const BusinessDetails = () => {
             <div className="main-content">
                 <div className="page-content">
                     <div className="container-fluid">
-                        <PageTitle title="Business Details" primary="Business Management" />
+                        <PageTitle title="Account Details" primary="Account Management" />
                         <ContentLoader />
                     </div>
                 </div>
@@ -56,7 +56,7 @@ const BusinessDetails = () => {
         <div className="main-content">
             <div className="page-content">
                 <div className="container-fluid">
-                    <PageTitle title="Business Details" primary="Business Management" />
+                    <PageTitle title="Account Details" primary="Account Management" />
 
                     <div className="row justify-content-center">
                         <div className="col-xxl-9 col-xl-10 col-lg-11">
@@ -69,7 +69,7 @@ const BusinessDetails = () => {
                                             width={100}
                                         />
                                         <h5 className="mb-0 text-uppercase fw-bold">
-                                            {data.business_name || "Business Details"}
+                                            {data.business_name || "Account Details"}
                                         </h5>
                                     </div>
                                 </div>
@@ -77,7 +77,7 @@ const BusinessDetails = () => {
                                 <div className="card-body p-4">
                                     <div className="row g-4">
                                         <div className="col-md-4">
-                                            <p className="text-muted mb-1 fw-semibold">Business ID</p>
+                                            <p className="text-muted mb-1 fw-semibold">Account ID</p>
                                             <h6>{data.business_id}</h6>
                                         </div>
 

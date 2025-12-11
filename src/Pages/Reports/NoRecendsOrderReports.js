@@ -20,11 +20,13 @@ const NoRecendsOrderReports = () => {
     const [totalRecords, setTotalRecords] = useState(0)
     const [totalPages, setTotalPages] = useState(0)
     const [loading, setLoading] = useState(true)
+    const [keyword, setKeyword] = useState('')
+    const [isUpdate, setIsUpdate] = useState(false)
 
 
     const GetBusinessesNoRecentOrders = async () => {
         try {
-            const response = await axios.get(`${apiURL}Dashboard/GetBusinessesNoRecentOrders`, { params: { limit, page }, headers });
+            const response = await axios.get(`${apiURL}Dashboard/GetBusinessesNoRecentOrders`, { params: { limit, page, keyword }, headers });
             const { success, data, page: currentPage, next, prev, total_pages, total_records } = response.data
 
             if (success) {
@@ -42,9 +44,24 @@ const NoRecendsOrderReports = () => {
         }
     };
 
+    const handleSearch = () => {
+        if (keyword) {
+            GetBusinessesNoRecentOrders();
+        } else {
+            return;
+        }
+    }
+
+    const handelClear = () => {
+        if (keyword) {
+            setKeyword("");
+            setIsUpdate(prev => !prev)
+        }
+    };
+
     useEffect(() => {
         GetBusinessesNoRecentOrders()
-    }, [page, limit])
+    }, [page, limit, isUpdate])
 
     return (
         <div className='main-content'>
@@ -62,7 +79,43 @@ const NoRecendsOrderReports = () => {
                             </div>
                         </div>
                         <div className="card-body">
+                            <div className="row mb-4 align-items-center">
+                                <div className="col-md-3">
+                                    <div className="position-relative w-100">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Search by Account Name or ID"
+                                            name="keyword"
+                                            value={keyword}
+                                            onChange={(e) => setKeyword(e.target.value)}
+                                        />
+                                        <span className="position-absolute end-0 top-50 translate-middle-y me-3">
+                                            <i className="ri-search-line"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="col-md-3 d-flex gap-3 mt-2 mt-md-0">
+                                    <button
+                                        type="button"
+                                        className="btn btn-danger btn-label right"
+                                        onClick={handleSearch}
+                                        disabled={keyword ? false : true}
+                                    >
+                                        Filter
+                                        <i className="ri-filter-line label-icon align-middle fs-16 ms-2"></i>
+                                    </button>
 
+                                    <button
+                                        type="button"
+                                        className="btn btn-light"
+                                        onClick={handelClear}
+                                        disabled={keyword ? false : true}
+                                    >
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
                             <div className="table-responsive table-card">
                                 <table className="table align-middle table-nowrap mb-0">
                                     <thead className="table-light">
