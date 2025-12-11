@@ -211,7 +211,9 @@ const FullOrdersReport = () => {
                                                         data.map((row) => (
                                                             <tr key={row.business_order_id} className="text-center">
                                                                 <td>
-                                                                    <Link style={{ color: primaryColor, fontWeight: "bolder" }} to={`/OrderInfo/${row.business_order_id}`}>
+                                                                    <Link style={{ color: primaryColor, fontWeight: "bolder" }}
+                                                                        to={`/OrderInfo/${row.business_order_id}/${row.secret_order_id}/${row.business_order_business_id}`}
+                                                                    >
                                                                         {row.secret_order_id}
                                                                     </Link>
                                                                 </td>
