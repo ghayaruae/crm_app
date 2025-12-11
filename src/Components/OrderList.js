@@ -74,15 +74,15 @@ const OrderList = ({ orderItems, orderDetails }) => {
                   <tbody>
                     <tr>
                       <td>Sub Total :</td>
-                      <td className="text-end">{orderDetails.display_sub_total}</td>
+                      <td className="text-end">{orderDetails.display_corrected_grand_total}</td>
                     </tr>
                     <tr>
                       <td>Total Exc. Tax :</td>
-                      <td className="text-end">{orderDetails.display_excl_vat}</td>
+                      <td className="text-end">{orderDetails.display_corrected_excl_vat}</td>
                     </tr>
                     <tr>
                       <td>VAT :</td>
-                      <td className="text-end">{orderDetails.display_vat_amount}</td>
+                      <td className="text-end">{orderDetails.display_corrected_vat_amount}</td>
                     </tr>
                     <tr>
                       <td>Coupon Discount :</td>
@@ -90,7 +90,7 @@ const OrderList = ({ orderItems, orderDetails }) => {
                     </tr>
                     <tr className="border-top border-top-dashed">
                       <th scope='row'>Grand Total</th>
-                      <th className="text-end">{orderDetails?.display_grand_total}</th>
+                      <th className="text-end">{orderDetails?.display_corrected_grand_total}</th>
                     </tr>
                   </tbody>
                 </table>
