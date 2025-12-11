@@ -23,7 +23,7 @@ const OrderList = ({ orderItems, orderDetails }) => {
               orderItems?.length > 0 ?
                 orderItems?.map((item, index) => {
                   return (
-                    <tr key={index}>
+                    <tr key={index} className={item?.item_status === 4 ? "return-overlay" : ""}>
                       <td>
                         <div className="d-flex">
                           <div className="flex-shrink-0 avatar-md bg-light rounded p-1">
@@ -35,9 +35,12 @@ const OrderList = ({ orderItems, orderDetails }) => {
                             <h5 className="fs-15">
                               <a className="text-reset cursor-pointer">{item?.item_name}</a>
                             </h5>
-                            <p className="text-muted mb-0">
-                              <span className="fw-medium">{item?.secret_order_id}</span>
-                            </p>
+                            <p className='text-muted mb-0'>{item?.store_name}</p>
+                            {item?.item_status === 4 &&
+                              <span className='badge bg-danger'>
+                                Return
+                              </span>
+                            }
                           </div>
                         </div>
                       </td>

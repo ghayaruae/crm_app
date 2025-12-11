@@ -153,7 +153,11 @@ const Invoice = ({ order, orderItems, address }) => {
                             <tr key={item.item_number} style={invoiceStyles.item}>
                                 <td style={invoiceStyles.itemCell}>
                                     {item.item_name}<br />
-                                    <small>{item.item_number}</small>
+                                    <small>{item.item_number}</small> <br />
+                                    {
+                                        item.item_status === 4 &&
+                                        <span className="badge bg-danger">Returned</span>
+                                    }
                                 </td>
                                 <td style={invoiceStyles.itemCell} align="right">
                                     AED {(Number(item.item_price) - Number(item.item_price) * 0.05).toFixed(2)}

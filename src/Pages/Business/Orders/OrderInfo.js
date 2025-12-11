@@ -115,7 +115,7 @@ const OrderInfo = () => {
                                                 <div className="d-flex justify-content-between align-items-center">
                                                     <div className="d-flex gap-3">
                                                         <h5 className="card-title flex-grow-1 mb-0">Order ID #{orderDetails?.secret_order_id}</h5>
-                                                        {GetStatusBadge(orderDetails?.business_order_status)}
+                                                        {/* {GetStatusBadge(orderDetails?.business_order_status)} */}
                                                     </div>
 
                                                     <div className="d-flex gap-3">
