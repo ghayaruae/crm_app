@@ -179,7 +179,7 @@ const Invoice = ({ order, orderItems, address }) => {
                                 <span style={{ lineHeight: '0' }}>Sub Total : <div><small>(Including VAT)</small></div></span>
                             </td>
                             <td style={invoiceStyles.itemCell} align="right">
-                                {order.display_sub_total}
+                                {order.display_corrected_grand_total}
                             </td>
                         </tr>
                         {Number(order.business_order_total_saving) > 0 && (
@@ -212,7 +212,7 @@ const Invoice = ({ order, orderItems, address }) => {
                                 <span style={{ lineHeight: '0' }}>Amount : <div><small>(Excluding VAT)</small></div></span>
                             </td>
                             <td style={invoiceStyles.itemCell} align="right">
-                                <strong>{order.display_excl_vat}</strong>
+                                <strong>{order.display_corrected_excl_vat}</strong>
                             </td>
                         </tr>
                         <tr style={{ ...invoiceStyles.total, fontSize: '12px' }}>
@@ -220,7 +220,7 @@ const Invoice = ({ order, orderItems, address }) => {
                                 <strong>VAT 5% : </strong>
                             </td>
                             <td style={invoiceStyles.itemCell} align="right">
-                                <strong>{order.display_vat_amount}</strong>
+                                <strong>{order.display_corrected_vat_amount}</strong>
                             </td>
                         </tr>
 
@@ -229,7 +229,7 @@ const Invoice = ({ order, orderItems, address }) => {
                                 <strong>Grand Total : </strong>
                             </td>
                             <td style={invoiceStyles.itemCell} align="right">
-                                <strong>AED {order.display_grand_total}</strong>
+                                <strong>AED {order.display_corrected_grand_total}</strong>
                             </td>
                         </tr>
                     </tbody>
