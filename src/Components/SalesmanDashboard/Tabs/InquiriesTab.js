@@ -67,7 +67,14 @@ const InquiriesTab = () => {
                                                             <td className='text-dark fw-bold'>{row.business_salesman_id}</td>
                                                             <td>{row.request_part_name}</td>
                                                             <td>{row.request_brand_name}</td>
-                                                            <td>{row.request_part_number}</td>
+                                                            <td>
+                                                                <span
+                                                                    className="text-ellipsis"
+                                                                    title={row?.request_part_number}
+                                                                >
+                                                                    {row?.request_part_number}
+                                                                </span>
+                                                            </td>
                                                             <td className='text-dark fw-bold'>{row.request_part_qty}</td>
                                                             <td className='text-danger fw-bold'>AED {row.request_part_market_price}</td>
                                                         </tr>

@@ -153,7 +153,14 @@ const SalesmanRequestPartList = () => {
                                                                         </td>
                                                                         <td>{row.request_part_name}</td>
                                                                         <td>{row.request_brand_name}</td>
-                                                                        <td>{row.request_part_number}</td>
+                                                                        <td>
+                                                                            <span
+                                                                                className="text-ellipsis"
+                                                                                title={row?.request_part_number}
+                                                                            >
+                                                                                {row?.request_part_number}
+                                                                            </span>
+                                                                        </td>
                                                                         <td>
                                                                             <span className="badge bg-info">
                                                                                 {row.request_part_qty}

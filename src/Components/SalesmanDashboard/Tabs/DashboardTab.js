@@ -1,10 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react'
-import DashboardCards from '../../../Pages/Dashboard/DashboardCards'
 import { DateFormater } from '../../GlobalFunctions';
 import SalesChart from '../../../Pages/Dashboard/SalesChart';
 import BusinessesChart from '../../../Pages/Dashboard/BusinessesChart';
-import { ConfigContext } from '../../../Context/ConfigContext';
-import axios from 'axios';
 import NoRecentOrders from '../../../Pages/Dashboard/NoRecendsOrders';
 import { Link } from 'react-router-dom';
 
@@ -49,9 +45,9 @@ const DashboardTab = ({ data, salesman_data }) => {
             arrowColor: "text-primary",
             iconColor: "text-primary",
             name: salesman_data?.business_salesmen_name,
-            target: salesman_data?.business_salesman_target,
-            from: salesman_data?.business_salesman_target_from,
-            to: salesman_data?.business_salesman_target_to,
+            target: salesman_data?.target_amount,
+            from: salesman_data?.target_from,
+            to: salesman_data?.target_to,
         });
     }
 
