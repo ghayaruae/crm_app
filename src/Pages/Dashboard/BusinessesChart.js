@@ -1,108 +1,11 @@
-// import React, { useContext, useEffect, useState } from 'react'
-// import ReactECharts from 'echarts-for-react'
-// import axios from 'axios';
-// import { ConfigContext } from '../../Context/ConfigContext';
-
-// const BusinessesChart = () => {
-//     const { apiHeaderJson, apiURL } = useContext(ConfigContext)
-//     const [getTargetAmount, setGetTargetAmount] = useState([]);
-
-//     const GetSalesmanTargetChartData = async () => {
-//         try {
-//             const headers = apiHeaderJson;
-//             const response = await axios.get(`${apiURL}Dashboard/GetSalesmanTargetChartData`, { headers })
-
-//             if (response?.data?.success) {
-//                 const data = response?.data?.data;
-//                 setGetTargetAmount(data);
-//             }
-
-//         } catch (error) {
-//             console.log(error)
-//         }
-//     }
-
-//     const option = {
-//         tooltip: {
-//             trigger: 'item',
-//             backgroundColor: '#fff',
-//             borderColor: '#ddd',
-//             borderWidth: 1,
-//             textStyle: { color: '#333' },
-//             formatter: '{b}: {c} ({d}%)'
-//         },
-//         legend: {
-//             bottom: 0,
-//             left: 'center',
-//             textStyle: { color: '#666', fontSize: 12 },
-//         },
-//         series: [
-//             {
-//                 name: 'Business Status',
-//                 type: 'pie',
-//                 radius: ['40%', '70%'],
-//                 avoidLabelOverlap: false,
-//                 label: { show: false, position: 'center' },
-//                 emphasis: {
-//                     label: {
-//                         show: true,
-//                         fontSize: 14,
-//                         fontWeight: 'bold',
-//                         color: '#333'
-//                     }
-//                 },
-//                 labelLine: { show: false },
-//                 data: [
-//                     { value: getTargetAmount?.total_achievement_amount, name: 'Achievement Amount', itemStyle: { color: '#2b7a78' } },
-//                     { value: getTargetAmount?.total_pending_amount, name: 'Pending Amount', itemStyle: { color: '#d9534f' } }
-//                 ]
-//             }
-//         ]
-//     }
-
-//     const chartStyle = {
-//         width: '100%',
-//         height: '90%',
-//         minHeight: '300px',
-//     }
-
-//     useEffect(() => {
-//         GetSalesmanTargetChartData();
-//     }, [])
-
-//     return (
-//         <div className="col-12 col-md-5">
-//             <div className="card shadow border-0 rounded h-100">
-//                 <div className="card-body d-flex flex-column justify-content-between">
-//                     <h5 className="card-title mb-3 text-dark fw-semibold text-center text-md-start">
-//                         Achievment Target Overview
-//                     </h5>
-//                     <div style={{ flex: 1 }}>
-//                         <ReactECharts
-//                             option={option}
-//                             style={chartStyle}
-//                             opts={{ renderer: 'svg' }}
-//                             notMerge={true}
-//                             lazyUpdate={true}
-//                             theme={"light"}
-//                         />
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     )
-// }
-
-// export default BusinessesChart
-
-
-import { useContext, useEffect, useState } from 'react'
-import ReactECharts from 'echarts-for-react'
-import axios from 'axios';
-import { ConfigContext } from '../../Context/ConfigContext';
+import { useContext, useEffect, useState } from "react";
+import ReactECharts from "echarts-for-react";
+import axios from "axios";
+import { ConfigContext } from "../../Context/ConfigContext";
 
 const BusinessesChart = () => {
-    const { apiHeaderJson, apiURL } = useContext(ConfigContext)
+    const { apiHeaderJson, apiURL } = useContext(ConfigContext);
+
     const [getTargetAmount, setGetTargetAmount] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -110,64 +13,82 @@ const BusinessesChart = () => {
         try {
             setLoading(true);
             const headers = apiHeaderJson;
-            const response = await axios.get(`${apiURL}Dashboard/GetSalesmanTargetChartData`, { headers })
+
+            const response = await axios.get(
+                `${apiURL}Dashboard/GetSalesmanTargetChartData`,
+                { headers }
+            );
 
             if (response?.data?.success) {
                 setGetTargetAmount(response?.data?.data);
             } else {
                 setGetTargetAmount(null);
             }
-
         } catch (error) {
-            console.log(error)
+            console.log(error);
             setGetTargetAmount(null);
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     useEffect(() => {
         GetSalesmanTargetChartData();
-    }, [])
+    }, []);
 
     const noData =
         !getTargetAmount ||
-        (parseFloat(getTargetAmount.total_achievement_amount) === 0 &&
-            parseFloat(getTargetAmount.total_pending_amount) === 0);
+        (parseFloat(getTargetAmount?.total_achievement_amount || 0) === 0 &&
+            parseFloat(getTargetAmount?.total_pending_amount || 0) === 0 &&
+            parseFloat(getTargetAmount?.above_achievement_amount || 0) === 0);
 
     const option = {
         tooltip: {
-            trigger: 'item',
-            backgroundColor: '#fff',
-            borderColor: '#ddd',
+            trigger: "item",
+            backgroundColor: "#fff",
+            borderColor: "#ddd",
             borderWidth: 1,
-            textStyle: { color: '#333' },
-            formatter: '{b}: {c} ({d}%)'
+            textStyle: { color: "#333" },
+            formatter: "{b}: {c} ({d}%)"
         },
         legend: {
             bottom: 0,
-            left: 'center',
-            textStyle: { color: '#666', fontSize: 12 },
+            left: "center",
+            textStyle: { color: "#666", fontSize: 12 }
         },
         series: [
             {
-                name: 'Business Status',
-                type: 'pie',
-                radius: ['40%', '70%'],
+                name: "Business Status",
+                type: "pie",
+                radius: ["40%", "70%"],
                 avoidLabelOverlap: false,
-                label: { show: false, position: 'center' },
+                label: { show: false },
                 emphasis: {
                     label: {
                         show: true,
                         fontSize: 14,
-                        fontWeight: 'bold',
-                        color: '#333'
+                        fontWeight: "bold",
+                        color: "#333"
                     }
                 },
                 labelLine: { show: false },
+
                 data: [
-                    { value: getTargetAmount?.total_achievement_amount?.toFixed(2), name: 'Achievement Amount', itemStyle: { color: '#2b7a78' } },
-                    { value: getTargetAmount?.total_pending_amount?.toFixed(2), name: 'Pending Amount', itemStyle: { color: '#d9534f' } }
+                    {
+                        value: parseFloat(getTargetAmount?.total_achievement_amount)?.toFixed(2),
+                        name: "Achievement Amount",
+                        itemStyle: { color: "#2b7a78" }
+                    },
+                    {
+                        value: parseFloat(getTargetAmount?.total_pending_amount)?.toFixed(2),
+                        name: "Pending Amount",
+                        itemStyle: { color: "#d9534f" }
+                    },
+                    {
+                        value: parseFloat(getTargetAmount?.above_achievement_amount)?.toFixed(2),
+                        name: "Above Achievement",
+                        itemStyle: { color: "#34568B" }
+                    }
                 ]
             }
         ]
@@ -176,19 +97,25 @@ const BusinessesChart = () => {
     return (
         <div className="col-lg-5 col-md-12">
             <div className="card shadow border-0 rounded h-100">
-                <h5 className="card-header text-center text-md-start">
-                    Achievement Target Overview
-                </h5>
+
+                <div className="card-header d-flex justify-content-between align-items-center">
+                    <h5 className="m-0">Achievement Target Overview</h5>
+
+                    {getTargetAmount?.target_from && getTargetAmount?.target_to && (
+                        <small className="text-muted fw-semibold">
+                            {getTargetAmount.target_from} → {getTargetAmount.target_to}
+                        </small>
+                    )}
+                </div>
+
                 <div className="card-body d-flex flex-column justify-content-evenly p-0">
 
-                    {/* Loader */}
                     {loading && (
                         <div className="d-flex justify-content-center align-items-center" style={{ height: "250px" }}>
                             <div className="spinner-border text-primary"></div>
                         </div>
                     )}
 
-                    {/* No Data */}
                     {!loading && noData && (
                         <div
                             style={{
@@ -202,28 +129,27 @@ const BusinessesChart = () => {
                             }}
                         >
                             <img
-                                src="https://cdn-icons-png.flaticon.com/512/4208/4208479.png"
-                                width="80"
-                                style={{ opacity: 0.5, marginBottom: "10px" }}
+                                src="https://cdn-icons-png.flaticon.com/512/7465/7465709.png"
+                                width="85"
+                                style={{ opacity: 0.6, marginBottom: "10px" }}
+                                alt="No data"
                             />
-                            <p className="fw-semibold">No target data available</p>
+                            <p className="fw-semibold mb-0">No target data available</p>
                             <small>Please assign target to view progress</small>
                         </div>
                     )}
 
-                    {/* Chart */}
                     {!loading && !noData && (
                         <ReactECharts
                             option={option}
                             style={{ width: "100%", height: "350px" }}
-                            opts={{ renderer: 'svg' }}
+                            opts={{ renderer: "svg" }}
                         />
                     )}
-
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default BusinessesChart
+export default BusinessesChart;
