@@ -155,7 +155,7 @@ const Invoice = ({ order, orderItems, address }) => {
                                     {item.item_name}<br />
                                     <small>{item.item_number}</small> <br />
                                     {
-                                        item.item_status === 4 &&
+                                        item.item_status === 7 &&
                                         <span className="badge bg-danger">Returned</span>
                                     }
                                 </td>
