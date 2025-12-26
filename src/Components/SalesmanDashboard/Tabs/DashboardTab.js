@@ -4,7 +4,7 @@ import BusinessesChart from '../../../Pages/Dashboard/BusinessesChart';
 import NoRecentOrders from '../../../Pages/Dashboard/NoRecendsOrders';
 import { Link } from 'react-router-dom';
 
-const DashboardTab = ({ data, salesman_data }) => {
+const DashboardTab = ({ data, salesman_data, sales_data }) => {
 
     const dashboardCards = [
         {
@@ -100,6 +100,84 @@ const DashboardTab = ({ data, salesman_data }) => {
                                 </div>
                             </div>
                         ))}
+                    </div>
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="card border-0 shadow-sm">
+                                <div className="card-body">
+
+                                    {/* Header */}
+                                    <div className="d-flex align-items-center justify-content-between mb-4">
+                                        <div>
+                                            <h6 className="mb-1 fw-semibold text-dark">
+                                                Daily Sales Summary
+                                            </h6>
+                                            <small className="text-muted">
+                                                Salesman performance overview
+                                            </small>
+                                        </div>
+
+                                        <span className="badge bg-light text-dark border">
+                                            {sales_data?.sale_date}
+                                        </span>
+                                    </div>
+
+                                    {/* Stats */}
+                                    <div className="row g-3">
+
+                                        {/* Total Orders */}
+                                        <div className="col-md-6 col-sm-6">
+                                            <div className="p-3 rounded bg-primary-subtle h-100">
+                                                <div className="d-flex align-items-center">
+                                                    <div className="me-3">
+                                                        <div className="avatar-sm">
+                                                            <span className="avatar-title rounded-circle bg-primary text-white">
+                                                                <i className="ri-shopping-bag-line fs-5"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div>
+                                                        <h5 className="mb-0 fw-bold">
+                                                            {sales_data?.total_orders ?? 0}
+                                                        </h5>
+                                                        <small className="text-muted">
+                                                            Total Orders
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Total Sales */}
+                                        <div className="col-md-6 col-sm-6">
+                                            <div className="p-3 rounded bg-success-subtle h-100">
+                                                <div className="d-flex align-items-center">
+                                                    <div className="me-3">
+                                                        <div className="avatar-sm">
+                                                            <span className="avatar-title rounded-circle bg-success text-white">
+                                                                <i className="ri-money-dollar-circle-line fs-5"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div>
+                                                        <h5 className="mb-0 fw-bold">
+                                                            AED {Number(sales_data?.total_sales || 0).toLocaleString("en-AE")}
+                                                        </h5>
+                                                        <small className="text-muted">
+                                                            Total Sales
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="row g-4">

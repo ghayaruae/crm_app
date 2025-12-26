@@ -16,6 +16,7 @@ const TabsMenu = () => {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState({})
     const [salesmanData, setSalesmanData] = useState({})
+    const [salesData, setSalesData] = useState({})
 
     const handleTabChange = (tab) => {
         setActiveTab(tab);
@@ -37,8 +38,21 @@ const TabsMenu = () => {
         }
     }
 
+    const getDailySalesData = async () => {
+        try {
+            const response = await axios.get(`${apiURL}Dashboard/GetSalesmanDailySales`, { headers })
+            const { success, data } = response.data
+            if (success) {
+                setSalesData(data)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     useEffect(() => {
         getSalesmanData()
+        getDailySalesData()
     }, [])
 
     return (
@@ -93,6 +107,7 @@ const TabsMenu = () => {
                     <DashboardTab
                         data={data}
                         salesman_data={salesmanData}
+                        sales_data={salesData}
                     />
                 )}
                 {activeTab === "targets" && (
