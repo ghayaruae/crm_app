@@ -183,8 +183,14 @@ const RequestPartList = () => {
                                                                         </td>
                                                                         <td>{row.request_part_name}</td>
                                                                         <td>{row.request_brand_name}</td>
-                                                                        <td>{row.request_part_number}</td>
-                                                                        <td>{row.request_part_qty}</td>
+                                                                        <td>
+                                                                            <span
+                                                                                className="text-ellipsis"
+                                                                                title={row?.request_part_number}
+                                                                            >
+                                                                                {row?.request_part_number}
+                                                                            </span>
+                                                                        </td>                                                                        <td>{row.request_part_qty}</td>
                                                                         <td>{row.request_part_market_price}</td>
                                                                         <td>{DateFormater(row?.request_date)}</td>
                                                                     </tr>
