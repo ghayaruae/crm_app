@@ -134,6 +134,13 @@ const Invoice = ({ order, orderItems, address }) => {
                                 <td style={{ padding: '5px 0', color: '#666' }}>Payment Method:</td>
                                 <td style={{ padding: '5px 0 5px 15px', textAlign: 'left', textTransform: 'capitalize' }}>{order.business_order_payment_method}</td>
                             </tr>
+                            <tr>
+                                <td colSpan={2} style={{ padding: '5px 0', color: '#000', textAlign: 'center' }}>
+                                    <b>GHAYAR AUTO SPARE PARTS TRADING L.L.C</b>
+                                    <br />
+                                    TRN: 100442212500003
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </div>
