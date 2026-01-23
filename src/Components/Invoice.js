@@ -97,7 +97,7 @@ const Invoice = ({ order, orderItems, address }) => {
             <PrintStyles />
             <div className="invoice-container" style={invoiceStyles.invoiceBox} dir={dir}>
                 <img
-                    src={`/assets/images/header.png`}
+                    src={`/assets/images/updated_header.png`}
                     alt="Invoice Header"
                     width={"100%"}
                 />
@@ -133,6 +133,13 @@ const Invoice = ({ order, orderItems, address }) => {
                             <tr>
                                 <td style={{ padding: '5px 0', color: '#666' }}>Payment Method:</td>
                                 <td style={{ padding: '5px 0 5px 15px', textAlign: 'left', textTransform: 'capitalize' }}>{order.business_order_payment_method}</td>
+                            </tr>
+                            <tr>
+                                <td colSpan={2} style={{ padding: '5px 0', color: '#000', textAlign: 'center' }}>
+                                    <b>GHAYAR AUTO SPARE PARTS TRADING L.L.C</b>
+                                    <br />
+                                    TRN: 100442212500003
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -237,7 +244,7 @@ const Invoice = ({ order, orderItems, address }) => {
 
                 <div style={{ marginTop: '30px', textAlign: 'center', color: '#888', fontSize: '14px' }}>
                     <img
-                        src={`/assets/images/footer.png`}
+                        src={`/assets/images/updated_footer.png`}
                         alt="Invoice Footer"
                         width={"100%"}
                     />
