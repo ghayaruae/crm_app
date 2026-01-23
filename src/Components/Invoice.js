@@ -97,7 +97,7 @@ const Invoice = ({ order, orderItems, address }) => {
             <PrintStyles />
             <div className="invoice-container" style={invoiceStyles.invoiceBox} dir={dir}>
                 <img
-                    src={`/assets/images/header.png`}
+                    src={`/assets/images/updated_header.png`}
                     alt="Invoice Header"
                     width={"100%"}
                 />
@@ -237,7 +237,7 @@ const Invoice = ({ order, orderItems, address }) => {
 
                 <div style={{ marginTop: '30px', textAlign: 'center', color: '#888', fontSize: '14px' }}>
                     <img
-                        src={`/assets/images/footer.png`}
+                        src={`/assets/images/updated_footer.png`}
                         alt="Invoice Footer"
                         width={"100%"}
                     />
