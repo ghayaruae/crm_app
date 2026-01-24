@@ -48,7 +48,7 @@ const OrderList = ({ orderItems, orderDetails }) => {
                       <td>{item?.item_qty}</td>
                       <td>
                         <div className="text-warning fw-bold fs-15">
-                          AED {item.item_price}
+                          AED {item.item_price_excl_vat}
                         </div>
                       </td>
                       <td>

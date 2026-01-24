@@ -167,7 +167,7 @@ const Invoice = ({ order, orderItems, address }) => {
                                     }
                                 </td>
                                 <td style={invoiceStyles.itemCell} align="right">
-                                    AED {(Number(item.item_price) - Number(item.item_price) * 0.05).toFixed(2)}
+                                    AED {item.item_price_excl_vat}
                                 </td>
                                 <td style={invoiceStyles.itemCell} align="right">
                                     {item.item_qty}
