@@ -44,7 +44,7 @@ const OrderList = ({ orderItems, orderDetails }) => {
                           </div>
                         </div>
                       </td>
-                      <td>{item?.business_order_item_numberitem_number}</td>
+                      <td>{item?.item_number}</td>
                       <td>{item?.item_qty}</td>
                       <td>
                         <div className="text-warning fw-bold fs-15">
