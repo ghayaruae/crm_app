@@ -163,11 +163,12 @@ const AllBusinessesReport = () => {
                                                         <th>TRN No</th>
                                                         <th>Email</th>
                                                         <th>Credit Limit</th>
+                                                        <th>Total Orders</th>
                                                     </tr>
                                                 </thead>
 
                                                 {loading ? (
-                                                    <TableRows rows="10" colspan="8" />
+                                                    <TableRows rows="10" colspan="10" />
                                                 ) : (
                                                     <>
                                                         <tbody>
@@ -220,11 +221,12 @@ const AllBusinessesReport = () => {
                                                                         <td className="text-danger fw-bold">
                                                                             AED {row?.business_credit_limit}
                                                                         </td>
+                                                                        <td>{row?.total_orders || "No Order yet"}</td>
                                                                     </tr>
                                                                 ))
                                                             ) : (
                                                                 <tr>
-                                                                    <td colSpan={8}>
+                                                                    <td colSpan={10}>
                                                                         <NoRecords />
                                                                     </td>
                                                                 </tr>
@@ -233,7 +235,7 @@ const AllBusinessesReport = () => {
 
                                                         <tfoot className="table-light">
                                                             <tr>
-                                                                <th colSpan={8}>
+                                                                <th colSpan={10}>
                                                                     <div className="d-flex justify-content-between">
                                                                         <button
                                                                             disabled={!prev || loading}
