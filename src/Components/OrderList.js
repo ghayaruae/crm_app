@@ -44,7 +44,7 @@ const OrderList = ({ orderItems, orderDetails }) => {
                           </div>
                         </div>
                       </td>
-                      <td>{item?.business_order_item_numberitem_number}</td>
+                      <td>{item?.item_number}</td>
                       <td>{item?.item_qty}</td>
                       <td>
                         <div className="text-warning fw-bold fs-15">
@@ -84,10 +84,13 @@ const OrderList = ({ orderItems, orderDetails }) => {
                       <td>VAT :</td>
                       <td className="text-end">{orderDetails.display_corrected_vat_amount}</td>
                     </tr>
-                    <tr>
-                      <td>Coupon Discount :</td>
-                      <td className="text-end">{orderDetails.item_discount}</td>
-                    </tr>
+                    {
+                      orderDetails?.business_order_total_saving > 0 &&
+                      <tr>
+                        <td>Discount :</td>
+                        <td className="text-end">AED {orderDetails.business_order_total_saving}</td>
+                      </tr>
+                    }
                     <tr className="border-top border-top-dashed">
                       <th scope='row'>Grand Total</th>
                       <th className="text-end">{orderDetails?.display_corrected_grand_total}</th>
