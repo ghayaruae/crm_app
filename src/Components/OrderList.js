@@ -29,7 +29,9 @@ const OrderList = ({ orderItems, orderDetails }) => {
                           <div className="flex-shrink-0 avatar-md bg-light rounded p-1">
                             <img
                               src={item?.item_img_url}
-                              alt className="img-fluid d-block" />
+                              alt={item?.item_name}
+                              className="img-fluid d-block"
+                            />
                           </div>
                           <div className="flex-grow-1 ms-3">
                             <h5 className="fs-15">

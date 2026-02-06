@@ -25,7 +25,8 @@ const invoiceStyles = {
 
     },
     heading: {
-        backgroundColor: 'rgb(154 10 12)',
+        // backgroundColor: 'rgb(154 10 12)',
+        backgroundColor: '#000',
         color: '#FFF',
         borderBottom: '1px solid #ddd'
     },
@@ -56,7 +57,11 @@ const invoiceStyles = {
         textAlign: 'left'
     },
     invoiceInfo: {
-        textAlign: 'right', fontSize: '12px', color: '#555', lineHeight: '1.5'
+        padding: '15px',
+        textAlign: 'left',
+        fontSize: '12px',
+        color: '#555',
+        lineHeight: '1.5'
     },
     shippingAddress: {
         marginBottom: '20px',
@@ -96,11 +101,38 @@ const Invoice = ({ order, orderItems, address }) => {
         <>
             <PrintStyles />
             <div className="invoice-container" style={invoiceStyles.invoiceBox} dir={dir}>
-                <img
-                    src={`/assets/images/updated_header.png`}
-                    alt="Invoice Header"
-                    width={"100%"}
-                />
+
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "flex-start",
+                        marginBottom: "10px",
+                        width: "100%",
+                        padding: "20px"
+                    }}
+                >
+                    {/* LEFT SIDE – COMPANY INFO */}
+                    <div style={{ fontSize: "12px", lineHeight: "1.5" }}>
+                        <strong><b>GHAYAR AUTO SPARE PARTS TRADING L.L.C</b>
+                            <br />
+                            TRN: 100442212500003</strong>
+                        <div>Ajman, AL Rawda 1, Algeria St, Al Meera Building, M002,
+                            <br />
+                            Warehouse No. 3 - Umm Dera - New Industrial Area - Emirate of Umm Al
+                            Quwain</div>
+                        <div>Dubai</div>
+                    </div>
+                    <div style={{ textAlign: "right", fontSize: "12px" }}>
+                    </div>
+                </div>
+
+                <div style={{ marginBottom: "-10px" }}>
+                    <h3 style={{ fontWeight: "bold", textAlign: "center", color: "#000", textDecoration: "underline" }}>
+                        Invoice
+                    </h3>
+                </div>
+
                 <div style={invoiceStyles.headerGrid}>
 
                     {/* Left side - Business name and shipping */}
@@ -133,13 +165,6 @@ const Invoice = ({ order, orderItems, address }) => {
                             <tr>
                                 <td style={{ padding: '5px 0', color: '#666' }}>Payment Method:</td>
                                 <td style={{ padding: '5px 0 5px 15px', textAlign: 'left', textTransform: 'capitalize' }}>{order.business_order_payment_method}</td>
-                            </tr>
-                            <tr>
-                                <td colSpan={2} style={{ padding: '5px 0', color: '#000', textAlign: 'center' }}>
-                                    <b>GHAYAR AUTO SPARE PARTS TRADING L.L.C</b>
-                                    <br />
-                                    TRN: 100442212500003
-                                </td>
                             </tr>
                         </table>
                     </div>
@@ -241,14 +266,6 @@ const Invoice = ({ order, orderItems, address }) => {
                         </tr>
                     </tbody>
                 </table>
-
-                <div style={{ marginTop: '30px', textAlign: 'center', color: '#888', fontSize: '14px' }}>
-                    <img
-                        src={`/assets/images/updated_footer.png`}
-                        alt="Invoice Footer"
-                        width={"100%"}
-                    />
-                </div>
             </div>
         </>
     );
