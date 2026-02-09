@@ -8,6 +8,7 @@ import { GlobalLimitChanger } from '../../Components/InputElements'
 import { DateFormater } from '../../Components/GlobalFunctions'
 import Select from 'react-select';
 import * as XLSX from 'xlsx';
+import { useSearchParams } from 'react-router-dom';
 
 const FollowupReport = () => {
     const { primaryColor, apiHeaderJson, apiURL, selectTheme, selectStyle } = useContext(ConfigContext)
@@ -16,8 +17,6 @@ const FollowupReport = () => {
     const [data, setData] = useState([])
     const [next, setNext] = useState(false)
     const [prev, setPrev] = useState(false)
-    const [page, setPage] = useState(1)
-    const [limit, setLimit] = useState(10)
     const [totalRecords, setTotalRecords] = useState(0)
     const [totalPages, setTotalPages] = useState(0)
     const [loading, setLoading] = useState(true)
@@ -28,6 +27,14 @@ const FollowupReport = () => {
     const [exporting, setExporting] = useState(false)
     const [progress, setProgress] = useState(0)
     const [applyFilter, setApplyFilter] = useState(0);
+
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const pageFromUrl = Number(searchParams.get("page")) || 1;
+    const limitFromUrl = Number(searchParams.get("limit")) || 10;
+
+    const [page, setPage] = useState(pageFromUrl);
+    const [limit, setLimit] = useState(limitFromUrl);
 
     const getData = async () => {
         try {
@@ -155,6 +162,15 @@ const FollowupReport = () => {
     useEffect(() => {
         getSalesmanList()
     }, [])
+
+    useEffect(() => {
+        setSearchParams(prev => {
+            const params = new URLSearchParams(prev);
+            params.set("page", page);
+            params.set("limit", limit);
+            return params;
+        });
+    }, [page, limit]);
 
     useEffect(() => {
         getData()

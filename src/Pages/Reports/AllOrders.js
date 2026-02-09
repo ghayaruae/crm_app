@@ -4,7 +4,7 @@ import { ConfigContext } from '../../Context/ConfigContext'
 import axios from 'axios'
 import Flatpicker from "react-flatpickr";
 import { TableRows, NoRecords } from '../../Components/Shimmer'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { GlobalLimitChanger } from '../../Components/InputElements'
 import { DateFormater } from '../../Components/GlobalFunctions'
 import { GetStatusBadge } from '../../Utils/GetStatusBadge'
@@ -20,8 +20,6 @@ const AllOrders = () => {
     const [data, setData] = useState([])
     const [next, setNext] = useState(false)
     const [prev, setPrev] = useState(false)
-    const [page, setPage] = useState(1)
-    const [limit, setLimit] = useState(10)
     const [totalRecords, setTotalRecords] = useState(0)
     const [totalPages, setTotalPages] = useState(0)
     const [loading, setLoading] = useState(true)
@@ -30,6 +28,14 @@ const AllOrders = () => {
     const [isUpdate, setIsUpdate] = useState(false)
     const [exporting, setExporting] = useState(false)
     const [progress, setProgress] = useState(0)
+
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const pageFromUrl = Number(searchParams.get("page")) || 1;
+    const limitFromUrl = Number(searchParams.get("limit")) || 10;
+
+    const [page, setPage] = useState(pageFromUrl);
+    const [limit, setLimit] = useState(limitFromUrl);
 
     const getData = async () => {
         try {
@@ -134,6 +140,15 @@ const AllOrders = () => {
         }
         setIsUpdate(prev => !prev)
     };
+
+    useEffect(() => {
+        setSearchParams(prev => {
+            const params = new URLSearchParams(prev);
+            params.set("page", page);
+            params.set("limit", limit);
+            return params;
+        });
+    }, [page, limit]);
 
     useEffect(() => {
         getData();

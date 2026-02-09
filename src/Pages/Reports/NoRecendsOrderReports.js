@@ -3,7 +3,7 @@ import { ConfigContext } from '../../Context/ConfigContext';
 import axios from 'axios';
 import PageTitle from '../../Components/PageTitle';
 import { NoRecords, TableRows } from '../../Components/Shimmer';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { DateFormater } from '../../Components/GlobalFunctions';
 import TableFooter from '../../Components/Table/TableFooter';
 
@@ -15,14 +15,19 @@ const NoRecendsOrderReports = () => {
 
     const [next, setNext] = useState(false)
     const [prev, setPrev] = useState(false)
-    const [page, setPage] = useState(1)
-    const [limit, setLimit] = useState(10)
     const [totalRecords, setTotalRecords] = useState(0)
     const [totalPages, setTotalPages] = useState(0)
     const [loading, setLoading] = useState(true)
     const [keyword, setKeyword] = useState('')
     const [isUpdate, setIsUpdate] = useState(false)
 
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const pageFromUrl = Number(searchParams.get("page")) || 1;
+    const limitFromUrl = Number(searchParams.get("limit")) || 10;
+
+    const [page, setPage] = useState(pageFromUrl);
+    const [limit, setLimit] = useState(limitFromUrl);
 
     const GetBusinessesNoRecentOrders = async () => {
         try {
@@ -58,6 +63,15 @@ const NoRecendsOrderReports = () => {
             setIsUpdate(prev => !prev)
         }
     };
+
+    useEffect(() => {
+        setSearchParams(prev => {
+            const params = new URLSearchParams(prev);
+            params.set("page", page);
+            params.set("limit", limit);
+            return params;
+        });
+    }, [page, limit]);
 
     useEffect(() => {
         GetBusinessesNoRecentOrders()
