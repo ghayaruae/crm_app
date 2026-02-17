@@ -114,7 +114,7 @@ const CustomerTransactions = ({ business_id }) => {
                                                     <h6 className="text-muted mb-1">Total Statement Due Amount</h6>
                                                     <h5 className={`mb-0 text-primary fw-bold`}>
                                                         {
-                                                            statements && statements.length > 0 ? `AED ${GetCurrentStatement().total_due_amount?.toFixed(2)}` : `AED 0.00`
+                                                            statements && statements.length > 0 ? `${GetCurrentStatement().total_due_amount?.toFixed(2)} AED` : `0.00 AED`
                                                         }
                                                     </h5>
                                                 </div>
@@ -124,7 +124,7 @@ const CustomerTransactions = ({ business_id }) => {
                                                     <h6 className="text-muted mb-1">Current Due Amount</h6>
                                                     <h5 className={`mb-0 text-primary fw-bold`}>
                                                         {
-                                                            currentDue ? `AED ${currentDue.toFixed(2)}` : `AED 0.00`
+                                                            currentDue ? `${currentDue.toFixed(2)} AED` : `0.00 AED`
                                                         }
                                                     </h5>
                                                 </div>
@@ -135,7 +135,7 @@ const CustomerTransactions = ({ business_id }) => {
                                                     <h6 className="text-muted mb-1">Credit Limit</h6>
                                                     <h5 className={`mb-0 text-primary fw-bold`}>
                                                         {
-                                                            businessInfo ? `AED ${businessInfo.business_credit_limit}` : `AED 0.00`
+                                                            businessInfo ? `${businessInfo.business_credit_limit} AED` : `0.00 AED`
                                                         }
                                                     </h5>
                                                 </div>
@@ -181,7 +181,7 @@ const CustomerTransactions = ({ business_id }) => {
                                                                 className='text-danger fw-bold'
                                                                 style={{ padding: "5px" }}
                                                             >
-                                                                AED {parseFloat(item?.total_due_amount).toFixed(2)}
+                                                                {parseFloat(item?.total_due_amount).toFixed(2)} AED
                                                             </td>
                                                             <td
                                                                 style={{ padding: "5px" }}

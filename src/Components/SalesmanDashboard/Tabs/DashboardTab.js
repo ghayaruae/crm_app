@@ -67,7 +67,7 @@ const DashboardTab = ({ data, salesman_data, sales_data }) => {
 
                                         {card.name ? (
                                             <div>
-                                                <div className="small mb-1">Target Amount: AED {card.target}</div>
+                                                <div className="small mb-1">Target Amount: {card.target} AED</div>
                                                 <div className="small text-muted">
                                                     Target Date: {DateFormater(card.from)} → {DateFormater(card.to)}
                                                 </div>
@@ -163,7 +163,7 @@ const DashboardTab = ({ data, salesman_data, sales_data }) => {
 
                                                     <div>
                                                         <h5 className="mb-0 fw-bold">
-                                                            AED {Number(sales_data?.total_sales || 0).toLocaleString("en-AE")}
+                                                            {Number(sales_data?.total_sales || 0).toLocaleString("en-AE")} AED
                                                         </h5>
                                                         <small className="text-muted">
                                                             Total Sales

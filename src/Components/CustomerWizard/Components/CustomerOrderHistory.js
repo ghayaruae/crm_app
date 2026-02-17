@@ -77,7 +77,7 @@ const CustomerOrderHistory = ({ business_id }) => {
                                                                 {item?.business_order_payment_method}
                                                             </td>
                                                             <td className='text-success fw-bold'>
-                                                                AED {item?.business_order_grand_total}
+                                                                {item?.business_order_grand_total} AED
                                                             </td>
                                                             <td>
                                                                 {GetStatusBadge(item?.business_order_status)}

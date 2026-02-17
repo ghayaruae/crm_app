@@ -192,16 +192,16 @@ const Invoice = ({ order, orderItems, address }) => {
                                     }
                                 </td>
                                 <td style={invoiceStyles.itemCell} align="right">
-                                    AED {item.item_price_excl_vat}
+                                    {item.item_price_excl_vat} AED
                                 </td>
                                 <td style={invoiceStyles.itemCell} align="right">
                                     {item.item_qty}
                                 </td>
                                 <td style={invoiceStyles.itemCell} align="right">
-                                    AED {item.item_vat_amount}
+                                    {item.item_vat_amount} AED
                                 </td>
                                 <td style={invoiceStyles.itemCell} align="right">
-                                    AED {item.item_sub_total}
+                                    {item.item_sub_total} AED
                                 </td>
                             </tr>
                         ))}
@@ -220,7 +220,7 @@ const Invoice = ({ order, orderItems, address }) => {
                                     Discount :
                                 </td>
                                 <td style={invoiceStyles.itemCell} align="right">
-                                    AED {order.business_order_total_saving}
+                                    {order.business_order_total_saving} AED
                                 </td>
                             </tr>
                         )}
@@ -231,7 +231,7 @@ const Invoice = ({ order, orderItems, address }) => {
                                     Shipping Charges :
                                 </td>
                                 <td style={invoiceStyles.itemCell} align="right">
-                                    AED {order.shipping_charges}
+                                    {order.shipping_charges} AED
                                 </td>
                             </tr>
                         )}
@@ -261,7 +261,7 @@ const Invoice = ({ order, orderItems, address }) => {
                                 <strong>Grand Total : </strong>
                             </td>
                             <td style={invoiceStyles.itemCell} align="right">
-                                <strong>AED {order.display_corrected_grand_total}</strong>
+                                <strong>{order.display_corrected_grand_total} AED</strong>
                             </td>
                         </tr>
                     </tbody>

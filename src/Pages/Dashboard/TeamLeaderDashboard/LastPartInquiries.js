@@ -45,7 +45,7 @@ const LastPartInquiries = ({ inquiryData }) => {
                                                 <td>{item?.request_brand_name}</td>
                                                 <td>{item?.request_part_number}</td>
                                                 <td className='text-success fw-bold'>{item?.request_part_qty}</td>
-                                                <td className='text-danger fw-bold'>AED {item?.request_part_market_price}</td>
+                                                <td className='text-danger fw-bold'>{item?.request_part_market_price} AED</td>
                                                 <td className='text-dark fw-bold'>{DateFormater(item?.request_date)}</td>
                                             </tr>
                                         ))

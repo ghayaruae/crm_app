@@ -273,7 +273,7 @@ const AllBusinesses = () => {
                                                                         <td>{row.busienss_trn}</td>
                                                                         <td>{row.business_email}</td>
                                                                         <td>{row.business_reward_points_balance}</td>
-                                                                        <td>AED {row.business_credit_limit}</td>
+                                                                        <td>{row.business_credit_limit} AED</td>
 
                                                                         <td className="d-flex gap-2 justify-content-center">
                                                                             <Link to={`/CustomerDashboard/${row.business_id}`}>

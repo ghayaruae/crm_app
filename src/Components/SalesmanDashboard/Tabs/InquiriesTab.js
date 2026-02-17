@@ -76,7 +76,7 @@ const InquiriesTab = () => {
                                                                 </span>
                                                             </td>
                                                             <td className='text-dark fw-bold'>{row.request_part_qty}</td>
-                                                            <td className='text-danger fw-bold'>AED {row.request_part_market_price}</td>
+                                                            <td className='text-danger fw-bold'>{row.request_part_market_price} AED</td>
                                                         </tr>
                                                     ))
                                                 ) : (

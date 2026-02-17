@@ -250,7 +250,7 @@ const BusinessOrders = () => {
                                                                     </td>
                                                                     <td>{DateFormater(row.business_order_date)}</td>
                                                                     <td>{row.business_order_payment_method}</td>
-                                                                    <td className='text-success fw-bold'>AED {row.business_order_grand_total}</td>
+                                                                    <td className='text-success fw-bold'>{row.business_order_grand_total} AED</td>
                                                                     <td>{row.business_order_earned_points}</td>
                                                                     <td>{GetStatusBadge(row.business_order_status)}</td>
                                                                     <td className='d-flex gap-2 justify-content-center'>

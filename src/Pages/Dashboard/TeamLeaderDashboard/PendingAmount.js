@@ -16,13 +16,14 @@ const PendingAmount = ({ pending_amount = 0 }) => {
                     <h5 className="pending-title">Pending Amount</h5>
 
                     <h2 className="pending-amount">
-                        AED <CountUp
+                        <CountUp
                             start={0}
                             end={parseFloat(pending_amount)}
                             decimals={2}
                             duration={2.5}
                             separator=","
                         />
+                        <span className="currency"> AED</span>
                     </h2>
 
                     <p className="pending-subtext">

@@ -50,15 +50,15 @@ const OrderList = ({ orderItems, orderDetails }) => {
                       <td>{item?.item_qty}</td>
                       <td>
                         <div className="text-warning fw-bold fs-15">
-                          AED {item.item_price_excl_vat}
+                          {item.item_price_excl_vat} AED
                         </div>
                       </td>
                       <td>
                         <div className="text-danger fw-bold fs-15">
-                          AED {item.item_vat_amount}
+                          {item.item_vat_amount} AED
                         </div>
                       </td>
-                      <td className="fw-medium text-end">AED {item.item_sub_total}</td>
+                      <td className="fw-medium text-end">{item.item_sub_total} AED</td>
                     </tr>
                   )
                 })
@@ -90,7 +90,7 @@ const OrderList = ({ orderItems, orderDetails }) => {
                       orderDetails?.business_order_total_saving > 0 &&
                       <tr>
                         <td>Discount :</td>
-                        <td className="text-end">AED {orderDetails.business_order_total_saving}</td>
+                        <td className="text-end">{orderDetails.business_order_total_saving} AED</td>
                       </tr>
                     }
                     <tr className="border-top border-top-dashed">

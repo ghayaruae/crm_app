@@ -59,7 +59,7 @@ const DashboardCards = ({ data, salesman_data }) => {
                                     {card.name ? (
                                         <div>
                                             <div className="text-dark fw-bold fs-5 mb-1">{card.name}</div>
-                                            <div className="small">Target Amount : AED {card.target}</div>
+                                            <div className="small">Target Amount : {card.target} AED</div>
                                             <div className="small text-muted">
                                                 Target Date :  {DateFormater(card.from)} → {DateFormater(card.to)}
                                             </div>

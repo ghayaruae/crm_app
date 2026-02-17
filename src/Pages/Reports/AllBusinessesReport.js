@@ -314,7 +314,7 @@ const AllBusinessesReport = () => {
                                                                         <td>{row?.busienss_trn}</td>
                                                                         <td>{row?.business_email}</td>
                                                                         <td className="text-danger fw-bold">
-                                                                            AED {row?.business_credit_limit}
+                                                                            {row?.business_credit_limit} AED
                                                                         </td>
                                                                         <td>{row?.total_orders || "No Order yet"}</td>
                                                                     </tr>

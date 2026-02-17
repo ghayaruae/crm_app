@@ -148,12 +148,12 @@ const MainDashboard = () => {
                                                                 {item.title}
                                                             </p>
                                                             <h4 className={`mb-0 fw-semibold ${item.color}`}>
-                                                                {item.key === "total_salesman_targets" && "AED "}
                                                                 <CountUp
                                                                     end={info?.[item.key] ?? 0}
                                                                     duration={1.5}
                                                                     separator=","
                                                                 />
+                                                                {item.key === "total_salesman_targets" && " AED"}
                                                             </h4>
                                                         </div>
                                                         <div

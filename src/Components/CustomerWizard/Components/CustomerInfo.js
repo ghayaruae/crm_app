@@ -148,13 +148,13 @@ const CustomerInfo = ({ business_id }) => {
 
                                 <div className="col-md-6">
                                     <div className="p-2 border rounded">
-                                        <strong>Account Credit Limit : </strong> <span className="text-success fw-bold">AED {businessInfo.business_credit_limit}</span>
+                                        <strong>Account Credit Limit : </strong> <span className="text-success fw-bold">{businessInfo.business_credit_limit} AED</span>
                                     </div>
                                 </div>
 
                                 <div className="col-md-6">
                                     <div className="p-2 border rounded">
-                                        <strong>Account Credit Balance : </strong> <span className="text-danger fw-bold">AED {businessInfo.business_credit_balance}</span>
+                                        <strong>Account Credit Balance : </strong> <span className="text-danger fw-bold">{businessInfo.business_credit_balance} AED</span>
                                     </div>
                                 </div>
 
