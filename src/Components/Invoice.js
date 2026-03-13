@@ -129,7 +129,7 @@ const Invoice = ({ order, orderItems, address }) => {
 
                 <div style={{ marginBottom: "-10px" }}>
                     <h3 style={{ fontWeight: "bold", textAlign: "center", color: "#000", textDecoration: "underline" }}>
-                        Invoice
+                       Tax Invoice
                     </h3>
                 </div>
 
