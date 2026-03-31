@@ -129,7 +129,7 @@ const Invoice = ({ order, orderItems, address }) => {
 
                 <div style={{ marginBottom: "-10px" }}>
                     <h3 style={{ fontWeight: "bold", textAlign: "center", color: "#000", textDecoration: "underline" }}>
-                       Tax Invoice
+                        Tax Invoice
                     </h3>
                 </div>
 
@@ -141,6 +141,11 @@ const Invoice = ({ order, orderItems, address }) => {
                         <div style={invoiceStyles.shippingAddress}>
                             <p style={{ margin: '10px 0', lineHeight: '1.5' }}>
                                 <b>Customer Name:</b> {order.business_name}<br />
+                                {order.business_order_ref_client &&
+                                    <>
+                                        <b>Ref Client:</b> {order.business_order_ref_client}<br />
+                                    </>
+                                }
                                 <b>Shipping Address:</b> {address.business_full_address}<br />
                                 <b>City:</b> {address.business_city}<br />
                                 <b>Phone:</b> {address.mobile_number_1}<br />

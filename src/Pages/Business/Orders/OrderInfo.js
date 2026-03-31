@@ -88,11 +88,20 @@ const OrderInfo = () => {
                                 <PageTitle title="Order Details" primary={"Orders"} />
 
                                 <div className="row">
-                                    <div className="col-md-10">
+                                    <div className="col-md-6">
                                         <div className="p-3 bg-white mb-3 rounded border-start border-4 border-danger">
                                             <h6 className="fw-bold mb-2" color={primaryColor}>Special Instruction</h6>
                                             <p className="mb-0">
                                                 {orderDetails?.business_order_special_instruction || "No special instructions"}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-md-4">
+                                        <div className="p-3 bg-white mb-3 rounded border-start border-4 border-warning">
+                                            <h6 className="fw-bold mb-2 text-warning">Ref Client</h6>
+                                            <p className="mb-0">
+                                                {orderDetails?.business_order_ref_client || "No Ref Client"}
                                             </p>
                                         </div>
                                     </div>
