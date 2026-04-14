@@ -53,6 +53,12 @@ const Header = () => {
           path: "/Reports/FullOrdersReport",
           label: "All Orders Report",
           isDropdown: false,
+        },
+        {
+          id: "allnorecendsorderreport",
+          path: "/Reports/AllNoRecentOrdersReport",
+          label: "No Recent Orders Report",
+          isDropdown: false,
         }
       ],
     },

@@ -19,6 +19,7 @@ import ManageTarget from "../Pages/Masters/ManageTarget";
 import ManageUsers from "../Pages/Masters/UsersManagement/ManageUsers";
 import UserPermissions from "../Pages/Masters/UsersManagement/UserPermissions";
 import AllBusinessesReport from "../Pages/Reports/AllBusinessesReport";
+import AllNoRecentOrdersReport from "../Pages/Reports/AllNoRecentOrdersReport";
 import AllOrders from "../Pages/Reports/AllOrders";
 import AllSalesmanReport from "../Pages/Reports/AllSalesmanReport";
 import FollowupReport from "../Pages/Reports/FollowupReport";
@@ -69,6 +70,7 @@ const routes = [
   { path: "/Reports/OrderByStatusReport", element: <OrderByStatusReport />, routeName: "/Reports/OrderByStatusReport" },
   { path: "/Reports/OrderByStatusReport/:status?", element: <OrderByStatusReport />, routeName: "/Reports/OrderByStatusReport" },
   { path: "/Reports/NoRecendsOrderReport", element: <NoRecendsOrderReports />, routeName: "/Reports/NoRecendsOrderReport" },
+  { path: "/Reports/AllNoRecentOrdersReport", element: <AllNoRecentOrdersReport />, routeName: "/Reports/AllNoRecentOrdersReport" },
 
   ////////////////////// Masters Routing ///////////////////////////
   { path: "/Masters/ManageTarget", element: <ManageTarget />, routeName: "/Masters/ManageTarget" },
