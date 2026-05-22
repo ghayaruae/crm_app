@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import PageTitle from '../../../Components/PageTitle';
 import axios from 'axios';
 import { ConfigContext } from '../../../Context/ConfigContext';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ContentLoader } from '../../../Components/Shimmer';
 
 const ViewQuotation = () => {
@@ -123,6 +123,18 @@ const ViewQuotation = () => {
         return diffDays;
     };
 
+    if (loading) {
+        return (
+            <div className="main-content">
+                <div className="page-content">
+                    <div className="container-fluid">
+                        <ContentLoader />
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className="main-content">
             <div className="page-content">
@@ -133,6 +145,9 @@ const ViewQuotation = () => {
                             <i className="ri-printer-line me-1"></i>
                             Print
                         </button>
+                        <Link className='btn btn-secondary' to={"/Masters/QuotationsList"}>
+                            Back <i className='ri-arrow-right-line ms-2 align-middle'></i>
+                        </Link>
                     </div>
 
                     <div className="quotation-sheet bg-white mx-auto">

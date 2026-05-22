@@ -364,6 +364,54 @@ const CreateQuotation = () => {
         );
     };
 
+    const resetForm = () => {
+        setFormData({
+            quotation_number: '',
+            customer_name: '',
+            customer_email: '',
+            customer_contact: '',
+            customer_address: '',
+            issue_date: '',
+            expiry_date: '',
+            remark: '',
+            payment_condition: '',
+        });
+
+        setCustomerType(0);
+        setStockType(0);
+
+        setItemsData([]);
+
+        setSelectedBrand(null);
+        setBrandsOptions([]);
+
+        setItemNumber('');
+
+        setSelectItemFields({
+            item_name: '',
+            item_qty: '',
+            item_price: '',
+            item_vat: '5',
+            item_total: ''
+        });
+
+        setManualMode(false);
+
+        setManualItem({
+            item_number: '',
+            item_name: '',
+            item_brand_name: '',
+            item_qty: '',
+            item_price: '',
+            item_vat: '5',
+            item_total: ''
+        });
+
+        setErrors({});
+        setItemErrors({});
+        setSubmitLoading(false);
+    };
+
     const resetItemForm = () => {
         // Reset manual mode form
         setManualItem({
@@ -429,6 +477,8 @@ const CreateQuotation = () => {
             if (response.data.success) {
                 Swal.fire("Success", response.data.message, "success")
                 if (quotation_id) navigate('/Masters/QuotationsList')
+
+                resetForm()
             }
         } catch (error) {
             console.error("Error submitting:", error)
