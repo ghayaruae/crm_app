@@ -16,6 +16,9 @@ import MainDashboard from "../Pages/Dashboard/TeamLeaderDashboard/MainDashboard"
 import FollowupList from "../Pages/Masters/Followup/FollowupList";
 import ManageFollowup from "../Pages/Masters/Followup/ManageFollowup";
 import ManageTarget from "../Pages/Masters/ManageTarget";
+import CreateQuotation from "../Pages/Masters/Quotations/CreateQuotation";
+import QuotationsList from "../Pages/Masters/Quotations/QuotationsList";
+import ViewQuotation from "../Pages/Masters/Quotations/ViewQuotation";
 import ManageUsers from "../Pages/Masters/UsersManagement/ManageUsers";
 import UserPermissions from "../Pages/Masters/UsersManagement/UserPermissions";
 import AllBusinessesReport from "../Pages/Reports/AllBusinessesReport";
@@ -26,6 +29,7 @@ import FollowupReport from "../Pages/Reports/FollowupReport";
 import FullOrdersReport from "../Pages/Reports/FullOrdersReport";
 import NoRecendsOrderReports from "../Pages/Reports/NoRecendsOrderReports";
 import OrderByStatusReport from "../Pages/Reports/OrderByStatusReport";
+import QuotationsReport from "../Pages/Reports/QuotationsReport";
 import TargetReport from "../Pages/Reports/TargetReport";
 import CreateRequest from "../Pages/RequestInquiry/CreateRequest";
 import RequestPartList from "../Pages/RequestInquiry/RequestPartList";
@@ -71,6 +75,7 @@ const routes = [
   { path: "/Reports/OrderByStatusReport/:status?", element: <OrderByStatusReport />, routeName: "/Reports/OrderByStatusReport" },
   { path: "/Reports/NoRecendsOrderReport", element: <NoRecendsOrderReports />, routeName: "/Reports/NoRecendsOrderReport" },
   { path: "/Reports/AllNoRecentOrdersReport", element: <AllNoRecentOrdersReport />, routeName: "/Reports/AllNoRecentOrdersReport" },
+  { path: "/Reports/QuotationsReport", element: <QuotationsReport />, routeName: "/Reports/QuotationsReport" },
 
   ////////////////////// Masters Routing ///////////////////////////
   { path: "/Masters/ManageTarget", element: <ManageTarget />, routeName: "/Masters/ManageTarget" },
@@ -78,6 +83,10 @@ const routes = [
   { path: "/Masters/FollowupList", element: <FollowupList />, routeName: "/Masters/FollowupList" },
   { path: "/Masters/ManageUsers", element: <ManageUsers />, routeName: "/Masters/ManageUsers" },
   { path: "/UserPermissions/:business_salesman_id", element: <UserPermissions />, routeName: "/UserPermissions" },
+  { path: "/Masters/CreateQuotation/:quotation_id?", element: <CreateQuotation />, routeName: "/Masters/CreateQuotation" },
+  { path: "/Masters/QuotationsList", element: <QuotationsList />, routeName: "/Masters/QuotationsList" },
+  { path: "/Masters/ViewQuotation/:quotation_id?", element: <ViewQuotation />, routeName: "/Masters/ViewQuotation" },
+
 
   ////////////////////// Request Routing ///////////////////////////
   { path: "/Request/RequestPartInquiry/:inventory_part_request_id?", element: <CreateRequest />, routeName: "/Request/RequestPartInquiry" },

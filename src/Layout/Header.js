@@ -111,6 +111,33 @@ const Header = () => {
       ],
     },
     {
+      id: "quoataions",
+      icon: "ri-bill-fill",
+      label: "Quoataions",
+      isDropdown: true,
+      dropdownId: "sidebarQuoataionsMenu",
+      items: [
+        {
+          id: "CreateQuotation",
+          path: "/Masters/CreateQuotation",
+          label: "Create Quotation",
+          isDropdown: false,
+        },
+        {
+          id: "QuotationsList",
+          path: "/Masters/QuotationsList",
+          label: "Quotations List",
+          isDropdown: false,
+        },
+        {
+          id: "QuotationsReport",
+          path: "/Reports/QuotationsReport",
+          label: "Quotations Report",
+          isDropdown: false,
+        }
+      ],
+    },
+    {
       id: "Business",
       icon: "ri-briefcase-4-fill",
       label: "Business",
@@ -269,7 +296,7 @@ const Header = () => {
                   </span>
                   <span className="logo-lg">
                     <img
-                      src="https://admin.stoneskill.com/assets/logo/2.png"
+                      src="/assets/images/main-logo.png"
                       alt="logo_image"
                       height={80}
                     />
@@ -282,7 +309,7 @@ const Header = () => {
                   </span>
                   <span className="logo-lg">
                     <img
-                      src="https://admin.stoneskill.com/assets/logo/2.png"
+                      src="/assets/images/main-logo.png"
                       alt="logo_image"
                       height={17}
                     />
@@ -378,7 +405,7 @@ const Header = () => {
 
         <div id="scrollbar">
           <div className="container-fluid">
-            <div id="two-column-menu"></div>
+            <div id="two-column-menu" className="two-column-menu"></div>
 
             <ul className="navbar-nav" id="navbar-nav">
 
