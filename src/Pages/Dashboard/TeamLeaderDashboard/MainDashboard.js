@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import AchievementStats from "./AchievementStats";
 import LastPartInquiries from "./LastPartInquiries";
 import FollowupPieChart from "./FollowupPieChart";
+import LastQuotations from "./LastQuotations";
 
 const MainDashboard = () => {
     const { apiHeaderJson, apiURL } = useContext(ConfigContext);
@@ -15,6 +16,7 @@ const MainDashboard = () => {
     const [aboveTargetData, setAboveTargetData] = useState([]);
     const [belowTargetData, setBelowTargetData] = useState([]);
     const [inquiryData, setInquiryData] = useState([]);
+    const [quotationData, setQuotationData] = useState([]);
 
     const GetTeamLeaderDashboardStates = async () => {
         try {
@@ -42,6 +44,19 @@ const MainDashboard = () => {
         }
     };
 
+    const GetLastQuotations = async () => {
+        try {
+            const response = await axios.get(`${apiURL}Dashboard/GetLastQuotations`, { headers });
+            if (response?.data?.success) {
+                setQuotationData(response?.data?.data)
+            } else {
+                console.log("Dashboard error");
+            }
+        } catch (error) {
+            console.log("error", error);
+        }
+    };
+
     const getAchievementReports = async () => {
         try {
             const response = await axios.get(`${apiURL}Dashboard/GetTargetAchievementReport`, { headers });
@@ -61,6 +76,7 @@ const MainDashboard = () => {
         GetTeamLeaderDashboardStates();
         getAchievementReports()
         GetLastPartInquiries()
+        GetLastQuotations()
     }, []);
 
     const cardItems = [
@@ -200,6 +216,11 @@ const MainDashboard = () => {
                     <div className="row">
                         <LastPartInquiries
                             inquiryData={inquiryData}
+                        />
+                    </div>
+                    <div className="row">
+                        <LastQuotations
+                            quotationData={quotationData}
                         />
                     </div>
                 </div>

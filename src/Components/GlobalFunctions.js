@@ -117,24 +117,38 @@ export const calculateWastage = (totalQty, wastagePercentage) => {
 }
 
 export const calculateTax = (amount, taxRate, isInterState = false) => {
-  const taxAmount = (amount * taxRate) / 100;
-  
-  if (isInterState) {
-    return {
-      igst: taxAmount,
-      cgst: 0,
-      sgst: 0,
-      total: amount + taxAmount
-    };
-  } else {
-    const halfRate = taxRate / 2;
-    const halfAmount = taxAmount / 2;
-    
-    return {
-      igst: 0,
-      cgst: halfAmount,
-      sgst: halfAmount,
-      total: amount + taxAmount
-    };
-  }
+    const taxAmount = (amount * taxRate) / 100;
+
+    if (isInterState) {
+        return {
+            igst: taxAmount,
+            cgst: 0,
+            sgst: 0,
+            total: amount + taxAmount
+        };
+    } else {
+        const halfRate = taxRate / 2;
+        const halfAmount = taxAmount / 2;
+
+        return {
+            igst: 0,
+            cgst: halfAmount,
+            sgst: halfAmount,
+            total: amount + taxAmount
+        };
+    }
+};
+
+export const getValidityDays = (row) => {
+    const { issue_date, expiry_date } = row;
+
+    if (!issue_date || !expiry_date) return "-";
+
+    const issue = new Date(issue_date);
+    const expiry = new Date(expiry_date);
+
+    const diffTime = expiry - issue;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    return diffDays;
 };

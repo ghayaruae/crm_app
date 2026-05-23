@@ -5,7 +5,7 @@ import { GlobalLimitChanger } from '../../../Components/InputElements'
 import { ConfigContext } from '../../../Context/ConfigContext'
 import PageTitle from '../../../Components/PageTitle'
 import Swal from 'sweetalert2'
-import { DateFormater } from '../../../Components/GlobalFunctions'
+import { DateFormater, getValidityDays } from '../../../Components/GlobalFunctions'
 import { Link } from 'react-router-dom'
 
 const QuotationsList = () => {
@@ -75,20 +75,6 @@ const QuotationsList = () => {
         } catch (error) {
             console.error(error);
         }
-    };
-
-    const getValidityDays = (row) => {
-        const { issue_date, expiry_date } = row;
-
-        if (!issue_date || !expiry_date) return "-";
-
-        const issue = new Date(issue_date);
-        const expiry = new Date(expiry_date);
-
-        const diffTime = expiry - issue;
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-        return diffDays;
     };
 
     const handlePrev = () => prev && setPage((prevPage) => prevPage - 1);

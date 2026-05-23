@@ -86,7 +86,7 @@
 
   width: 210mm;
   min-height: 297mm;
-  padding: 130px 40px 130px 40px;
+  padding: 40px 40px 40px 40px;
   font-size: 11px;
   color: black;
 
@@ -183,7 +183,7 @@
     width: 210mm !important;
     min-height: 297mm !important;
 
-    padding: 130px 40px 130px 40px !important;
+    padding: 40px 40px 40px 40px !important;
 
     margin: 0 auto !important;
 

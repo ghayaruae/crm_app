@@ -4,6 +4,7 @@ import axios from 'axios';
 import { ConfigContext } from '../../../Context/ConfigContext';
 import { Link, useParams } from 'react-router-dom';
 import { ContentLoader } from '../../../Components/Shimmer';
+import { getValidityDays } from '../../../Components/GlobalFunctions';
 
 const ViewQuotation = () => {
     const { apiURL, apiHeaderJson, primaryColor } = useContext(ConfigContext);
@@ -109,20 +110,6 @@ const ViewQuotation = () => {
         return result.trim();
     };
 
-    const getValidityDays = (row) => {
-        const { issue_date, expiry_date } = row;
-
-        if (!issue_date || !expiry_date) return "-";
-
-        const issue = new Date(issue_date);
-        const expiry = new Date(expiry_date);
-
-        const diffTime = expiry - issue;
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-        return diffDays;
-    };
-
     if (loading) {
         return (
             <div className="main-content">
@@ -145,7 +132,7 @@ const ViewQuotation = () => {
                             <i className="ri-printer-line me-1"></i>
                             Print
                         </button>
-                        <Link className='btn btn-secondary' to={"/Masters/QuotationsList"}>
+                        <Link className='btn btn-secondary ms-3' to={"/Masters/QuotationsList"}>
                             Back <i className='ri-arrow-right-line ms-2 align-middle'></i>
                         </Link>
                     </div>
