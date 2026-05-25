@@ -7,6 +7,7 @@ import PageTitle from '../../../Components/PageTitle'
 import Swal from 'sweetalert2'
 import Flatpickr from "react-flatpickr";
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import CreatableSelect from 'react-select/creatable';
 
 const CreateQuotation = () => {
 
@@ -57,10 +58,26 @@ const CreateQuotation = () => {
         item_total: ''
     })
 
+    // Customer Suggestion State
+    const [customerOptions, setCustomerOptions] = useState([])
+    const [selectedCustomer, setSelectedCustomer] = useState(null);
+
     // Validation States
     const [errors, setErrors] = useState({})
     const [itemErrors, setItemErrors] = useState({})
     const [submitLoading, setSubmitLoading] = useState(false)
+
+    // Generate quotation number on component mount
+    useEffect(() => {
+        if (!quotation_id) {
+            generateQuotationNumber()
+        }
+    }, [])
+
+    // Fetch customers for suggestion
+    useEffect(() => {
+        fetchCustomers()
+    }, [])
 
     // Fetch brands based on stock type
     useEffect(() => {
@@ -105,6 +122,72 @@ const CreateQuotation = () => {
             GetItemInfo()
         }
     }, [selectedBrand, itemNumber, customer_type])
+
+    const generateQuotationNumber = async () => {
+        try {
+            const response = await axios.get(`${apiURL}Masters/GetLastQuotationNumber`, { headers })
+            const { success, last_number } = response.data;
+            if (success) {
+                const nextNumber =
+                    (parseInt(last_number) + 1)
+                        .toString()
+                        .padStart(4, '0');
+                setFormData(prev => ({ ...prev, quotation_number: nextNumber }))
+            } else {
+                // Default starting number
+                setFormData(prev => ({ ...prev, quotation_number: '0001' }))
+            }
+        } catch (error) {
+            console.log(error)
+            // Default starting number if API fails
+            setFormData(prev => ({ ...prev, quotation_number: '0001' }))
+        }
+    }
+
+    const fetchCustomers = async () => {
+        try {
+            const response = await axios.get(`${apiURL}Business/GetAllBusinessesList`, { headers })
+            const { success, data } = response.data;
+            if (success && data) {
+                const options = data.map((customer) => ({
+                    value: customer.business_id,
+                    label: customer.business_name,
+                    email: customer.business_email,
+                    contact: customer.business_contact_number,
+                    address: customer.business_full_address,
+                    ...customer
+                }));
+                setCustomerOptions(options)
+            }
+        } catch (error) {
+            console.log("Error fetching customers:", error)
+        }
+    }
+
+    const handleCustomerChange = (option) => {
+        setSelectedCustomer(option);
+
+        if (!option) {
+            setFormData(prev => ({
+                ...prev,
+                customer_name: '',
+                customer_email: '',
+                customer_contact: '',
+                customer_address: ''
+            }));
+            return;
+        }
+
+        setFormData(prev => ({
+            ...prev,
+            customer_name: option.label || '',
+            customer_email: option.email || '',
+            customer_contact: option.contact || '',
+            customer_address: option.address || ''
+        }));
+
+        setErrors({});
+    };
 
     const GetAFMBrands = async () => {
         try {
@@ -152,8 +235,7 @@ const CreateQuotation = () => {
                 part_number: itemNumber.trim(),
                 stock_type,
                 sup_id: selectedBrand?.SUP_ID || '',
-                brand_name:
-                    selectedBrand?.stock_brand_name || ''
+                brand_name: selectedBrand?.stock_brand_name || ''
             }
 
             const response = await axios.get(`${apiURL}Masters/GetPartInfo`, { headers, params })
@@ -209,7 +291,6 @@ const CreateQuotation = () => {
                     issue_date: issue_date || '',
                     expiry_date: expiry_date || '',
                     remark: remark || '',
-
                     payment_condition: payment_condition || '',
                 })
                 setItemsData(items || [])
@@ -258,7 +339,6 @@ const CreateQuotation = () => {
         if (manualMode) {
             if (!manualItem.item_number) Errors.item_number = "Item Number is required"
             if (!manualItem.item_name) Errors.item_name = "Item Name is required"
-            if (!selectedBrand) Errors.selectedBrand = "Please select a brand"
             if (!manualItem.item_qty) Errors.item_qty = "Quantity is required"
             else if (parseFloat(manualItem.item_qty) <= 0) Errors.item_qty = "Quantity must be greater than 0"
 
@@ -267,10 +347,12 @@ const CreateQuotation = () => {
 
             if (!manualItem.item_vat) Errors.item_vat = "VAT is required"
             else if (parseFloat(manualItem.item_vat) < 0) Errors.item_vat = "VAT cannot be negative"
+
+            // Brand is optional in manual mode, so no validation for selectedBrand
         } else {
             if (!selectedBrand) Errors.selectedBrand = "Please select a brand"
             if (!itemNumber) Errors.item_number = "Item Number is required"
-            if (!selectItemFields.item_name) Errors.item_name = "item Name is required"
+            if (!selectItemFields.item_name) Errors.item_name = "Item Name is required"
             if (!selectItemFields.item_qty) Errors.item_qty = "Quantity is required"
             else if (parseFloat(selectItemFields.item_qty) <= 0) Errors.item_qty = "Quantity must be greater than 0"
 
@@ -311,7 +393,7 @@ const CreateQuotation = () => {
             newItem = {
                 item_number: manualItem.item_number,
                 item_name: manualItem.item_name,
-                item_brand_name: selectedBrand?.label,
+                item_brand_name: selectedBrand?.label || 'N/A',
                 item_qty: manualItem.item_qty,
                 item_price: manualItem.item_price,
                 item_vat: manualItem.item_vat,
@@ -407,9 +489,14 @@ const CreateQuotation = () => {
             item_total: ''
         });
 
+        setSelectedCustomer(null);
+
         setErrors({});
         setItemErrors({});
         setSubmitLoading(false);
+
+        // Regenerate quotation number
+        generateQuotationNumber();
     };
 
     const resetItemForm = () => {
@@ -476,9 +563,11 @@ const CreateQuotation = () => {
             const response = await axios.post(`${apiURL}Masters/CreateQuotation`, submitData, { headers })
             if (response.data.success) {
                 Swal.fire("Success", response.data.message, "success")
-                if (quotation_id) navigate('/Masters/QuotationsList')
-
-                resetForm()
+                if (quotation_id) {
+                    navigate('/Masters/QuotationsList')
+                } else {
+                    resetForm()
+                }
             }
         } catch (error) {
             console.error("Error submitting:", error)
@@ -538,24 +627,51 @@ const CreateQuotation = () => {
                                                     className={`form-control ${errors.quotation_number ? 'is-invalid' : ''}`}
                                                     placeholder="Enter quotation number"
                                                     value={formData.quotation_number}
-                                                    onChange={(e) => setFormData({ ...formData, quotation_number: e.target.value })}
+                                                    readOnly
+                                                    disabled={quotation_id ? false : true}
+                                                    style={{ backgroundColor: '#e9ecef' }}
                                                 />
                                                 {errors.quotation_number && <div className="invalid-feedback">{errors.quotation_number}</div>}
                                             </div>
 
-                                            {/* Customer Name */}
+                                            {/* Customer Name with Suggestion */}
                                             <div className="col-md-4">
                                                 <label className="form-label">
                                                     Customer Name <span className="text-danger">*</span>
                                                 </label>
-                                                <input
-                                                    type="text"
-                                                    className={`form-control ${errors.customer_name ? 'is-invalid' : ''}`}
-                                                    placeholder="Enter customer name"
-                                                    value={formData.customer_name}
-                                                    onChange={(e) => setFormData({ ...formData, customer_name: e.target.value })}
+                                                <CreatableSelect
+                                                    value={selectedCustomer}
+                                                    options={customerOptions}
+                                                    onChange={handleCustomerChange}
+                                                    placeholder="Search or add customer"
+                                                    isClearable
+                                                    theme={selectTheme}
+                                                    styles={selectStyle}
+
+                                                    onCreateOption={(input) => {
+
+                                                        const newCustomer = {
+                                                            value: input,
+                                                            label: input,
+                                                            email: '',
+                                                            contact: '',
+                                                            address: ''
+                                                        };
+
+                                                        setCustomerOptions(prev => [...prev, newCustomer]);
+
+                                                        setSelectedCustomer(newCustomer);
+
+                                                        setFormData(prev => ({
+                                                            ...prev,
+                                                            customer_name: input,
+                                                            customer_email: '',
+                                                            customer_contact: '',
+                                                            customer_address: ''
+                                                        }));
+                                                    }}
                                                 />
-                                                {errors.customer_name && <div className="invalid-feedback">{errors.customer_name}</div>}
+                                                {errors.customer_name && <div className="text-danger small mt-1">{errors.customer_name}</div>}
                                             </div>
 
                                             {/* Customer Email */}
@@ -567,8 +683,14 @@ const CreateQuotation = () => {
                                                     type="email"
                                                     className={`form-control ${errors.customer_email ? 'is-invalid' : ''}`}
                                                     placeholder="customer@example.com"
+                                                    name="customer_email"
                                                     value={formData.customer_email}
-                                                    onChange={(e) => setFormData({ ...formData, customer_email: e.target.value })}
+                                                    onChange={(e) =>
+                                                        setFormData(prev => ({
+                                                            ...prev,
+                                                            customer_email: e.target.value
+                                                        }))
+                                                    }
                                                 />
                                                 {errors.customer_email && <div className="invalid-feedback">{errors.customer_email}</div>}
                                             </div>
@@ -621,8 +743,14 @@ const CreateQuotation = () => {
                                                     type="tel"
                                                     className={`form-control ${errors.customer_contact ? 'is-invalid' : ''}`}
                                                     placeholder="1234567890"
+                                                    name="customer_contact"
                                                     value={formData.customer_contact}
-                                                    onChange={(e) => setFormData({ ...formData, customer_contact: e.target.value })}
+                                                    onChange={(e) =>
+                                                        setFormData(prev => ({
+                                                            ...prev,
+                                                            customer_contact: e.target.value
+                                                        }))
+                                                    }
                                                 />
                                                 {errors.customer_contact && <div className="invalid-feedback">{errors.customer_contact}</div>}
                                             </div>
@@ -676,8 +804,14 @@ const CreateQuotation = () => {
                                                     className="form-control"
                                                     rows="2"
                                                     placeholder="Enter customer address"
+                                                    name="customer_address"
                                                     value={formData.customer_address}
-                                                    onChange={(e) => setFormData({ ...formData, customer_address: e.target.value })}
+                                                    onChange={(e) =>
+                                                        setFormData(prev => ({
+                                                            ...prev,
+                                                            customer_address: e.target.value
+                                                        }))
+                                                    }
                                                 />
                                             </div>
 
@@ -786,7 +920,7 @@ const CreateQuotation = () => {
                                                             <input
                                                                 type="text"
                                                                 className={`form-control ${itemErrors.item_name ? 'is-invalid' : ''}`}
-                                                                placeholder="Enter quantity"
+                                                                placeholder="Enter item name"
                                                                 value={selectItemFields.item_name}
                                                                 onChange={(e) => handleSelectFieldChange('item_name', e.target.value)}
                                                             />
@@ -856,7 +990,7 @@ const CreateQuotation = () => {
                                                         </div>
                                                     </div>
                                                 ) : (
-                                                    // Manual Mode
+                                                    // Manual Mode - Brand is optional
                                                     <div className="row g-3 mb-3">
                                                         <div className="col-md-3">
                                                             <label className="form-label">
@@ -874,13 +1008,13 @@ const CreateQuotation = () => {
                                                         </div>
                                                         <div className="col-md-3">
                                                             <label className="form-label">
-                                                                Brand <span className="text-danger">*</span>
+                                                                Brand <span className="text-muted">(Optional)</span>
                                                             </label>
                                                             <Select
                                                                 options={brandsOptions}
                                                                 value={selectedBrand}
                                                                 onChange={setSelectedBrand}
-                                                                placeholder="Select brand..."
+                                                                placeholder="Select brand (optional)..."
                                                                 isClearable
                                                                 theme={selectTheme}
                                                                 styles={selectStyle}
@@ -1027,9 +1161,10 @@ const CreateQuotation = () => {
                                                 <button
                                                     onClick={handleSubmit}
                                                     className="btn btn-primary px-4"
+                                                    disabled={submitLoading}
                                                 >
                                                     <i className={`ri-${quotation_id ? 'file-edit' : 'save'}-line me-1`} />
-                                                    {quotation_id ? 'Update Quotation' : 'Create Quotation'}
+                                                    {submitLoading ? 'Processing...' : (quotation_id ? 'Update Quotation' : 'Create Quotation')}
                                                 </button>
                                             </div>
                                         </div>
