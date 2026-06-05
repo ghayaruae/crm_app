@@ -395,20 +395,35 @@ const OEPartDetails = () => {
                                                     {/* Pricing Boxes */}
                                                     <div className="col-12 mt-3">
                                                         <div className="d-flex gap-3 flex-wrap">
+
                                                             <div className="border rounded p-3 flex-grow-1">
-                                                                <div className="small text-muted">Purchase Price</div>
-                                                                <div className="h5 mb-0">{current.stock_purchase_price || '0'} AED</div>
+                                                                <div className="small text-muted">B2B Price</div>
+                                                                <div className="h5 mb-0">
+                                                                    {current.stock_bb_price || "0"} AED
+                                                                </div>
                                                             </div>
 
                                                             <div className="border rounded p-3 flex-grow-1">
-                                                                <div className="small text-muted">Retail (MRP)</div>
-                                                                <div className="h5 mb-0">{current.stock_price_mrp || '0'} AED</div>
+                                                                <div className="small text-muted">B2G Price</div>
+                                                                <div className="h5 mb-0">
+                                                                    {current.stock_bg_price || "0"} AED
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="border rounded p-3 flex-grow-1">
+                                                                <div className="small text-muted">B2C Price</div>
+                                                                <div className="h5 mb-0">
+                                                                    {current.stock_bc_price || "0"} AED
+                                                                </div>
                                                             </div>
 
                                                             <div className="border rounded p-3" style={{ minWidth: 130 }}>
                                                                 <div className="small text-muted">Available Qty</div>
-                                                                <div className="h5 mb-0">{current.stock_available_qty || '0'}</div>
+                                                                <div className="h5 mb-0">
+                                                                    {current.stock_available_qty || "0"}
+                                                                </div>
                                                             </div>
+
                                                         </div>
                                                     </div>
 
