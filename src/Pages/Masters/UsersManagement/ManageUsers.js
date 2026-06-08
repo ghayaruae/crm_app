@@ -386,12 +386,13 @@ const ManageUsers = () => {
                                                         <th>Password</th>
                                                         <th>Email</th>
                                                         <th>Image</th>
+                                                        <th>Status</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
 
                                                 {loading ? (
-                                                    <TableRows rows="10" colspan="8" />
+                                                    <TableRows rows="10" colspan="10" />
                                                 ) : (
                                                     <>
                                                         <tbody>
@@ -399,7 +400,7 @@ const ManageUsers = () => {
                                                                 data.map((row) => (
                                                                     <tr
                                                                         key={row.business_salesman_id}
-                                                                        className="text-center"
+                                                                        className={`text-center ${row.business_salesman_status === 1 ? "text-decoration-line-through" : ""}`}
                                                                     >
                                                                         <td>{row.business_salesman_id}</td>
                                                                         <td>{row.business_salesmen_name}</td>
@@ -423,18 +424,24 @@ const ManageUsers = () => {
                                                                                 'No Image'
                                                                             )}
                                                                         </td>
+                                                                        <td>
+                                                                            <span className={`badge ${row.business_salesman_status === 0 ? 'bg-success' : 'bg-danger'} text-white`}>
+                                                                                {row.business_salesman_status === 0 ? 'Active' : 'Inactive'}
+                                                                            </span>
+                                                                        </td>
                                                                         <td className="d-flex align-items-center justify-content-center gap-2">
                                                                             <button
                                                                                 className="btn btn-sm btn-soft-primary"
                                                                                 onClick={() =>
                                                                                     getInfo(row.business_salesman_id)
                                                                                 }
+                                                                                disabled={row.business_salesman_status === 1}
                                                                             >
                                                                                 <i className="ri-pencil-line"></i>
                                                                             </button>
 
                                                                             <Link to={`/UserPermissions/${row.business_salesman_id}`}>
-                                                                                <button className="btn btn-sm btn-soft-success">
+                                                                                <button className="btn btn-sm btn-soft-success" disabled={row.business_salesman_status === 1}>
                                                                                     <i className="ri-flag-line"></i>
                                                                                 </button>
                                                                             </Link>
@@ -444,6 +451,7 @@ const ManageUsers = () => {
                                                                                 onClick={() =>
                                                                                     handleDelete(row.business_salesman_id)
                                                                                 }
+                                                                                disabled={row.business_salesman_status === 1}
                                                                             >
                                                                                 <i className="ri-delete-bin-line"></i>
                                                                             </button>
@@ -452,7 +460,7 @@ const ManageUsers = () => {
                                                                 ))
                                                             ) : (
                                                                 <tr>
-                                                                    <td colSpan={8}>
+                                                                    <td colSpan={10}>
                                                                         <NoRecords />
                                                                     </td>
                                                                 </tr>
@@ -461,7 +469,7 @@ const ManageUsers = () => {
 
                                                         <tfoot className="table-light">
                                                             <tr>
-                                                                <th colSpan={8}>
+                                                                <th colSpan={10}>
                                                                     <div className="d-flex align-items-center justify-content-between flex-nowrap gap-2">
                                                                         <button
                                                                             disabled={!prev || loading}

@@ -15,6 +15,9 @@ const OrderInfo = () => {
 
     const [orderDetails, setOrderDetails] = useState({});
     const [orderItems, setOrderItems] = useState([]);
+    const [returnData, setReturnData] = useState([]);
+    const [cancelData, setCancelData] = useState([]);
+
     const [orderAddress, setOrderAddress] = useState({})
     const [orderTimeLineDate, setOrderTimeLineDate] = useState([])
 
@@ -44,7 +47,8 @@ const OrderInfo = () => {
         try {
             setLoading(true);
             const headers = apiHeaderJson;
-            const response = await axios.get(`${apiURL}Business/GetOrderInfo`, {
+            // const response = await axios.get(`${apiURL}Business/GetOrderInfo`, {
+            const response = await axios.get(`${apiURL}Business/GetExcludingOrderDetails`, {
                 params: {
                     secret_order_id,
                     business_id: business_order_business_id
@@ -56,6 +60,8 @@ const OrderInfo = () => {
                 setOrderDetails(response.data.data);
                 setOrderItems(response.data.items);
                 setOrderAddress(response.data.address);
+                setReturnData(response.data.return_data || []);
+                setCancelData(response.data.cancel_data || []);
                 setLoading(false)
             } else {
                 console.log(response.data.message);
@@ -138,6 +144,8 @@ const OrderInfo = () => {
                                             <OrderList
                                                 orderItems={orderItems}
                                                 orderDetails={orderDetails}
+                                                returnData={returnData}
+                                                cancelData={cancelData}
                                             />
                                         </div>
                                         {

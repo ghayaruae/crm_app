@@ -13,14 +13,20 @@ const ViewOrderInvoice = () => {
 
 
     const { apiURL, apiHeaderJson } = useContext(ConfigContext);
+
+
     const [orderDetails, setOrderDetails] = useState({});
     const [orderItems, setOrderItems] = useState([]);
+    const [returnData, setReturnData] = useState([]);
+    const [cancelData, setCancelData] = useState([]);
+
     const [orderAddress, setOrderAddress] = useState({})
 
     const getData = async () => {
         try {
             const headers = apiHeaderJson;
-            const response = await axios.get(`${apiURL}Business/GetOrderInfo`, {
+            // const response = await axios.get(`${apiURL}Business/GetOrderInfo`, {
+            const response = await axios.get(`${apiURL}Business/GetExcludingOrderDetails`, {
                 params: { secret_order_id, business_id: business_order_business_id },
                 headers
             });
@@ -29,6 +35,8 @@ const ViewOrderInvoice = () => {
                 setOrderDetails(response.data.data);
                 setOrderItems(response.data.items);
                 setOrderAddress(response.data.address);
+                setReturnData(response.data.return_data || []);
+                setCancelData(response.data.cancel_data || []);
             } else {
                 console.log(response.data.message);
             }
@@ -106,6 +114,8 @@ const ViewOrderInvoice = () => {
                             order={orderDetails}
                             orderItems={orderItems}
                             address={orderAddress}
+                            returnData={returnData}
+                            cancelData={cancelData}
                         />
                     </div>
 
