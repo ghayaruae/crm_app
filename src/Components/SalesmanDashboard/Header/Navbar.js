@@ -53,7 +53,7 @@ const Navbar = () => {
                                 src={
                                     data?.business_salesman_image
                                         ? `${apiURL}public/salesmans/${data?.business_salesman_image}`
-                                        : "https://cirrusindia.co.in/wp-content/uploads/2016/10/dummy-profile-pic-male1.jpg"
+                                        : "/assets/Image.jpg"
                                 }
                                 alt="user-img"
                                 style={{
