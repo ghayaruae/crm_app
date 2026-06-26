@@ -176,17 +176,19 @@ const ViewQuotation = () => {
                             <div className="col-8">
 
                                 <div className="border border-black rounded p-2 top-box">
+                                    <div className="mb-3">
+                                        <div><strong>Name:</strong> {quotation?.customer_name || "-"}</div>
+                                        <div><strong>Contact:</strong> {quotation?.customer_contact || "-"}</div>
+                                        <div><strong>Email:</strong> {quotation?.customer_email || "-"}</div>
+                                    </div>
 
-                                    <p className="fw-bold" style={{ marginBottom: "60px" }}>
+                                    <div className="mb-2">
+                                        <strong>Subject:</strong>
+                                    </div>
 
-                                        {quotation?.customer_contact}
-
-                                    </p>
-
-                                    <div>Subject</div>
-
-                                    <div>Attention</div>
-
+                                    <div>
+                                        <strong>Attention:</strong>
+                                    </div>
                                 </div>
 
                             </div>
