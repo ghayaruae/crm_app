@@ -56,15 +56,26 @@ const ViewQuotation = () => {
 
     // Calculate totals from items
     const calculateSubtotal = () => {
-        return items.reduce((sum, item) => sum + (parseFloat(item.item_price) * item.item_qty), 0);
+        return items.reduce(
+            (sum, item) =>
+                sum +
+                (parseFloat(item.item_price || 0) * parseFloat(item.item_qty || 0)),
+            0
+        );
     };
 
     const calculateTotalVAT = () => {
-        return items.reduce((sum, item) => sum + parseFloat(item.item_vat || 0), 0);
+        return items.reduce((sum, item) => {
+            const taxable =
+                parseFloat(item.item_price || 0) *
+                parseFloat(item.item_qty || 0);
+
+            return sum + (taxable * parseFloat(item.item_vat || 0)) / 100;
+        }, 0);
     };
 
     const calculateNetAmount = () => {
-        return items.reduce((sum, item) => sum + parseFloat(item.item_total), 0);
+        return calculateSubtotal() + calculateTotalVAT();
     };
 
     // Format number to 2 decimal places
