@@ -4,8 +4,9 @@ import axios from 'axios';
 import PageTitle from '../../Components/PageTitle';
 import { NoRecords, TableRows } from '../../Components/Shimmer';
 import { Link, useSearchParams } from 'react-router-dom';
-import { DateFormater } from '../../Components/GlobalFunctions';
+import { DateFormater, getCurrentDate } from '../../Components/GlobalFunctions';
 import TableFooter from '../../Components/Table/TableFooter';
+import { downloadExcel } from '../../Components/FileDownloader';
 
 const NoRecendsOrderReports = () => {
 
@@ -64,6 +65,31 @@ const NoRecendsOrderReports = () => {
         }
     };
 
+    const handleDownload = () => {
+        const excelCols = [
+            { label: "Account ID", key: "business_id" },
+            { label: "Account Name", key: "business_name" },
+            { label: "Contact", key: "business_contact_number" },
+            { label: "Email", key: "business_email" },
+            { label: "Total Orders", key: "total_orders" },
+            { label: "No Order Since (Days)", key: "no_order_since_days" },
+            { label: "Last Order Date", key: "last_order_date" }
+        ];
+
+        downloadExcel({
+            apiURL,
+            endpoint: "Dashboard/GetBusinessesNoRecentOrders",
+            headers,
+            params: {
+                page: 1,
+                limit: totalRecords || 100000,
+                keyword
+            },
+            cols: excelCols,
+            fileName: `No_Recent_Orders_${getCurrentDate()}.xlsx`
+        });
+    };
+
     useEffect(() => {
         setSearchParams(prev => {
             const params = new URLSearchParams(prev);
@@ -83,14 +109,24 @@ const NoRecendsOrderReports = () => {
                 <div className='container-fluid'>
                     <PageTitle title="No Recent Orders" primary="Reports" />
                     <div className="card shadow-sm border-0">
-                        <div className="card-header" style={{ background: primaryColor }}>
-                            <div className="d-flex justify-content-between align-items-center">
+                        <div
+                            className="card-header d-flex align-items-center justify-content-between"
+                            style={{ backgroundColor: primaryColor }}
+                        >
+                            <h5 className="mb-0 text-white">
+                                <i className="ri-store-2-line me-2"></i>
+                                No Recent Orders By Account
+                            </h5>
 
-                                <h5 className="mb-0 card-title text-white">
-                                    <i className="ri-store-2-line me-2"></i>
-                                    No Recent Orders By Account
-                                </h5>
-                            </div>
+                            {noRecentOrders.length > 0 && (
+                                <button
+                                    className="btn btn-success btn-sm btn-label"
+                                    onClick={handleDownload}
+                                >
+                                    <i className="ri-file-excel-2-line label-icon"></i>
+                                    Export
+                                </button>
+                            )}
                         </div>
                         <div className="card-body">
                             <div className="row mb-4 align-items-center">

@@ -4,9 +4,9 @@ import axios from 'axios';
 import PageTitle from '../../Components/PageTitle';
 import { NoRecords, TableRows } from '../../Components/Shimmer';
 import { Link, useSearchParams } from 'react-router-dom';
-import { DateFormater } from '../../Components/GlobalFunctions';
+import { DateFormater, getCurrentDate } from '../../Components/GlobalFunctions';
 import TableFooter from '../../Components/Table/TableFooter';
-import * as XLSX from "xlsx";
+import { downloadExcel } from '../../Components/FileDownloader';
 
 const AllNoRecentOrdersReport = () => {
 
@@ -29,9 +29,6 @@ const AllNoRecentOrdersReport = () => {
 
     const [page, setPage] = useState(pageFromUrl);
     const [limit, setLimit] = useState(limitFromUrl);
-
-    const [exporting, setExporting] = useState(false);
-    const [progress, setProgress] = useState(0);
 
     const GetBusinessesNoRecentOrders = async () => {
         try {
@@ -68,48 +65,30 @@ const AllNoRecentOrdersReport = () => {
         }
     };
 
-    const handleExportExcel = () => {
-        if (!noRecentOrders.length) return;
+    const handleDownload = () => {
+        const excelCols = [
+            { label: "Account ID", key: "business_id" },
+            { label: "Account Name", key: "business_name" },
+            { label: "Salesman Name", key: "business_salesmen_name" },
+            { label: "Contact", key: "business_contact_number" },
+            { label: "Email", key: "business_email" },
+            { label: "Total Orders", key: "total_orders" },
+            { label: "No Order Since (Days)", key: "no_order_since_days" },
+            { label: "Last Order Date", key: "last_order_date" }
+        ];
 
-        try {
-            setExporting(true);
-            setProgress(20);
-
-            const exportData = noRecentOrders.map((row) => ({
-                "Account ID": row.business_id,
-                "Account Name": row.business_name,
-                "Salesman Name": row.business_salesmen_name || "-",
-                "Contact": row.business_contact_number || "N/A",
-                "Email": row.business_email || "N/A",
-                "Total Orders": row.total_orders || 0,
-                "No Order Since (Days)": row.no_order_since_days,
-                "Last Order Date": row.last_order_date
-                    ? DateFormater(row.last_order_date)
-                    : "No Orders Yet"
-            }));
-
-            setProgress(60);
-
-            const worksheet = XLSX.utils.json_to_sheet(exportData);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "No Recent Orders");
-
-            setProgress(90);
-
-            XLSX.writeFile(
-                workbook,
-                `No_Recent_Orders_${new Date().toISOString().slice(0, 10)}.xlsx`
-            );
-
-            setProgress(100);
-        } catch (err) {
-            console.error("Export Error:", err);
-        } finally {
-            setTimeout(() => {
-                setExporting(false);
-                setProgress(0);
-            }, 500);
-        }
+        downloadExcel({
+            apiURL,
+            endpoint: "Reports/AllNoRecentOrders",
+            headers,
+            params: {
+                page: 1,
+                limit: totalRecords || 100000,
+                keyword
+            },
+            cols: excelCols,
+            fileName: `No_Recent_Orders_${getCurrentDate()}.xlsx`
+        });
     };
 
     useEffect(() => {
@@ -143,38 +122,13 @@ const AllNoRecentOrdersReport = () => {
                             {noRecentOrders.length > 0 && (
                                 <button
                                     className="btn btn-success btn-sm btn-label"
-                                    onClick={handleExportExcel}
-                                    disabled={exporting}
+                                    onClick={handleDownload}
                                 >
                                     <i className="ri-file-excel-2-line label-icon"></i>
-                                    {exporting ? "Exporting..." : "Export"}
+                                    Export
                                 </button>
                             )}
                         </div>
-                        {exporting && (
-                            <div className="px-3 pt-2 pb-1 bg-white border-bottom">
-                                <div className="d-flex justify-content-between mb-1">
-                                    <small className="text-muted fw-semibold">
-                                        Exporting, please wait...
-                                    </small>
-                                    <small className="text-muted fw-bold">
-                                        {progress}%
-                                    </small>
-                                </div>
-
-                                <div className="progress" style={{ height: "8px", borderRadius: "20px" }}>
-                                    <div
-                                        className="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                        role="progressbar"
-                                        style={{
-                                            width: `${progress}%`,
-                                            borderRadius: "20px",
-                                            transition: "width 0.4s ease"
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                        )}
                         <div className="card-body">
                             <div className="row mb-4 align-items-center">
                                 <div className="col-md-3">

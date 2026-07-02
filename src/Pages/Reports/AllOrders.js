@@ -6,9 +6,9 @@ import Flatpicker from "react-flatpickr";
 import { TableRows, NoRecords } from '../../Components/Shimmer'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { GlobalLimitChanger } from '../../Components/InputElements'
-import { DateFormater } from '../../Components/GlobalFunctions'
+import { DateFormater, getCurrentDate } from '../../Components/GlobalFunctions'
 import { GetStatusBadge } from '../../Utils/GetStatusBadge'
-import * as XLSX from 'xlsx'
+import { downloadExcel } from '../../Components/FileDownloader';
 
 const AllOrders = () => {
 
@@ -26,8 +26,6 @@ const AllOrders = () => {
     const [keyword, setKeyword] = useState('')
     const [dateRange, setDateRange] = useState([])
     const [isUpdate, setIsUpdate] = useState(false)
-    const [exporting, setExporting] = useState(false)
-    const [progress, setProgress] = useState(0)
 
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -68,47 +66,34 @@ const AllOrders = () => {
         }
     }
 
-    const handleExportExcel = () => {
-        if (!data.length) return
+    const handleDownload = () => {
+        const excelCols = [
+            { label: "Order ID", key: "secret_order_id" },
+            { label: "Account ID", key: "business_order_business_id" },
+            { label: "Account Name", key: "business_name" },
+            { label: "Order Date", key: "business_order_date" },
+            { label: "Payment Method", key: "business_order_payment_method" },
+            { label: "Total Amount", key: "corrected_grand_total" },
+            { label: "Reward Points", key: "business_order_earned_points" },
+            { label: "Status", key: "business_order_status" }
+        ];
 
-        try {
-            setExporting(true)
-            setProgress(20)
-
-            const exportData = data.map((row) => ({
-                "Order ID": row.secret_order_id,
-                "Account ID": row.business_order_business_id,
-                "Account Name": row.business_name,
-                "Order Date": DateFormater(row.business_order_date),
-                "Payment Method": row.business_order_payment_method,
-                "Total Amount": row.corrected_grand_total?.toFixed(2),
-                "Reward Points": row.business_order_earned_points,
-                Status: row.business_order_status
-            }))
-
-            setProgress(60)
-
-            const worksheet = XLSX.utils.json_to_sheet(exportData)
-            const workbook = XLSX.utils.book_new()
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Salesman Orders")
-
-            setProgress(90)
-
-            XLSX.writeFile(
-                workbook,
-                `Salesman_Orders_${new Date().toISOString().slice(0, 10)}.xlsx`
-            )
-
-            setProgress(100)
-        } catch (err) {
-            console.error("Export Error:", err)
-        } finally {
-            setTimeout(() => {
-                setExporting(false)
-                setProgress(0)
-            }, 500)
-        }
-    }
+        downloadExcel({
+            apiURL,
+            endpoint: "Reports/GetBusinessAllOrdersReport",
+            headers,
+            params: {
+                page: 1,
+                limit: totalRecords || 100000,
+                keyword,
+                from_date: dateRange[0] || "",
+                to_date: dateRange[1] || "",
+                status
+            },
+            cols: excelCols,
+            fileName: `Salesman_Orders_${getCurrentDate()}.xlsx`
+        });
+    };
 
     const handlePrev = () => {
         if (prev) {
@@ -175,39 +160,13 @@ const AllOrders = () => {
                                         {data.length > 0 && (
                                             <button
                                                 className="btn btn-success btn-sm btn-label"
-                                                onClick={handleExportExcel}
-                                                disabled={exporting}
+                                                onClick={handleDownload}
                                             >
                                                 <i className="ri-file-excel-2-line label-icon"></i>
-                                                {exporting ? "Exporting..." : "Export"}
+                                                Export
                                             </button>
                                         )}
                                     </div>
-
-                                    {exporting && (
-                                        <div className="px-3 pt-2 pb-1 bg-white border-bottom">
-                                            <div className="d-flex justify-content-between mb-1">
-                                                <small className="text-muted fw-semibold">
-                                                    Exporting, please wait...
-                                                </small>
-                                                <small className="text-muted fw-bold">
-                                                    {progress}%
-                                                </small>
-                                            </div>
-
-                                            <div className="progress" style={{ height: "8px", borderRadius: "20px" }}>
-                                                <div
-                                                    className="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                                    role="progressbar"
-                                                    style={{
-                                                        width: `${progress}%`,
-                                                        borderRadius: "20px",
-                                                        transition: "width 0.4s ease"
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                    )}
 
                                     <div className="card-body">
                                         <div className="row mb-4 g-3 align-items-center">

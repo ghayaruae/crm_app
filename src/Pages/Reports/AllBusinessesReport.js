@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from 'react'
 import PageTitle from '../../Components/PageTitle'
 import { ConfigContext } from '../../Context/ConfigContext'
-import axios from 'axios'
 import { TableRows, NoRecords } from '../../Components/Shimmer'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { GlobalLimitChanger } from '../../Components/InputElements'
-import * as XLSX from 'xlsx'
+import { getCurrentDate } from '../../Components/GlobalFunctions'
+import { downloadExcel } from '../../Components/FileDownloader'
+import axios from 'axios'
 
 const AllBusinessesReport = () => {
 
@@ -22,8 +23,6 @@ const AllBusinessesReport = () => {
     const [loading, setLoading] = useState(true)
     const [keyword, setKeyword] = useState('')
     const [isUpdate, setIsUpdate] = useState(false)
-    const [exporting, setExporting] = useState(false)
-    const [progress, setProgress] = useState(0)
 
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -62,48 +61,33 @@ const AllBusinessesReport = () => {
         }
     }
 
-    const handleExportExcel = () => {
-        if (!data.length) return
+    const handleDownload = () => {
+        const excelCols = [
+            { label: "Account ID", key: "business_id" },
+            { label: "Salesman Name", key: "business_salesmen_name" },
+            { label: "Account Name", key: "business_name" },
+            { label: "Owner Name", key: "business_contact_person" },
+            { label: "Contact No", key: "business_contact_number" },
+            { label: "TRN No", key: "busienss_trn" },
+            { label: "Email", key: "business_email" },
+            { label: "Credit Limit", key: "business_credit_limit" },
+            { label: "Total Orders", key: "total_orders" }
+        ];
 
-        try {
-            setExporting(true)
-            setProgress(20)
-
-            const exportData = data.map((row) => ({
-                "Account ID": row.business_id,
-                "Salesman Name": row.business_salesmen_name,
-                "Account Name": row.business_name,
-                "Owner Name": row.business_contact_person,
-                "Contact No": row.business_contact_number,
-                "TRN No": row.busienss_trn,
-                "Email": row.business_email,
-                "Credit Limit": row.business_credit_limit,
-                "Total Orders": row.total_orders || "No Order yet"
-            }))
-
-            setProgress(60)
-
-            const worksheet = XLSX.utils.json_to_sheet(exportData)
-            const workbook = XLSX.utils.book_new()
-            XLSX.utils.book_append_sheet(workbook, worksheet, "All Accounts Report")
-
-            setProgress(90)
-
-            XLSX.writeFile(
-                workbook,
-                `All_Accounts_Report_${new Date().toISOString().slice(0, 10)}.xlsx`
-            )
-
-            setProgress(100)
-        } catch (err) {
-            console.error("Export Error:", err)
-        } finally {
-            setTimeout(() => {
-                setExporting(false)
-                setProgress(0)
-            }, 500)
-        }
-    }
+        downloadExcel({
+            apiURL,
+            endpoint: "Reports/AllSalesmanAssignBusinessReport",
+            headers,
+            params: {
+                page: 1,
+                limit: totalRecords || 100000,
+                keyword,
+                status
+            },
+            cols: excelCols,
+            fileName: `All_Accounts_Report_${getCurrentDate()}.xlsx`
+        });
+    };
 
     const handlePrev = () => {
         if (prev) {
@@ -174,39 +158,13 @@ const AllBusinessesReport = () => {
                                         {data.length > 0 && (
                                             <button
                                                 className="btn btn-success btn-sm btn-label"
-                                                onClick={handleExportExcel}
-                                                disabled={exporting}
+                                                onClick={handleDownload}
                                             >
                                                 <i className="ri-file-excel-2-line label-icon"></i>
-                                                {exporting ? "Exporting..." : "Export"}
+                                                Export
                                             </button>
                                         )}
                                     </div>
-
-                                    {exporting && (
-                                        <div className="px-3 pt-2 pb-1 bg-white border-bottom">
-                                            <div className="d-flex justify-content-between mb-1">
-                                                <small className="text-muted fw-semibold">
-                                                    Exporting, please wait...
-                                                </small>
-                                                <small className="text-muted fw-bold">
-                                                    {progress}%
-                                                </small>
-                                            </div>
-
-                                            <div className="progress" style={{ height: "8px", borderRadius: "20px" }}>
-                                                <div
-                                                    className="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                                    role="progressbar"
-                                                    style={{
-                                                        width: `${progress}%`,
-                                                        borderRadius: "20px",
-                                                        transition: "width 0.4s ease"
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                    )}
 
                                     <div className="card-body">
                                         <div className="row mb-4 align-items-center">

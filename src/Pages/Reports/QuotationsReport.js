@@ -5,10 +5,10 @@ import axios from 'axios'
 import Flatpicker from "react-flatpickr";
 import { TableRows, NoRecords } from '../../Components/Shimmer'
 import { GlobalLimitChanger } from '../../Components/InputElements'
-import { DateFormater, getValidityDays } from '../../Components/GlobalFunctions'
+import { DateFormater, getCurrentDate, getValidityDays } from '../../Components/GlobalFunctions'
 import Select from 'react-select';
-import * as XLSX from 'xlsx';
 import { Link, useSearchParams } from 'react-router-dom';
+import { downloadExcel } from '../../Components/FileDownloader';
 
 const QuotationsReport = () => {
     const { primaryColor, apiHeaderJson, apiURL, selectTheme, selectStyle } = useContext(ConfigContext)
@@ -24,8 +24,6 @@ const QuotationsReport = () => {
     const [salesmanOptions, setSalesmanOptions] = useState([])
     const [from_date, setFrom_date] = useState("")
     const [to_date, setTo_date] = useState("")
-    const [exporting, setExporting] = useState(false)
-    const [progress, setProgress] = useState(0)
     const [applyFilter, setApplyFilter] = useState(0);
 
     const [searchParams, setSearchParams] = useSearchParams();
@@ -116,67 +114,32 @@ const QuotationsReport = () => {
         setApplyFilter(prev => prev + 1)
     }
 
-    const handleExportExcel = () => {
-        if (!data.length) return;
+    const handleDownload = () => {
+        const excelCols = [
+            { label: "Quotation ID", key: "quotation_id" },
+            { label: "Quotation No", key: "quotation_number" },
+            { label: "Salesman", key: "business_salesmen_name" },
+            { label: "Customer", key: "customer_name" },
+            { label: "Issue Date", key: "issue_date" },
+            { label: "Expiry Date", key: "expiry_date" },
+            { label: "Validity (Days)", key: "validity_days" },
+            { label: "Remark", key: "remark" }
+        ];
 
-        try {
-            setExporting(true);
-            setProgress(20);
-
-            const exportData = data.map((row, index) => ({
-                "Sr No": index + 1,
-                "Quotation ID": row.quotation_id,
-                "Quotation No": row.quotation_number,
-                "Salesman": row.business_salesmen_name,
-                "Customer": row.customer_name,
-                "Issue Date": DateFormater(row.issue_date),
-                "Expiry Date": DateFormater(row.expiry_date),
-                "Validity (Days)": getValidityDays(row),
-                "Remark": row.remark || "-"
-            }));
-
-            setProgress(50);
-
-            const worksheet = XLSX.utils.json_to_sheet(exportData);
-
-            worksheet["!cols"] = [
-                { wch: 10 },
-                { wch: 15 },
-                { wch: 25 },
-                { wch: 25 },
-                { wch: 30 },
-                { wch: 18 },
-                { wch: 18 },
-                { wch: 15 },
-                { wch: 40 }
-            ];
-
-            const workbook = XLSX.utils.book_new();
-
-            XLSX.utils.book_append_sheet(
-                workbook,
-                worksheet,
-                "Quotations Report"
-            );
-
-            setProgress(80);
-
-            XLSX.writeFile(
-                workbook,
-                `Quotations_Report_${new Date()
-                    .toISOString()
-                    .slice(0, 10)}.xlsx`
-            );
-
-            setProgress(100);
-        } catch (err) {
-            console.error("Export Error:", err);
-        } finally {
-            setTimeout(() => {
-                setExporting(false);
-                setProgress(0);
-            }, 500);
-        }
+        downloadExcel({
+            apiURL,
+            endpoint: "Masters/GetQuotationsReport",
+            headers,
+            params: {
+                page: 1,
+                limit: totalRecords || 100000,
+                business_salesman_id: selectedSalesman || "",
+                from_date: from_date || "",
+                to_date: to_date || ""
+            },
+            cols: excelCols,
+            fileName: `Quotations_Report_${getCurrentDate()}.xlsx`
+        });
     };
 
     useEffect(() => {
@@ -215,40 +178,13 @@ const QuotationsReport = () => {
                                     {data.length > 0 && (
                                         <button
                                             className="btn btn-success btn-sm btn-label"
-                                            onClick={handleExportExcel}
-                                            disabled={exporting}
+                                            onClick={handleDownload}
                                         >
                                             <i className="ri-file-excel-2-line label-icon"></i>
-                                            {exporting ? "Exporting..." : "Export"}
+                                            Export
                                         </button>
                                     )}
                                 </div>
-
-                                {exporting && (
-                                    <div className="px-3 pt-2 pb-1 bg-white border-bottom">
-                                        <div className="d-flex justify-content-between mb-1">
-                                            <small className="text-muted fw-semibold">
-                                                Exporting, please wait...
-                                            </small>
-
-                                            <small className="text-muted fw-bold">
-                                                {progress}%
-                                            </small>
-                                        </div>
-
-                                        <div className="progress" style={{ height: "8px", borderRadius: "20px" }}>
-                                            <div
-                                                className="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                                role="progressbar"
-                                                style={{
-                                                    width: `${progress}%`,
-                                                    borderRadius: "20px",
-                                                    transition: "width 0.4s ease"
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                )}
 
                                 <div className="card-body">
                                     <div className="row mb-4 g-3 align-items-center">

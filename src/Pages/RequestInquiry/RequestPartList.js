@@ -5,9 +5,8 @@ import { GlobalLimitChanger } from '../../Components/InputElements'
 import { ConfigContext } from '../../Context/ConfigContext'
 import PageTitle from '../../Components/PageTitle'
 import { Link, useSearchParams } from 'react-router-dom'
-import * as XLSX from 'xlsx';
-import { saveAs } from 'file-saver';
-import { DateFormater } from '../../Components/GlobalFunctions'
+import { DateFormater, getCurrentDate } from '../../Components/GlobalFunctions'
+import { downloadExcel } from '../../Components/FileDownloader'
 
 const RequestPartList = () => {
 
@@ -82,34 +81,28 @@ const RequestPartList = () => {
 
 
     const handleDownload = () => {
-        try {
-            const orderWorkSheet = XLSX.utils.json_to_sheet(
-                data?.map((item) => ({
-                    "Salesman Name": item?.business_salesmen_name,
-                    "Part Name": item?.request_part_name,
-                    "Brand Name": item?.request_brand_name,
-                    "Part Number": item?.request_part_number,
-                    "Qty": item?.request_part_qty,
-                    "Market Price": item?.request_part_market_price,
-                    "Request Date": DateFormater(item?.request_date)
+        const excelCols = [
+            { label: "Salesman Name", key: "business_salesmen_name" },
+            { label: "Part Name", key: "request_part_name" },
+            { label: "Brand Name", key: "request_brand_name" },
+            { label: "Part Number", key: "request_part_number" },
+            { label: "Qty", key: "request_part_qty" },
+            { label: "Market Price", key: "request_part_market_price" },
+            { label: "Request Date", key: "request_date" }
+        ];
 
-                }))
-            );
-
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, orderWorkSheet, "business");
-
-            const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-
-            // Avoid shadowing variable name "data"
-            const blob = new Blob([excelBuffer], {
-                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            });
-
-            saveAs(blob, 'partInquery.xlsx');
-        } catch (error) {
-            console.error("Excel download error:", error);
-        }
+        downloadExcel({
+            apiURL,
+            endpoint: "Masters/GetRequestPartInquiry",
+            headers,
+            params: {
+                page: 1,
+                limit: totalRecords || 100000,
+                keyword
+            },
+            cols: excelCols,
+            fileName: `Part_Inquiry_Report_${getCurrentDate()}.xlsx`
+        });
     };
 
     useEffect(() => {
