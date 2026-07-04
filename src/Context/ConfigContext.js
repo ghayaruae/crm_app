@@ -3,7 +3,7 @@ import React, { createContext, useEffect, useState } from 'react';
 export const ConfigContext = createContext();
 
 export const ConfigProvider = ({ children }) => {
-  const [apiURL] = useState('https://crmapis.ghayar.com/');
+  const [apiURL] = useState('https://uaecrmapis.ghayar.com/');
   const [dcapiurl] = useState('https://dcapi.carz7.com/')
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [business_salesman_id] = useState(localStorage.getItem("business_salesman_id"));
