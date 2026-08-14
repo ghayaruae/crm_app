@@ -61,8 +61,8 @@ const SearchOEParts = () => {
             const { success, data } = response.data
             if (success) {
                 const options = data.map((item) => ({
-                    value: item.SUP_ID,
-                    label: item.SUP_BRAND
+                    value: item.sup_id,
+                    label: item.sup_brand
                 }))
                 setBrandOptions(options)
             }

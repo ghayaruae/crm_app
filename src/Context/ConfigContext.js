@@ -32,6 +32,13 @@ export const ConfigProvider = ({ children }) => {
     { value: "7", label: "Returned" },
     { value: "8", label: "Returned Collected" },
     { value: "9", label: "Returned Received" },
+    { value: "10", label: "Partially Accept" },
+    { value: "11", label: "Partially Cancelled" },
+    { value: "12", label: "Partially Packed" },
+    { value: "13", label: "Out for Delivery" },
+    { value: "14", label: "Packed To Central Hub" },
+    { value: "15", label: "Out For Delivery To Central Hub" },
+    { value: "16", label: "Delivered To Central Hub" },
   ];
 
   const selectTheme = (theme) => ({

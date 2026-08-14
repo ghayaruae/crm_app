@@ -103,7 +103,7 @@ const ViewOrderInvoice = () => {
                                 onClick={downloadPDF}
                             >
                                 <i className="ri-download-cloud-2-line me-2 text-primary fs-5" />
-                                <span className="text-decoration-underline">Download Invoice</span>
+                                <span className="text-decoration-underline">Download Order Details</span>
                             </span>
                         </div>
 

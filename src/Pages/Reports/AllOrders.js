@@ -112,8 +112,8 @@ const AllOrders = () => {
     }
 
     const handleSearch = () => {
-        setPage(1)
-        getData();
+        setPage(1);
+        setIsUpdate(prev => !prev);
     }
 
     const handelClear = () => {
@@ -267,7 +267,7 @@ const AllOrders = () => {
                                                                 </td>
                                                                 <td>{DateFormater(row.business_order_date)}</td>
                                                                 <td>{row.business_order_payment_method}</td>
-                                                                <td className='text-success fw-bold'>{row.corrected_grand_total?.toFixed(2)} AED</td>
+                                                                <td className='text-success fw-bold'>{row.business_order_grand_total?.toFixed(2)} AED</td>
                                                                 <td>
                                                                     <span className='badge bg-success'>
                                                                         {row?.business_order_earned_points} Points

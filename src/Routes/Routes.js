@@ -7,6 +7,7 @@ import CustomerRequestedCreditLimit from "../Components/CustomerWizard/Tabs/Cust
 import CustomerRequestedDueDays from "../Components/CustomerWizard/Tabs/CustomerRequestedDueDays";
 import CustomerSelectedBrands from "../Components/CustomerWizard/Tabs/CustomerSelectedBrands";
 import ViewOrderInvoice from "../Components/ViewOrderInvoice";
+import ViewOrderItemInvoice from "../Components/ViewOrderItemInvoice";
 import AllBusinesses from "../Pages/Business/AllBusinesses";
 import BusinessDetails from "../Pages/Business/BusinessDetails";
 import BusinessOrders from "../Pages/Business/Orders/BusinessOrders";
@@ -51,6 +52,7 @@ const routes = [
   { path: "/BusinessOrders", element: <BusinessOrders />, routeName: "/BusinessOrders" },
   { path: "/OrderInfo/:business_order_id?/:secret_order_id?/:business_order_business_id?", element: <OrderInfo />, routeName: "/OrderInfo" },
   { path: "/ViewOrderInvoice/:secret_order_id?/:business_order_business_id?", element: <ViewOrderInvoice />, routeName: "/ViewOrderInvoice" },
+  { path: "/ViewOrderItemInvoice/:business_id?/:business_order_id?/:invoice_id?/:invoice_no?", element: <ViewOrderItemInvoice />, routeName: "/ViewOrderItemInvoice" },
 
   ////////////////////// Customer Dashboard Routing ///////////////////////////
   { path: "/CustomerDashboard/:business_id?", element: <CustomerDashboardStates />, routeName: "/CustomerDashboard" },

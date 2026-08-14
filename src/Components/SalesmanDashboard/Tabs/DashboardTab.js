@@ -51,6 +51,65 @@ const DashboardTab = ({ data, salesman_data, sales_data }) => {
         });
     }
 
+    console.log(sales_data)
+
+    const dailyCards = [
+        {
+            title: "Total Orders",
+            value: sales_data?.total_orders || 0,
+            subValue: `${Number(sales_data?.total_amount || 0)?.toFixed(2)} AED`,
+            icon: "ri-shopping-bag-line",
+            bg: "bg-primary-subtle",
+            iconBg: "bg-primary",
+            text: "text-primary"
+        },
+        {
+            title: "Pending",
+            value: sales_data?.pending_count || 0,
+            subValue: `${Number(sales_data?.pending_amount || 0)?.toFixed(2)} AED`,
+            icon: "ri-time-line",
+            bg: "bg-warning-subtle",
+            iconBg: "bg-warning",
+            text: "text-warning"
+        },
+        {
+            title: "In Progress",
+            value: sales_data?.in_progress_count || 0,
+            subValue: `${Number(sales_data?.in_progress_amount || 0)?.toFixed(2)} AED`,
+            icon: "ri-loader-4-line",
+            bg: "bg-info-subtle",
+            iconBg: "bg-info",
+            text: "text-info"
+        },
+        {
+            title: "Delivered",
+            value: sales_data?.delivered_count || 0,
+            subValue: `${Number(sales_data?.delivered_amount || 0)?.toFixed(2)} AED`,
+            icon: "ri-checkbox-circle-line",
+            bg: "bg-success-subtle",
+            iconBg: "bg-success",
+            text: "text-success"
+        },
+        {
+            title: "Returned",
+            value: sales_data?.returned_count || 0,
+            subValue: `${Number(sales_data?.returned_amount || 0)?.toFixed(2)} AED`,
+            icon: "ri-arrow-go-back-line",
+            bg: "bg-secondary-subtle",
+            iconBg: "bg-secondary",
+            text: "text-secondary"
+        },
+        {
+            title: "Cancelled",
+            value: sales_data?.cancelled_count || 0,
+            subValue: `${Number(sales_data?.cancelled_amount || 0)?.toFixed(2)} AED`,
+            icon: "ri-close-circle-line",
+            bg: "bg-danger-subtle",
+            iconBg: "bg-danger",
+            text: "text-danger"
+        }
+    ];
+
     return (
         <>
             <div className='tab-pane fade show active'>
@@ -102,12 +161,12 @@ const DashboardTab = ({ data, salesman_data, sales_data }) => {
                         ))}
                     </div>
                     <div className="row">
-                        <div className="col-md-12">
+                        <div className="col-lg-7 col-md-12 col-sm-12">
                             <div className="card border-0 shadow-sm">
-                                <div className="card-body">
+                                <div className="card-body pb-2">
 
                                     {/* Header */}
-                                    <div className="d-flex align-items-center justify-content-between mb-4">
+                                    <div className="d-flex align-items-center justify-content-between mb-3">
                                         <div>
                                             <h6 className="mb-1 fw-semibold text-dark">
                                                 Daily Sales Summary
@@ -123,66 +182,56 @@ const DashboardTab = ({ data, salesman_data, sales_data }) => {
                                     </div>
 
                                     {/* Stats */}
-                                    <div className="row g-3">
+                                    <div className="row">
+                                        {dailyCards.map((card, index) => (
+                                            <div className="col-xl-6 col-lg-4 col-md-4 col-sm-6" key={index}>
+                                                <div className={`card border-0 shadow-sm ${card.bg}`}>
+                                                    <div className="card-body">
 
-                                        {/* Total Orders */}
-                                        <div className="col-md-6 col-sm-6">
-                                            <div className="p-3 rounded bg-primary-subtle h-100">
-                                                <div className="d-flex align-items-center">
-                                                    <div className="me-3">
-                                                        <div className="avatar-sm">
-                                                            <span className="avatar-title rounded-circle bg-primary text-white">
-                                                                <i className="ri-shopping-bag-line fs-5"></i>
-                                                            </span>
+                                                        <div className="d-flex justify-content-between align-items-start">
+
+                                                            <div>
+
+                                                                <small className="text-muted fw-semibold text-uppercase">
+                                                                    {card.title}
+                                                                </small>
+
+                                                                <h3 className={`fw-bold mb-1 mt-2 ${card.text}`}>
+                                                                    {card.value}
+                                                                </h3>
+
+                                                                <small className="fw-semibold text-dark">
+                                                                    Amount: {card.subValue}
+                                                                </small>
+
+                                                            </div>
+
+                                                            <div
+                                                                className={`${card.iconBg} rounded-circle text-white d-flex align-items-center justify-content-center`}
+                                                                style={{
+                                                                    width: 46,
+                                                                    height: 46
+                                                                }}
+                                                            >
+                                                                <i className={`${card.icon} fs-5`}></i>
+                                                            </div>
+
                                                         </div>
-                                                    </div>
 
-                                                    <div>
-                                                        <h5 className="mb-0 fw-bold">
-                                                            {sales_data?.total_orders ?? 0}
-                                                        </h5>
-                                                        <small className="text-muted">
-                                                            Total Orders
-                                                        </small>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        {/* Total Sales */}
-                                        <div className="col-md-6 col-sm-6">
-                                            <div className="p-3 rounded bg-success-subtle h-100">
-                                                <div className="d-flex align-items-center">
-                                                    <div className="me-3">
-                                                        <div className="avatar-sm">
-                                                            <span className="avatar-title rounded-circle bg-success text-white">
-                                                                <i className="ri-money-dollar-circle-line fs-5"></i>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div>
-                                                        <h5 className="mb-0 fw-bold">
-                                                            {Number(sales_data?.total_sales || 0).toLocaleString("en-AE")} AED
-                                                        </h5>
-                                                        <small className="text-muted">
-                                                            Total Sales
-                                                        </small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
+                                        ))}
                                     </div>
 
                                 </div>
                             </div>
                         </div>
+                        <BusinessesChart />
                     </div>
 
                     <div className="row g-4">
                         <SalesChart />
-                        <BusinessesChart />
                     </div>
 
                     <div className="row mt-4">

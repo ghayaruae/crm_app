@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import ReactECharts from "echarts-for-react";
 import axios from "axios";
 import { ConfigContext } from "../../Context/ConfigContext";
 import { DateFormater } from "../../Components/GlobalFunctions";
@@ -37,68 +36,44 @@ const BusinessesChart = () => {
         GetSalesmanTargetChartData();
     }, []);
 
+    // Calculate values based on actual API response structure
+    const targetAmount = parseFloat(getTargetAmount?.total_target_amount || 0);
+    const achievementAmount = parseFloat(getTargetAmount?.total_achievement_amount || 0);
+    const pendingAmount = parseFloat(getTargetAmount?.total_pending_amount || 0);
+    const aboveAchievement = parseFloat(getTargetAmount?.above_achievement_amount || 0);
+
+    // Calculate achievement percentage
+    const achievementPercentage = targetAmount > 0
+        ? (achievementAmount / targetAmount) * 100
+        : 0;
+
+    const isAboveTarget = achievementAmount > targetAmount;
+    const extraPercentage = targetAmount > 0
+        ? ((achievementAmount - targetAmount) / targetAmount) * 100
+        : 0;
+
+    // Check if there's any data
     const noData =
         !getTargetAmount ||
-        (
-            parseFloat(getTargetAmount?.total_achievement_amount || 0) === 0 &&
-            parseFloat(getTargetAmount?.total_pending_amount || 0) === 0 &&
-            parseFloat(getTargetAmount?.above_achievement_amount || 0) === 0
-        );
+        (achievementAmount === 0 && pendingAmount === 0 && aboveAchievement === 0);
 
-    const option = {
-        tooltip: {
-            trigger: "item",
-            backgroundColor: "#fff",
-            borderColor: "#ddd",
-            borderWidth: 1,
-            textStyle: { color: "#333" },
-            formatter: "{b}: {c} ({d}%)"
-        },
-        legend: {
-            bottom: 0,
-            left: "center",
-            textStyle: { color: "#666", fontSize: 12 }
-        },
-        series: [
-            {
-                name: "Business Status",
-                type: "pie",
-                radius: ["40%", "70%"],
-                avoidLabelOverlap: false,
-                label: { show: false },
-                emphasis: {
-                    label: {
-                        show: true,
-                        fontSize: 14,
-                        fontWeight: "bold",
-                        color: "#333"
-                    }
-                },
-                labelLine: { show: false },
-                data: [
-                    {
-                        value: parseFloat(getTargetAmount?.total_achievement_amount || 0).toFixed(2),
-                        name: "Achievement Amount",
-                        itemStyle: { color: "#2b7a78" }
-                    },
-                    {
-                        value: parseFloat(getTargetAmount?.total_pending_amount || 0).toFixed(2),
-                        name: "Pending Amount",
-                        itemStyle: { color: "#d9534f" }
-                    },
-                    {
-                        value: parseFloat(getTargetAmount?.above_achievement_amount || 0).toFixed(2),
-                        name: "Above Achievement",
-                        itemStyle: { color: "#34568B" }
-                    }
-                ]
-            }
-        ]
+    // Format currency with ₹ and thousand separators
+    const formatCurrency = (amount) => {
+        if (!amount && amount !== 0) return '0 AED';
+        return `${amount.toFixed(2)} AED`;
+    };
+
+    // Get progress bar color based on percentage
+    const getProgressColor = (percentage) => {
+        if (percentage >= 100) return 'success';
+        if (percentage >= 70) return 'info';
+        if (percentage >= 40) return 'warning';
+        return 'danger';
     };
 
     return (
         <div className="col-lg-5 col-md-12">
-            <div className="card shadow border-0 rounded h-100">
+            <div className="card shadow border-0 rounded">
 
                 {/* Header */}
                 <div className="card-header d-flex justify-content-between align-items-center">
@@ -113,15 +88,15 @@ const BusinessesChart = () => {
 
                 {/* Body */}
                 <div
-                    className="card-body d-flex flex-column justify-content-evenly p-0"
-                    style={{ position: "relative" }}
+                    className="card-body d-flex flex-column justify-content-end p-4"
+                    style={{ position: "relative", minHeight: "445px" }}
                 >
 
                     {/* Loader */}
                     {loading && (
                         <div
                             className="d-flex justify-content-center align-items-center"
-                            style={{ height: "250px" }}
+                            style={{ height: "400px" }}
                         >
                             <div className="spinner-border text-primary"></div>
                         </div>
@@ -131,7 +106,7 @@ const BusinessesChart = () => {
                     {!loading && noData && !getTargetAmount?.target_expired && (
                         <div
                             style={{
-                                height: "250px",
+                                height: "400px",
                                 display: "flex",
                                 flexDirection: "column",
                                 justifyContent: "center",
@@ -151,20 +126,117 @@ const BusinessesChart = () => {
                         </div>
                     )}
 
-                    {/* Chart */}
+                    {/* Main Content */}
                     {!loading && !noData && (
-                        <ReactECharts
-                            option={option}
-                            style={{
-                                width: "100%",
-                                height: "350px",
-                                opacity: getTargetAmount?.target_expired ? 0.4 : 1
-                            }}
-                            opts={{ renderer: "svg" }}
-                        />
+                        <div style={{ opacity: getTargetAmount?.target_expired ? 0.4 : 1 }}>
+
+                            {/* Achievement Percentage Display */}
+                            <div className="text-center mb-4">
+                                <div
+                                    className="display-1 fw-bold"
+                                    style={{
+                                        fontSize: "4rem",
+                                        lineHeight: 1,
+                                        color: achievementPercentage >= 100 ? "#28a745" : "#007bff"
+                                    }}
+                                >
+                                    {achievementPercentage.toFixed(1)}%
+                                </div>
+                                <small className="text-muted">Achievement Rate</small>
+
+                                {isAboveTarget && (
+                                    <span className="badge bg-success ms-2" style={{ fontSize: "0.9rem" }}>
+                                        +{extraPercentage.toFixed(1)}% Above Target
+                                    </span>
+                                )}
+                            </div>
+
+                            {/* Progress Bar */}
+                            <div className="mb-4">
+                                <div className="d-flex justify-content-between mb-1">
+                                    <small className="text-muted">Progress</small>
+                                    <small className="text-muted">
+                                        {formatCurrency(achievementAmount)} / {formatCurrency(targetAmount)}
+                                    </small>
+                                </div>
+                                <div className="progress" style={{ height: "15px" }}>
+                                    <div
+                                        className={`progress-bar bg-${getProgressColor(achievementPercentage)}`}
+                                        role="progressbar"
+                                        style={{
+                                            width: `${Math.min(achievementPercentage, 100)}%`,
+                                            transition: "width 0.6s ease"
+                                        }}
+                                        aria-valuenow={achievementPercentage}
+                                        aria-valuemin="0"
+                                        aria-valuemax="100"
+                                    >
+                                        {achievementPercentage >= 100 && "✓"}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Stats Cards */}
+                            <div className="row">
+                                <div className="col-6 col-md-6">
+                                    <div className="card bg-dark-subtle border-dark">
+                                        <div className="card-body p-3 text-center">
+                                            <small className="text-muted d-block">Target</small>
+                                            <strong className="text-primary">
+                                                {formatCurrency(targetAmount)}
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-6 col-md-6">
+                                    <div className="card bg-dark-subtle border-dark">
+                                        <div className="card-body p-3 text-center">
+                                            <small className="text-muted d-block">Achieved</small>
+                                            <strong className="text-success">
+                                                {formatCurrency(achievementAmount)}
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-6 col-md-6">
+                                    <div className="card bg-dark-subtle border-dark">
+                                        <div className="card-body p-3 text-center">
+                                            <small className="text-muted d-block">Pending</small>
+                                            <strong className="text-danger">
+                                                {formatCurrency(pendingAmount)}
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                {isAboveTarget && aboveAchievement > 0 && (
+                                    <div className="col-6 col-md-6">
+                                        <div className="card bg-dark-subtle border-dark">
+                                            <div className="card-body p-3 text-center">
+                                                <small className="text-muted d-block">Extra</small>
+                                                <strong className="text-warning">
+                                                    {formatCurrency(aboveAchievement)}
+                                                </strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                                {!isAboveTarget && (
+                                    <div className="col-6 col-md-6">
+                                        <div className="card bg-dark-subtle border-dark">
+                                            <div className="card-body p-3 text-center">
+                                                <small className="text-muted d-block">Shortfall</small>
+                                                <strong className="text-secondary">
+                                                    {formatCurrency(Math.max(0, targetAmount - achievementAmount))}
+                                                </strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     )}
 
-                    {/* Expired Overlay */}
+                    {/* Target Expired Overlay */}
                     {!loading && getTargetAmount?.target_expired && (
                         <div
                             style={{
@@ -177,7 +249,8 @@ const BusinessesChart = () => {
                                 justifyContent: "center",
                                 zIndex: 10,
                                 textAlign: "center",
-                                padding: "20px"
+                                padding: "20px",
+                                borderRadius: "8px"
                             }}
                         >
                             <div>

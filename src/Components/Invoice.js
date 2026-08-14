@@ -511,7 +511,7 @@ const Invoice = ({ order, orderItems, address, returnData, cancelData }) => {
 
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <span style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "10px" }}>
-                        Tax Invoice
+                        Order Details
                     </span>
                 </div>
 
@@ -579,7 +579,7 @@ const Invoice = ({ order, orderItems, address, returnData, cancelData }) => {
                         </div>
 
                         <div style={invoiceStyles.shippingAddress}>
-                            <b>Invoice # :</b> {order?.secret_order_id}
+                            <b>Reference Order No # :</b> {order?.secret_order_id}
                             <br />
                             <b>Date :</b> {dayjs(order?.business_order_date).format("DD MMM YYYY")}
                             <div style={{ display: "flex", marginBottom: "-5px" }}>
@@ -622,7 +622,13 @@ const Invoice = ({ order, orderItems, address, returnData, cancelData }) => {
                             return (
                                 <tr key={item.item_number}>
                                     <td style={invoiceStyles.itemCell}>{index + 1}</td>
-                                    <td style={invoiceStyles.itemCell}>{item.item_name}</td>
+                                    <td style={invoiceStyles.itemCell}>
+                                        <div>{item.item_name}</div>
+                                        {
+                                            item.invoice_no &&
+                                            <small>Invoice No: {item.invoice_no}</small>
+                                        }
+                                    </td>
                                     <td style={invoiceStyles.itemCell} align="left">{item?.item_number}</td>
                                     <td style={invoiceStyles.itemCell} align="left">{item?.item_brand}</td>
                                     <td style={invoiceStyles.itemCell} align="left">{item?.item_price_excl_vat} AED</td>

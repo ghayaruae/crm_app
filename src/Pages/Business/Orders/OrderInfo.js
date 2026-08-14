@@ -116,7 +116,7 @@ const OrderInfo = () => {
                                         <Link to={`/ViewOrderInvoice/${orderDetails?.secret_order_id}/${orderDetails?.business_order_business_id}`}>
                                             <span className="d-flex align-items-center me-4 cursor-pointer">
                                                 <i className="ri-download-cloud-2-line me-2 text-danger fs-5" />
-                                                <span className="text-decoration-underline text-danger">View Invoice</span>
+                                                <span className="text-decoration-underline text-danger">View Order Details</span>
                                             </span>
                                         </Link>
                                     </div>

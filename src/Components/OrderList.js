@@ -115,6 +115,8 @@
 
 import React, { useState } from 'react'
 import { NoRecords } from './Shimmer'
+import { GetStatusBadge } from '../Utils/GetStatusBadge';
+import { Link } from 'react-router-dom';
 
 const OrderList = ({
   orderItems,
@@ -174,8 +176,9 @@ const OrderList = ({
               <th scope="col">Qty</th>
               <th scope="col">Unit Price</th>
               <th scope="col">VAT 5%</th>
-              {/* <th scope="col">Sub Total</th> */}
               <th scope="col">Total</th>
+              <th scope="col">Status</th>
+              <th scope="col">Print Invoice</th>
             </tr>
           </thead>
 
@@ -493,6 +496,55 @@ const OrderList = ({
                         {item?.item_sub_total}
                       </td>
 
+                      <td>
+                        {GetStatusBadge(item?.item_status)}
+                      </td>
+
+                      <td>
+                        {
+                          item?.item_status === 6 ? (
+                            <span className="badge bg-danger text-white">
+                              Item Cancelled
+                            </span>
+                          ) : item?.item_status === 7 ? (
+                            <span className="badge bg-warning text-dark">
+                              Item Returned
+                            </span>
+                          ) : item?.invoice_no ? (
+                            <>
+                              <span className='text-dark fw-bold'>{item?.invoice_no}</span>
+                              <br />
+                              <Link to={`/ViewOrderItemInvoice/${item?.business_id}/${item?.business_order_id}/${item?.invoice_id}/${item?.invoice_no}`}>
+                                <button className='btn btn-sm btn-warning mb-2'>
+                                  View Invoice
+                                </button>
+                              </Link>
+                              <br />
+                              {
+                                item?.business_order_e_signature_url &&
+                                <button
+                                  onClick={() =>
+                                    window.open(
+                                      item?.business_order_e_signature_url,
+                                      "_blank",
+                                      "noopener,noreferrer"
+                                    )
+                                  }
+                                  disabled={!item?.business_order_e_signature_url}
+                                  className='btn btn-sm btn-info'>
+                                  Signature
+                                </button>
+                              }
+                            </>
+                          ) : (
+                            <span className="badge bg-danger text-white">
+                              -
+                            </span>
+                          )
+                        }
+
+                      </td>
+
                     </tr>
                   )
                 })
@@ -563,7 +615,7 @@ const OrderList = ({
                         </td>
                       </tr>
                     }
-                    
+
                     <tr>
                       <td>VAT 5% :</td>
                       <td className="text-end">

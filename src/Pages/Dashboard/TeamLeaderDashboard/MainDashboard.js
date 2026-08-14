@@ -17,6 +17,9 @@ const MainDashboard = () => {
     const [belowTargetData, setBelowTargetData] = useState([]);
     const [inquiryData, setInquiryData] = useState([]);
     const [quotationData, setQuotationData] = useState([]);
+    const [selectedMonth, setSelectedMonth] = useState(
+        new Date().toISOString().slice(0, 7)
+    );
 
     const GetTeamLeaderDashboardStates = async () => {
         try {
@@ -57,27 +60,40 @@ const MainDashboard = () => {
         }
     };
 
-    const getAchievementReports = async () => {
+    const getAchievementReports = async (month) => {
         try {
-            const response = await axios.get(`${apiURL}Dashboard/GetTargetAchievementReport`, { headers });
-            const { success, data } = response.data
+            const response = await axios.get(
+                `${apiURL}Dashboard/GetTargetAchievementReport?month=${month}`,
+                { headers }
+            );
+
+            const { success, data } = response.data;
+
             if (success) {
-                setAboveTargetData(data?.above_target)
-                setBelowTargetData(data?.below_target)
+                setAboveTargetData(data?.above_target || []);
+                setBelowTargetData(data?.below_target || []);
             } else {
+                setAboveTargetData([]);
+                setBelowTargetData([]);
                 console.log("Dashboard error");
             }
+
         } catch (error) {
             console.log("error", error);
+            setAboveTargetData([]);
+            setBelowTargetData([]);
         }
-    }
+    };
 
     useEffect(() => {
         GetTeamLeaderDashboardStates();
-        getAchievementReports()
         GetLastPartInquiries()
         GetLastQuotations()
     }, []);
+
+    useEffect(() => {
+        getAchievementReports(selectedMonth);
+    }, [selectedMonth]);
 
     const cardItems = [
         {
@@ -211,6 +227,8 @@ const MainDashboard = () => {
                         <AchievementStats
                             aboveTargetData={aboveTargetData}
                             belowTargetData={belowTargetData}
+                            selectedMonth={selectedMonth}
+                            onMonthChange={setSelectedMonth}
                         />
                     </div>
                     <div className="row">

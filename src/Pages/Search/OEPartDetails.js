@@ -74,7 +74,7 @@ const OEPartDetails = () => {
             const { success, data } = response.data
             if (success) {
                 setBrandOptions(
-                    data.map(i => ({ value: i.SUP_ID, label: i.SUP_BRAND }))
+                    data.map(i => ({ value: i.sup_id, label: i.sup_brand }))
                 )
             }
         } catch (error) {

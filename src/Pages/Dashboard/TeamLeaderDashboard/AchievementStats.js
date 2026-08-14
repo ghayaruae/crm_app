@@ -1,7 +1,12 @@
 import { useState } from 'react'
 import { DateFormater } from '../../../Components/GlobalFunctions'
 
-const AchievementStats = ({ aboveTargetData = [], belowTargetData = [] }) => {
+const AchievementStats = ({
+    aboveTargetData = [],
+    belowTargetData = [],
+    selectedMonth,
+    onMonthChange
+}) => {
     const [activeTab, setActiveTab] = useState('above')
 
     const renderTable = (data, type) => {
@@ -61,10 +66,28 @@ const AchievementStats = ({ aboveTargetData = [], belowTargetData = [] }) => {
     return (
         <div className="col-12">
             <div className="card">
-                <div className='card-header'>
-                    <h5 className="mb-0" style={{ color: "#132530" }}>
-                        <i className="ri-bar-chart-2-line me-2"></i>Salesman Achievement Report
-                    </h5>
+                <div className="card-header">
+                    <div className="d-flex justify-content-between align-items-center">
+
+                        <h5 className="mb-0" style={{ color: "#132530" }}>
+                            <i className="ri-bar-chart-2-line me-2"></i>
+                            Salesman Achievement Report
+                        </h5>
+
+                        <div className="d-flex align-items-center gap-2">
+                            <label className="mb-0 fw-semibold text-muted">
+                                Month
+                            </label>
+
+                            <input
+                                type="month"
+                                className="form-control form-control-sm"
+                                value={selectedMonth}
+                                onChange={(e) => onMonthChange(e.target.value)}
+                            />
+                        </div>
+
+                    </div>
                 </div>
                 <div className="card-body">
                     {/* Tabs */}
