@@ -170,8 +170,7 @@ const AllOrders = () => {
 
                                     <div className="card-body">
                                         <div className="row mb-4 g-3 align-items-center">
-
-                                            {/* Search Input */}
+                                            
                                             <div className="col-lg-3 col-md-6 col-12">
                                                 <div className="position-relative w-100">
                                                     <input
