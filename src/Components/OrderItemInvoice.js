@@ -471,7 +471,7 @@ const OrderItemInvoice = ({ order, orderItems, address, returnData, cancelData, 
 
                         <div className="col-4 text-end">
                             <img
-                                src="https://b2badmin.ghayar.com/assets/images/invoice/invoice_emirates.png"
+                                src="/assets/images/inv-logo.jpeg"
                                 alt="logo"
                                 style={{
                                     width: "90px",
