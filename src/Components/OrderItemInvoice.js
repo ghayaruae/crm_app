@@ -318,7 +318,7 @@ const OrderItemInvoice = ({ order, orderItems, address, returnData, cancelData, 
                             <div><b>Invoice No :</b> {invoice_no}</div>
                             <div><b>Date :</b> {dayjs(order?.business_order_date).format("DD MMM YYYY")}</div>
                             <div style={{ display: "flex", gap: "20px", flexWrap: "wrap", marginBottom: "-5px" }}>
-                                <div><b>Currency :</b> AED</div>
+                                <div><b>Currency :</b> {order.business_order_currency}</div>
                             </div>
                             <div><b>Payment Method :</b> {order.business_order_payment_method}</div>
                         </div>
@@ -357,11 +357,11 @@ const OrderItemInvoice = ({ order, orderItems, address, returnData, cancelData, 
                                     <td style={invoiceStyles.itemCell}>{item.item_name}</td>
                                     <td style={invoiceStyles.itemCell} align="left">{item?.item_number}</td>
                                     <td style={invoiceStyles.itemCell} align="left">{item?.item_brand}</td>
-                                    <td style={invoiceStyles.itemCell} align="left">{item?.item_price} AED</td>
+                                    <td style={invoiceStyles.itemCell} align="left">{item?.business_order_item_price}</td>
                                     <td style={invoiceStyles.itemCell} align="left">{remainingQty}</td>
-                                    <td style={invoiceStyles.itemCell} align="left">{item?.item_vat_amount} AED</td>
+                                    <td style={invoiceStyles.itemCell} align="left">{item?.item_vat_amount}</td>
                                     <td style={invoiceStyles.itemCell} align="left">
-                                        {parseFloat(item?.item_sub_total).toFixed(2)} AED
+                                        {(item?.item_sub_total)}
                                     </td>
                                 </tr>
                             );
@@ -372,7 +372,7 @@ const OrderItemInvoice = ({ order, orderItems, address, returnData, cancelData, 
                                 {Number(order.business_order_total_saving) > 0 ? "Sub Total" : "Taxable Amount"} :
                             </td>
                             <td style={invoiceStyles.totalValueCell} align="right">
-                                {orderItems[0]?.taxable_amount} AED
+                                {order?.display_sub_total}
                             </td>
                         </tr>
 
@@ -381,7 +381,7 @@ const OrderItemInvoice = ({ order, orderItems, address, returnData, cancelData, 
                                 VAT 5%
                             </td>
                             <td style={invoiceStyles.totalValueCell} align="right">
-                                <strong>{orderItems[0]?.vat_amount ?? 0} AED</strong>
+                                <strong>{order?.display_vat_amount ?? 0}</strong>
                             </td>
                         </tr>
 
@@ -401,7 +401,7 @@ const OrderItemInvoice = ({ order, orderItems, address, returnData, cancelData, 
                                 }}
                                 align="right"
                             >
-                                <strong>{orderItems[0]?.total_bill_amount} AED</strong>
+                                <strong>{order?.display_grand_total}</strong>
                             </td>
                         </tr>
                     </tbody>

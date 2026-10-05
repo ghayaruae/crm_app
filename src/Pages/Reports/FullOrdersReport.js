@@ -75,7 +75,7 @@ const FullOrdersReport = () => {
             { label: "Account Name", key: "business_name" },
             { label: "Order Date", key: "business_order_date" },
             { label: "Payment Method", key: "business_order_payment_method" },
-            { label: "Total Amount", key: "corrected_grand_total" },
+            { label: "Total Amount", key: "display_grand_total" },
             { label: "Reward Points", key: "business_order_earned_points" },
             { label: "Status", key: "business_order_status" }
         ];
@@ -295,7 +295,7 @@ const FullOrdersReport = () => {
                                                                 </td>
                                                                 <td>{DateFormater(row.business_order_date)}</td>
                                                                 <td>{row.business_order_payment_method}</td>
-                                                                <td className='text-success fw-bold'>{parseFloat(row.corrected_grand_total)?.toFixed(2)} AED</td>
+                                                                <td className='text-success fw-bold'>{row.display_grand_total}</td>
                                                                 <td>
                                                                     <span className='badge bg-success'>
                                                                         {row?.business_order_earned_points} Points

@@ -482,13 +482,13 @@ const OrderList = ({
 
                       <td>
                         <div className="text-warning fw-bold fs-15">
-                          {item.item_price_excl_vat} AED
+                          {item.business_order_item_price}
                         </div>
                       </td>
 
                       <td>
                         <div className="text-danger fw-bold fs-15">
-                          {item.item_vat_amount} AED
+                          {item.item_vat_amount}
                         </div>
                       </td>
 
