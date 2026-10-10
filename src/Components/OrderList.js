@@ -1,122 +1,10 @@
-// import React from 'react'
-// import { NoRecords } from './Shimmer'
-
-// const OrderList = ({ orderItems, orderDetails }) => {
-
-
-//   return (
-//     <div className="card-body">
-//       <div className="table-responsive table-card">
-//         <table className="table table-nowrap align-middle table-borderless mb-0">
-//           <thead className="table-light text-muted">
-//             <tr>
-//               <th scope="col">Product Details</th>
-//               <th scope="col">Part Number</th>
-//               <th scope="col">Qty</th>
-//               <th scope="col">Price</th>
-//               <th scope="col">VAT</th>
-//               <th scope="col" className='text-end'>Sub Total</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             {
-//               orderItems?.length > 0 ?
-//                 orderItems?.map((item, index) => {
-//                   return (
-//                     <tr key={index} className={item?.item_status === 7 ? "return-overlay" : ""}>
-//                       <td>
-//                         <div className="d-flex">
-//                           <div className="flex-shrink-0 avatar-md bg-light rounded p-1">
-//                             <img
-//                               src={item?.item_img_url}
-//                               alt={item?.item_name}
-//                               className="img-fluid d-block"
-//                             />
-//                           </div>
-//                           <div className="flex-grow-1 ms-3">
-//                             <h5 className="fs-15">
-//                               <a className="text-reset cursor-pointer">{item?.item_name}</a>
-//                             </h5>
-//                             <p className='text-muted mb-0'>{item?.store_name}</p>
-//                             {item?.item_status === 7 &&
-//                               <span className='badge bg-danger'>
-//                                 Returned
-//                               </span>
-//                             }
-//                           </div>
-//                         </div>
-//                       </td>
-//                       <td>{item?.item_number}</td>
-//                       <td>{item?.item_qty}</td>
-//                       <td>
-//                         <div className="text-warning fw-bold fs-15">
-//                           {item.item_price_excl_vat} AED
-//                         </div>
-//                       </td>
-//                       <td>
-//                         <div className="text-danger fw-bold fs-15">
-//                           {item.item_vat_amount} AED
-//                         </div>
-//                       </td>
-//                       <td className="fw-medium text-end">{item.item_sub_total}</td>
-//                     </tr>
-//                   )
-//                 })
-//                 :
-//                 <tr colspan={8}>
-//                   <td><NoRecords /></td>
-//                 </tr>
-
-//             }
-
-//             <tr className="border-top border-top-dashed">
-//               <td colSpan={4} />
-//               <td colSpan={2} className="fw-medium p-0">
-//                 <table className="table table-borderless mb-0">
-//                   <tbody>
-//                     <tr>
-//                       <td>Sub Total :</td>
-//                       <td className="text-end">{orderDetails.display_corrected_grand_total}</td>
-//                     </tr>
-//                     <tr>
-//                       <td>Total Exc. Tax :</td>
-//                       <td className="text-end">{orderDetails.display_corrected_excl_vat}</td>
-//                     </tr>
-//                     <tr>
-//                       <td>VAT :</td>
-//                       <td className="text-end">{orderDetails.display_corrected_vat_amount}</td>
-//                     </tr>
-//                     {
-//                       orderDetails?.business_order_total_saving > 0 &&
-//                       <tr>
-//                         <td>Discount :</td>
-//                         <td className="text-end">{orderDetails.business_order_total_saving} AED</td>
-//                       </tr>
-//                     }
-//                     <tr className="border-top border-top-dashed">
-//                       <th scope='row'>Grand Total</th>
-//                       <th className="text-end">{orderDetails?.display_corrected_grand_total}</th>
-//                     </tr>
-//                   </tbody>
-//                 </table>
-//               </td>
-//             </tr>
-//           </tbody>
-//         </table>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default OrderList
-
-
-
-
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { NoRecords } from './Shimmer'
 import { GetStatusBadge } from '../Utils/GetStatusBadge';
 import { Link } from 'react-router-dom';
+import { ConfigContext } from '../Context/ConfigContext';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const OrderList = ({
   orderItems,
@@ -125,8 +13,153 @@ const OrderList = ({
   cancelData
 }) => {
 
+  const { apiHeaderJson, apiURL } = useContext(ConfigContext)
+  const headers = apiHeaderJson;
+
   const [openReturnIndex, setOpenReturnIndex] = useState(null);
   const [openCancelIndex, setOpenCancelIndex] = useState(null);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [showReturnModal, setShowReturnModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const [cancelRemark, setCancelRemark] = useState("");
+  const [returnQty, setReturnQty] = useState(1);
+  const [returnReason, setReturnReason] = useState("");
+  const [loadingRequest, setLoadingRequest] = useState(false);
+
+  const openCancelModal = (item) => {
+    setSelectedItem(item);
+    setCancelRemark("");
+    setShowCancelModal(true);
+  };
+
+  const openReturnModal = (item) => {
+    setSelectedItem(item);
+    setReturnQty(1);
+    setReturnReason("");
+    setShowReturnModal(true);
+  };
+
+  const submitCancelRequest = async () => {
+    if (!cancelRemark.trim()) {
+      Swal.fire("Required", "Please enter cancel remark.", "warning");
+      return;
+    }
+
+    try {
+      setLoadingRequest(true);
+
+      const payload = {
+        business_order_id: orderDetails?.business_order_id,
+        business_id: orderDetails?.business_order_business_id,
+        business_order_cancel_remark: cancelRemark,
+        business_order_item_id: selectedItem?.item_id,
+        business_order_cancel_item_name: selectedItem?.item_name,
+        business_order_cancel_item_number: selectedItem?.item_number,
+        business_order_cancel_item_brand_name: selectedItem?.item_brand,
+        business_order_cancel_item_sup_id: selectedItem?.business_order_item_sup_id,
+        business_order_cancel_item_qty: selectedItem?.item_qty,
+        business_order_cancel_item_price: selectedItem?.item_price,
+        business_order_cancel_item_store_id: selectedItem?.business_order_item_store_id,
+        business_order_cancel_item_stock_oe: selectedItem?.stock_oe
+      };
+
+      console.log(payload)
+      return;
+
+      const response = await axios.post(
+        `${apiURL}/CancelOrderItem`,
+        payload, { headers }
+      );
+
+      if (response?.data?.success) {
+        setShowCancelModal(false);
+
+        Swal.fire(
+          "Success",
+          response?.data?.message || "Cancellation request submitted successfully.",
+          "success"
+        );
+      } else {
+        Swal.fire(
+          "Error",
+          response?.data?.message || "Unable to submit cancellation request.",
+          "error"
+        );
+      }
+    } catch (error) {
+      Swal.fire(
+        "Error",
+        error?.response?.data?.message || "Something went wrong.",
+        "error"
+      );
+    } finally {
+      setLoadingRequest(false);
+    }
+  };
+
+  const submitReturnRequest = async () => {
+    if (!returnQty || Number(returnQty) <= 0) {
+      Swal.fire("Required", "Please enter valid return quantity.", "warning");
+      return;
+    }
+
+    if (Number(returnQty) > Number(selectedItem?.item_qty || 0)) {
+      Swal.fire(
+        "Invalid Quantity",
+        `Maximum return quantity is ${selectedItem?.item_qty}.`,
+        "warning"
+      );
+      return;
+    }
+
+    if (!returnReason.trim()) {
+      Swal.fire("Required", "Please enter return reason.", "warning");
+      return;
+    }
+
+    try {
+      setLoadingRequest(true);
+
+      const payload = {
+        order_id: orderDetails?.business_order_id,
+        business_id: orderDetails?.business_order_business_id,
+        order_item_id: selectedItem?.item_id,
+        return_quantity: Number(returnQty),
+        return_reason: returnReason,
+        invoice_id: selectedItem?.invoice_id
+      };
+
+      const response = await axios.post(
+        `${apiURL}/ReturnRequest`,
+        payload, { headers }
+      );
+
+      if (response?.data?.success) {
+        setShowReturnModal(false);
+
+        Swal.fire(
+          "Success",
+          response?.data?.message || "Return request submitted successfully.",
+          "success"
+        );
+      } else {
+        Swal.fire(
+          "Error",
+          response?.data?.message || "Unable to submit return request.",
+          "error"
+        );
+      }
+    } catch (error) {
+      Swal.fire(
+        "Error",
+        error?.response?.data?.message || "Something went wrong.",
+        "error"
+      );
+    } finally {
+      setLoadingRequest(false);
+    }
+  };
 
   // ==============================
   // RETURN FUNCTIONS
@@ -178,7 +211,7 @@ const OrderList = ({
               <th scope="col">VAT 5%</th>
               <th scope="col">Total</th>
               <th scope="col">Status</th>
-              <th scope="col">Print Invoice</th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
 
@@ -512,16 +545,18 @@ const OrderList = ({
                             </span>
                           ) : item?.invoice_no ? (
                             <>
-                              <span className='text-dark fw-bold'>{item?.invoice_no}</span>
+                              <span className="text-dark fw-bold">{item?.invoice_no}</span>
                               <br />
+
                               <Link to={`/ViewOrderItemInvoice/${item?.business_id}/${item?.business_order_id}/${item?.invoice_id}/${item?.invoice_no}`}>
-                                <button className='btn btn-sm btn-warning mb-2'>
+                                <button className="btn btn-sm btn-warning mb-2">
                                   View Invoice
                                 </button>
                               </Link>
+
                               <br />
-                              {
-                                item?.business_order_e_signature_url &&
+
+                              {item?.business_order_e_signature_url && (
                                 <button
                                   onClick={() =>
                                     window.open(
@@ -531,10 +566,11 @@ const OrderList = ({
                                     )
                                   }
                                   disabled={!item?.business_order_e_signature_url}
-                                  className='btn btn-sm btn-info'>
+                                  className="btn btn-sm btn-info"
+                                >
                                   Signature
                                 </button>
-                              }
+                              )}
                             </>
                           ) : (
                             <span className="badge bg-danger text-white">
@@ -543,6 +579,31 @@ const OrderList = ({
                           )
                         }
 
+                        {(Number(item?.item_status) === 0 || Number(item?.item_status) === 5) && (
+                          <div className="d-flex flex-wrap gap-2 mt-2 justify-content-center">
+                            {Number(item?.item_status) === 0 && (
+                              <button
+                                type="button"
+                                className="btn btn-sm btn-danger"
+                                onClick={() => openCancelModal(item)}
+                              >
+                                <i className="fa fa-ban me-1"></i>
+                                Cancel Request
+                              </button>
+                            )}
+
+                            {Number(item?.item_status) === 5 && (
+                              <button
+                                type="button"
+                                className="btn btn-sm btn-warning"
+                                onClick={() => openReturnModal(item)}
+                              >
+                                <i className="fa fa-undo me-1"></i>
+                                Return Request
+                              </button>
+                            )}
+                          </div>
+                        )}
                       </td>
 
                     </tr>
@@ -659,6 +720,138 @@ const OrderList = ({
         </table>
 
       </div>
+      {showReturnModal && (
+        <div
+          className="modal fade show d-block"
+          tabIndex="-1"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Return Request</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={() => setShowReturnModal(false)}
+                />
+              </div>
+
+              <div className="modal-body">
+                <div className="mb-3">
+                  <label className="form-label">
+                    Return Quantity
+                  </label>
+
+                  <input
+                    type="number"
+                    min="1"
+                    max={selectedItem?.item_qty}
+                    className="form-control"
+                    value={returnQty}
+                    onChange={(e) => setReturnQty(e.target.value)}
+                  />
+
+                  <small className="text-muted">
+                    Available quantity: {selectedItem?.item_qty}
+                  </small>
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">
+                    Return Reason
+                  </label>
+
+                  <textarea
+                    className="form-control"
+                    rows="4"
+                    value={returnReason}
+                    onChange={(e) => setReturnReason(e.target.value)}
+                    placeholder="Enter return reason"
+                  />
+                </div>
+              </div>
+
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-light"
+                  onClick={() => setShowReturnModal(false)}
+                  disabled={loadingRequest}
+                >
+                  Close
+                </button>
+
+                <button
+                  type="button"
+                  className="btn btn-warning"
+                  onClick={submitReturnRequest}
+                  disabled={loadingRequest}
+                >
+                  {loadingRequest ? "Submitting..." : "Submit Return Request"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showCancelModal && (
+        <div
+          className="modal fade show d-block"
+          tabIndex="-1"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Cancel Request</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={() => setShowCancelModal(false)}
+                />
+              </div>
+
+              <div className="modal-body">
+                <div className="mb-3">
+                  <label className="form-label">
+                    Cancel Remark
+                  </label>
+
+                  <textarea
+                    className="form-control"
+                    rows="4"
+                    value={cancelRemark}
+                    onChange={(e) => setCancelRemark(e.target.value)}
+                    placeholder="Enter cancel remark"
+                  />
+                </div>
+              </div>
+
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-light"
+                  onClick={() => setShowCancelModal(false)}
+                  disabled={loadingRequest}
+                >
+                  Close
+                </button>
+
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={submitCancelRequest}
+                  disabled={loadingRequest}
+                >
+                  {loadingRequest ? "Submitting..." : "Submit Cancel Request"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
