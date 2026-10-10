@@ -65,7 +65,7 @@ const OrderList = ({
       };
 
       const response = await axios.post(
-        `${apiURL}/CancelOrderItem`,
+        `${apiURL}Business/CancelOrderItem`,
         payload, { headers }
       );
 
@@ -128,7 +128,7 @@ const OrderList = ({
       };
 
       const response = await axios.post(
-        `${apiURL}/ReturnRequest`,
+        `${apiURL}Business/ReturnRequest`,
         payload, { headers }
       );
 
