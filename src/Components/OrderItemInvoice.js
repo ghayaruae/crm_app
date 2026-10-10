@@ -316,7 +316,7 @@ const OrderItemInvoice = ({ order, orderItems, address, returnData, cancelData, 
                         <div style={invoiceStyles.shippingAddress}>
                             <div><b>Ref Order No # :</b> {order?.secret_order_id}</div>
                             <div><b>Invoice No :</b> {invoice_no}</div>
-                            <div><b>Date :</b> {dayjs(order?.invoice_date).format("DD MMM YYYY")}</div>
+                            <div><b>Date :</b> {dayjs(orderItems[0]?.invoice_date).format("DD MMM YYYY")}</div>
                             <div style={{ display: "flex", gap: "20px", flexWrap: "wrap", marginBottom: "-5px" }}>
                                 <div><b>Currency :</b> {order.business_order_currency}</div>
                             </div>
