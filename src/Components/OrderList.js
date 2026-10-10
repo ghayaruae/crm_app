@@ -64,9 +64,6 @@ const OrderList = ({
         business_order_cancel_item_stock_oe: selectedItem?.stock_oe
       };
 
-      console.log(payload)
-      return;
-
       const response = await axios.post(
         `${apiURL}/CancelOrderItem`,
         payload, { headers }
